@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Đọc truyện</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="top-bar">
+  <button onclick="goHome()">🏠 Trang chủ</button>
+</div>
+
+<div class="nav">
+  <button onclick="firstChapter()">⏮</button>
+  <button onclick="prevChapter()">◀</button>
+
+  <select id="chapterSelect" onchange="changeChapter()"></select>
+
+  <button onclick="nextChapter()">▶</button>
+  <button onclick="lastChapter()">⏭</button>
+
+  <button onclick="toggleSettings()">⚙</button>
+</div>
+
+<div id="content" class="content"></div>
+
+
+
+<div class="nav bottom">
+  <button onclick="firstChapter()">⏮</button>
+  <button onclick="prevChapter()">◀</button>
+
+  <!-- SELECT CHỌN CHƯƠNG Ở GIỮA -->
+  <select id="chapterSelectBottom" onchange="changeChapterBottom()"></select>
+
+  <button onclick="nextChapter()">▶</button>
+  <button onclick="lastChapter()">⏭</button>
+</div>
+
+<div id="settings" class="settings hidden">
+  <h3>Chọn giao diện đọc</h3>
+  <div class="theme-btns">
+    <button onclick="applyTheme(0)">🌙 Dark</button>
+    <button onclick="applyTheme(1)">📖 Light</button>
+    <button onclick="applyTheme(2)">💛 Sepia</button>
+  </div>
+
+  <h3>Chọn cỡ chữ</h3>
+  <div class="fontsize-btns">
+    <button onclick="applyFontSize('small')">A-</button>
+    <button onclick="applyFontSize('medium')">A</button>
+    <button onclick="applyFontSize('large')">A+</button>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

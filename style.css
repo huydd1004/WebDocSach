@@ -1,0 +1,173 @@
+/* RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* FONT ĐẸP */
+body {
+  font-family: "verdana", serif;
+  background: #0f172a;
+  color: #e2e8f0;
+}
+
+/* TITLE */
+.title {
+  text-align: center;
+  padding: 30px 0;
+  font-size: 32px;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+/* GRID TRUYỆN */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 25px;
+  padding: 30px;
+}
+
+/* CARD TRUYỆN */
+.book {
+  background: rgba(255,255,255,0.05);
+  border-radius: 16px;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.book:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+}
+
+.book img {
+  width: 100%;
+  height: 280px;
+  object-fit: cover;
+}
+
+/* INFO */
+.book-info {
+  padding: 15px;
+}
+
+.book-info h3 {
+  font-size: 18px;
+  margin-bottom: 8px;
+}
+
+.book-info p {
+  font-size: 14px;
+  opacity: 0.7;
+}
+
+/* TOP BAR */
+.top-bar {
+  position: sticky;
+  top: 0;
+  background: rgba(15,23,42,0.8);
+  backdrop-filter: blur(10px);
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+/* NAVIGATION */
+.nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  padding: 15px;
+  flex-wrap: wrap;
+}
+
+/* BUTTON */
+button {
+  background: linear-gradient(135deg, #1e293b, #334155);
+  border: none;
+  color: #e2e8f0;
+  padding: 10px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.25s;
+  font-size: 14px;
+}
+
+button:hover {
+  background: linear-gradient(135deg, #334155, #475569);
+  transform: scale(1.05);
+}
+
+/* SELECT */
+select {
+  background: #1e293b;
+  color: white;
+  border: none;
+  padding: 8px;
+  border-radius: 8px;
+}
+
+/* CONTENT */
+.content {
+  max-width: 900px;
+  margin: 30px auto;
+  padding: 30px;
+  line-height: 2;
+  font-size: 20px;
+  background: rgba(255,255,255,0.04);
+  border-radius: 16px;
+  box-shadow: 0 0 40px rgba(0,0,0,0.3);
+  white-space: pre-line;
+}
+
+/* SETTINGS PANEL */
+.settings {
+  position: fixed;
+  right: 20px;
+  top: 80px;
+  background: #1e293b;
+  padding: 20px;
+  border-radius: 14px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+}
+
+.settings h3 {
+  margin-bottom: 10px;
+}
+
+.settings label {
+  display: block;
+  margin: 10px 0;
+}
+
+/* HIDE */
+.hidden {
+  display: none;
+}
+
+/* SCROLLBAR */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #475569;
+  border-radius: 10px;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .content {
+    font-size: 18px;
+    padding: 20px;
+  }
+
+  .title {
+    font-size: 24px;
+  }
+}
