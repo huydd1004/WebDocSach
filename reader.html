@@ -40,6 +40,7 @@
 </div>
 
 <div id="settings" class="settings hidden">
+  <button class="settings-close" onclick="toggleSettings()" aria-label="Đóng cài đặt">✖</button>
   <h3>Chọn giao diện đọc</h3>
   <div class="theme-btns">
     <button onclick="applyTheme(0)">🌙 Dark</button>
@@ -52,6 +53,22 @@
     <button onclick="applyFontSize('small')">A-</button>
     <button onclick="applyFontSize('medium')">A</button>
     <button onclick="applyFontSize('large')">A+</button>
+  </div>
+
+  <h3>Đọc to (Text-to-Speech)</h3>
+  <div class="tts-controls">
+    <label for="voiceSelect">Giọng:</label>
+    <select id="voiceSelect"></select>
+
+    <label for="ttsRate">Tốc độ:</label>
+    <input id="ttsRate" type="range" min="0.6" max="1.8" step="0.1" value="1">
+    <span id="ttsRateVal">1.0x</span>
+
+    <div class="tts-buttons">
+      <button id="ttsPlayBtn" type="button">▶ Play</button>
+      <button id="ttsPauseBtn" type="button">⏸ Pause</button>
+      <button id="ttsStopBtn" type="button">⏹ Stop</button>
+    </div>
   </div>
 </div>
 

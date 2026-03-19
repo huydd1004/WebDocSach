@@ -29,6 +29,25 @@ body {
   padding: 30px;
 }
 
+/* SEARCH BAR */
+.search-bar {
+  max-width: 900px;
+  margin: 12px auto;
+  padding: 0 20px;
+}
+
+.search-bar input[type="search"] {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: none;
+  background: rgba(255,255,255,0.03);
+  color: #e2e8f0;
+  font-size: 16px;
+}
+
+.search-bar input[type="search"]::placeholder { color: rgba(226,232,240,0.5); }
+
 /* CARD TRUYỆN */
 .book {
   background: rgba(255,255,255,0.05);
@@ -186,6 +205,23 @@ select {
   box-shadow: 0 10px 40px rgba(0,0,0,0.5);
 }
 
+.settings-close {
+  position: absolute;
+  right: 10px;
+  top: 8px;
+  background: transparent;
+  border: none;
+  color: #e2e8f0;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 6px;
+}
+
+.settings-close:focus {
+  outline: 2px solid rgba(226,232,240,0.2);
+  border-radius: 6px;
+}
+
 .settings h3 {
   margin-bottom: 10px;
 }
@@ -193,6 +229,26 @@ select {
 .settings label {
   display: block;
   margin: 10px 0;
+}
+
+.tts-controls {
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.tts-controls select, .tts-controls input[type="range"] {
+  width: 100%;
+}
+
+.tts-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.tts-buttons button {
+  flex: 1;
 }
 
 /* HIDE */

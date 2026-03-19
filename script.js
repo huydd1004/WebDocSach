@@ -3,33 +3,51 @@ let currentChapter = 1;
 let totalChapters = 1;
 const CHAPTERS_PER_PART = 200; // số chương trong 1 phần
 
-// LOAD DANH SÁCH TRUYỆN
+// LOAD DANH SÁCH TRUYỆN với tính năng tìm kiếm
+let booksData = [];
+function renderBookList(list) {
+  const container = document.getElementById("book-list");
+  if (!container) return;
+  container.innerHTML = "";
+
+  list.forEach(book => {
+    const div = document.createElement("div");
+    div.className = "book";
+
+    div.innerHTML = `
+      <img src="${book.cover}">
+      <div class="book-info">
+        <h3>${book.title}</h3>
+        <p>${book.author}</p>
+        <p>${book.status}</p>
+        <p>${book.date}</p>
+      </div>
+    `;
+
+    div.onclick = () => {
+      window.location.href = `reader.html?book=${book.id}&chap=1`;
+    };
+
+    container.appendChild(div);
+  });
+}
+
 if (document.getElementById("book-list")) {
   fetch("data/books.json")
     .then(res => res.json())
     .then(data => {
-      const container = document.getElementById("book-list");
+      booksData = data;
+      renderBookList(booksData);
 
-      data.forEach(book => {
-        const div = document.createElement("div");
-        div.className = "book";
-
-        div.innerHTML = `
-          <img src="${book.cover}">
-          <div class="book-info">
-            <h3>${book.title}</h3>
-            <p>${book.author}</p>
-            <p>${book.status}</p>
-            <p>${book.date}</p>
-          </div>
-        `;
-
-        div.onclick = () => {
-          window.location.href = `reader.html?book=${book.id}&chap=1`;
-        };
-
-        container.appendChild(div);
-      });
+      const search = document.getElementById('bookSearch');
+      if (search) {
+        search.addEventListener('input', (e) => {
+          const q = e.target.value.trim().toLowerCase();
+          if (!q) return renderBookList(booksData);
+          const filtered = booksData.filter(b => b.title.toLowerCase().includes(q));
+          renderBookList(filtered);
+        });
+      }
     });
 }
 
@@ -270,4 +288,112 @@ function updateURL() {
 
   // init visibility
   onScroll();
+})();
+
+// Text-to-Speech (TTS) for reader page
+(function setupTTS() {
+  const contentEl = document.getElementById('content');
+  if (!contentEl) return; // only in reader page
+
+  const voiceSelect = document.getElementById('voiceSelect');
+  const rateInput = document.getElementById('ttsRate');
+  const rateVal = document.getElementById('ttsRateVal');
+  const playBtn = document.getElementById('ttsPlayBtn');
+  const pauseBtn = document.getElementById('ttsPauseBtn');
+  const stopBtn = document.getElementById('ttsStopBtn');
+
+  let synth = window.speechSynthesis;
+  let voices = [];
+  let utter = null;
+
+  function populateVoices() {
+    voices = synth.getVoices().filter(v => v.lang && v.name);
+    if (!voiceSelect) return;
+    // prefer voices that are Vietnamese (lang starts with 'vi' or name contains 'Vietnamese')
+    const viCandidates = voices.filter(v => {
+      const lang = (v.lang || '').toLowerCase();
+      const name = (v.name || '').toLowerCase();
+      return lang.startsWith('vi') || /vietnamese/.test(name) || /vi[-_]/.test(lang) || lang === 'vi';
+    });
+
+    voiceSelect.innerHTML = '';
+    // Only include Vietnamese voices. If none, show a disabled notice.
+    if (viCandidates.length) {
+      viCandidates.forEach(v => {
+        const opt = document.createElement('option');
+        opt.value = v.name;
+        opt.innerText = `${v.name} (${v.lang})`;
+        voiceSelect.appendChild(opt);
+      });
+    } else {
+      const note = document.createElement('option');
+      note.disabled = true;
+      note.selected = true;
+      note.innerText = 'Không tìm thấy giọng Tiếng Việt trên trình duyệt này';
+      voiceSelect.appendChild(note);
+    }
+  }
+
+  populateVoices();
+  // some browsers (Chrome) load voices asynchronously
+  if (synth.onvoiceschanged !== undefined) {
+    synth.onvoiceschanged = populateVoices;
+  }
+
+  // rate display
+  if (rateInput && rateVal) {
+    rateInput.addEventListener('input', e => {
+      rateVal.innerText = parseFloat(e.target.value).toFixed(1) + 'x';
+    });
+  }
+
+  function stopTTS() {
+    if (!synth) return;
+    synth.cancel();
+    utter = null;
+  }
+
+  function pauseTTS() {
+    if (!synth) return;
+    if (synth.speaking && !synth.paused) synth.pause();
+  }
+
+  function resumeTTS() {
+    if (!synth) return;
+    if (synth.paused) synth.resume();
+  }
+
+  function playTTS() {
+    if (!synth) return;
+    // if paused, resume
+    if (synth.paused) return resumeTTS();
+
+    stopTTS();
+
+    const text = contentEl.innerText || contentEl.textContent;
+    if (!text || !text.trim()) return;
+
+    utter = new SpeechSynthesisUtterance(text);
+    // voice
+    if (voiceSelect && voiceSelect.value) {
+      const v = voices.find(x => x.name === voiceSelect.value);
+      if (v) utter.voice = v;
+    }
+    // rate
+    if (rateInput) utter.rate = parseFloat(rateInput.value) || 1;
+
+    // optional: set lang if not provided
+    if (!utter.lang) utter.lang = 'vi-VN';
+
+    synth.speak(utter);
+  }
+
+  if (playBtn) playBtn.addEventListener('click', playTTS);
+  if (pauseBtn) pauseBtn.addEventListener('click', () => {
+    if (synth && synth.speaking) pauseTTS();
+  });
+  if (stopBtn) stopBtn.addEventListener('click', () => {
+    stopTTS();
+  });
+
 })();
