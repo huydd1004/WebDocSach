@@ -66,11 +66,35 @@ if (document.getElementById("content")) {
     });
 }
 
+function getChapterPath(chap) {
+  const part = chapterToPart(chap);
+  return `data/${currentBook}/phần ${part}/${chap}.txt`;
+}
+
 function loadChapter() {
-  fetch(`data/${currentBook}/${currentChapter}.txt`)
-    .then(res => res.text())
+  const contentEl = document.getElementById("content");
+  if (!contentEl) return;
+
+  const partPath = getChapterPath(currentChapter);
+  const fallbackPath = `data/${currentBook}/${currentChapter}.txt`;
+
+  const tryFetch = (url) => {
+    return fetch(encodeURI(url)).then(res => {
+      if (!res.ok) throw res;
+      return res.text();
+    });
+  };
+
+  tryFetch(partPath)
+    .catch(() => tryFetch(fallbackPath))
     .then(text => {
-      document.getElementById("content").innerText = text;
+      contentEl.innerText = text;
+    })
+    .catch(err => {
+      const msg = err && err.status
+        ? `Không thể tải chương ${currentChapter} (HTTP ${err.status})`
+        : (err && err.message) ? err.message : String(err);
+      contentEl.innerText = `Lỗi tải chương: ${msg}`;
     });
 }
 
