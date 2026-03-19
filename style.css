@@ -111,6 +111,34 @@ button:hover {
   transform: scale(1.05);
 }
 
+/* Scroll to top button */
+.scroll-top {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 999;
+  border-radius: 50%;
+  width: clamp(44px, 8vw, 56px);
+  height: clamp(44px, 8vw, 56px);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(18px, 3.2vw, 22px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+
+.scroll-top.show {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.scroll-top:active {
+  transform: scale(0.98);
+}
+
 /* SELECT */
 select {
   background: #1e293b;
@@ -377,8 +405,8 @@ select {
   button {
     padding: 12px 16px;
     font-size: 16px;
-    min-width: 44px;
-    min-height: 44px;
+    min-width: 46px;
+    min-height: 46px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -394,14 +422,14 @@ select {
   /* Đảm bảo select box có kích thước phù hợp */
   select {
     padding: 10px;
-    font-size: 16px;
-    height: 48px;
+    font-size: 18px;
+    height: 46px;
     min-width: 140px;
   }
   
   /* Điều chỉnh button trong top-bar */
   .top-bar button {
-    font-size: 15px;
+    font-size: 25px;
   }
   
   /* Điều chỉnh panel settings */

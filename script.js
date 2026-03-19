@@ -243,3 +243,31 @@ function changeChapterBottom() {
 function updateURL() {
   window.location.href = `reader.html?book=${currentBook}&chap=${currentChapter}`;
 }
+
+// Scroll-to-top button behavior (works on any page that includes script.js)
+(function setupScrollTop() {
+  const btn = document.getElementById('scrollTopBtn');
+  if (!btn) return;
+
+  // show button after user scrolls down this many pixels
+  const SHOW_AFTER = 200;
+
+  function onScroll() {
+    if (window.scrollY > SHOW_AFTER) {
+      btn.classList.add('show');
+    } else {
+      btn.classList.remove('show');
+    }
+  }
+
+  // smooth scroll to top
+  function toTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  btn.addEventListener('click', toTop);
+
+  // init visibility
+  onScroll();
+})();
