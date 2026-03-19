@@ -116,8 +116,22 @@ select {
   background: #1e293b;
   color: white;
   border: none;
-  padding: 8px;
+  /* responsive padding and font-size */
+  padding: clamp(8px, 1.6vw, 14px);
   border-radius: 8px;
+  font-size: clamp(14px, 1.8vw, 18px);
+  min-height: clamp(44px, 6vw, 56px);
+  min-width: clamp(100px, 22vw, 260px);
+  appearance: none; /* keep consistent look */
+}
+
+/* specific selects used in reader */
+#partSelect {
+  min-width: clamp(80px, 16vw, 140px);
+}
+
+#chapterSelect, #chapterSelectBottom {
+  min-width: clamp(120px, 30vw, 320px);
 }
 
 /* CONTENT */
@@ -381,7 +395,8 @@ select {
   select {
     padding: 10px;
     font-size: 16px;
-    height: 44px;
+    height: 48px;
+    min-width: 140px;
   }
   
   /* Điều chỉnh button trong top-bar */
@@ -424,6 +439,8 @@ select {
   }
   
   select {
-    max-width: 120px;
+    max-width: 160px;
+    min-width: 100px;
+    font-size: 14px;
   }
 }
