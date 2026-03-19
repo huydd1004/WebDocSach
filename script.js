@@ -187,6 +187,31 @@ window.addEventListener("load", () => {
 
   if(savedTheme !== null) applyTheme(parseInt(savedTheme));
   if(savedFont !== null) applyFontSize(savedFont);
+
+  // initialize font slider (if present) and bind
+  const fontSlider = document.getElementById('fontSlider');
+  const fontLabel = document.getElementById('fontSizeLabel');
+  if (fontSlider && fontLabel) {
+    // determine initial px value (support old keywords)
+    let initPx = 20;
+    if (savedFont) {
+      if (savedFont === 'small') initPx = 16;
+      else if (savedFont === 'medium') initPx = 20;
+      else if (savedFont === 'large') initPx = 24;
+      else {
+        const parsed = parseInt(savedFont);
+        if (!isNaN(parsed)) initPx = parsed;
+      }
+    }
+    fontSlider.value = initPx;
+    fontLabel.innerText = initPx + 'px';
+
+    fontSlider.addEventListener('input', (e) => {
+      const px = e.target.value;
+      fontLabel.innerText = px + 'px';
+      applyFontSize(px, false); // don't close settings when sliding
+    });
+  }
 });
 
 // Áp dụng theme và lưu
@@ -206,28 +231,28 @@ function applyTheme(index) {
 }
 
 // Áp dụng font size và lưu
-function applyFontSize(size) {
+// Áp dụng font size; `size` can be 'small'|'medium'|'large' or numeric px value.
+function applyFontSize(size, close = true) {
   const content = document.getElementById("content");
   if(!content) return; // Chỉ áp dụng nếu đang đọc truyện
 
-  switch(size) {
-    case 'small':
-      content.style.fontSize = "16px";
-      content.style.lineHeight = "1.6";
-      break;
-    case 'medium':
-      content.style.fontSize = "20px";
-      content.style.lineHeight = "2";
-      break;
-    case 'large':
-      content.style.fontSize = "24px";
-      content.style.lineHeight = "2.2";
-      break;
-  }
+  let px;
+  if (size === 'small') px = 16;
+  else if (size === 'medium') px = 20;
+  else if (size === 'large') px = 24;
+  else px = parseFloat(size);
 
-  localStorage.setItem("fontsize", size); // lưu cỡ chữ
+  if (isNaN(px)) px = 20;
 
-  toggleSettings(); // tự đóng bảng setting
+  content.style.fontSize = px + 'px';
+  // reasonable default line-height based on size
+  if (px <= 16) content.style.lineHeight = '1.6';
+  else if (px <= 20) content.style.lineHeight = '2';
+  else content.style.lineHeight = '2.2';
+
+  localStorage.setItem('fontsize', String(px)); // lưu cỡ chữ (px)
+
+  if (close) toggleSettings(); // only close settings when requested
 }
 
 // LOAD SELECT BOX
