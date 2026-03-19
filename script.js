@@ -1,6 +1,7 @@
 let currentBook = "";
 let currentChapter = 1;
 let totalChapters = 1;
+const CHAPTERS_PER_PART = 200; // số chương trong 1 phần
 
 // LOAD DANH SÁCH TRUYỆN
 if (document.getElementById("book-list")) {
@@ -43,7 +44,7 @@ if (document.getElementById("content")) {
     .then(data => {
       totalChapters = data.total;
       loadChapter();
-      loadSelect();
+      loadSelects();
     });
 }
 
@@ -55,14 +56,53 @@ function loadChapter() {
     });
 }
 
-function loadSelect() {
-  const select = document.getElementById("chapterSelect");
-  for (let i = 1; i <= totalChapters; i++) {
-    let opt = document.createElement("option");
-    opt.value = i;
-    opt.innerText = "Chương " + i;
-    if (i === currentChapter) opt.selected = true;
-    select.appendChild(opt);
+// Tính phần (1-based) cho chương
+function chapterToPart(chap) {
+  return Math.floor((chap - 1) / CHAPTERS_PER_PART) + 1;
+}
+
+// Tính range chương của phần
+function partRange(part) {
+  const start = (part - 1) * CHAPTERS_PER_PART + 1;
+  const end = Math.min(part * CHAPTERS_PER_PART, totalChapters);
+  return { start, end };
+}
+
+// Load cả select phần và select chương (top & bottom)
+function loadSelects() {
+  const partTop = document.getElementById("partSelect");
+  const selectTop = document.getElementById("chapterSelect");
+  const selectBottom = document.getElementById("chapterSelectBottom");
+
+  // xóa nội dung cũ nếu có
+  [partTop, selectTop, selectBottom].forEach(el => { if (el) el.innerHTML = ""; });
+
+  const totalParts = Math.max(1, Math.ceil(totalChapters / CHAPTERS_PER_PART));
+  const currentPart = chapterToPart(currentChapter);
+
+  // phần select (chỉ cần 1 select ở trên)
+  for (let p = 1; p <= totalParts; p++) {
+    const opt = document.createElement("option");
+    opt.value = p;
+    opt.innerText = "Phần " + p;
+    if (p === currentPart) opt.selected = true;
+    partTop.appendChild(opt);
+  }
+
+  // fill chapters for currentPart
+  const range = partRange(currentPart);
+  for (let i = range.start; i <= range.end; i++) {
+    const o1 = document.createElement("option");
+    o1.value = i;
+    o1.innerText = "Chương " + i;
+    if (i === currentChapter) o1.selected = true;
+    selectTop.appendChild(o1);
+
+    const o2 = document.createElement("option");
+    o2.value = i;
+    o2.innerText = "Chương " + i;
+    if (i === currentChapter) o2.selected = true;
+    selectBottom.appendChild(o2);
   }
 }
 
@@ -91,15 +131,6 @@ function lastChapter() {
   updateURL();
 }
 
-function changeChapter() {
-  const select = document.getElementById("chapterSelect");
-  currentChapter = parseInt(select.value);
-  updateURL();
-}
-
-function updateURL() {
-  window.location.href = `reader.html?book=${currentBook}&chap=${currentChapter}`;
-}
 
 function goHome() {
   window.location.href = "index.html";
@@ -182,26 +213,18 @@ function applyFontSize(size) {
 }
 
 // LOAD SELECT BOX
-function loadSelect() {
-  const selectTop = document.getElementById("chapterSelect");
-  const selectBottom = document.getElementById("chapterSelectBottom");
-
-  for (let i = 1; i <= totalChapters; i++) {
-    const optionTop = document.createElement("option");
-    optionTop.value = i;
-    optionTop.innerText = "Chương " + i;
-    if(i === currentChapter) optionTop.selected = true;
-    selectTop.appendChild(optionTop);
-
-    const optionBottom = document.createElement("option");
-    optionBottom.value = i;
-    optionBottom.innerText = "Chương " + i;
-    if(i === currentChapter) optionBottom.selected = true;
-    selectBottom.appendChild(optionBottom);
-  }
+// Khi user chọn 1 phần
+function changePart() {
+  const partSel = document.getElementById("partSelect");
+  const selectedPart = parseInt(partSel.value);
+  // chuyển chương hiện tại về chương đầu của phần
+  const { start } = partRange(selectedPart);
+  currentChapter = start;
+  updateURL();
 }
 
 // Khi chọn select ở đầu
+// Khi chọn chương ở trên
 function changeChapter() {
   const select = document.getElementById("chapterSelect");
   currentChapter = parseInt(select.value);
@@ -209,6 +232,7 @@ function changeChapter() {
 }
 
 // Khi chọn select ở cuối
+// Khi chọn chương ở dưới
 function changeChapterBottom() {
   const select = document.getElementById("chapterSelectBottom");
   currentChapter = parseInt(select.value);
