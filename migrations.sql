@@ -1,0 +1,31 @@
+-- Run these statements in your MySQL server to create the database and tables
+CREATE DATABASE IF NOT EXISTS webdocsach CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE webdocsach;
+
+CREATE TABLE IF NOT EXISTS users (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  username VARCHAR(100) NOT NULL UNIQUE,
+  password_hash VARCHAR(255) NOT NULL,
+  role VARCHAR(20) NOT NULL DEFAULT 'user',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS books (
+  id VARCHAR(200) PRIMARY KEY,
+  title VARCHAR(500) NOT NULL,
+  author VARCHAR(255),
+  status VARCHAR(100),
+  date VARCHAR(100),
+  cover VARCHAR(1000),
+  genre TEXT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS progress (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT NOT NULL,
+  book_id VARCHAR(200) NOT NULL,
+  chapter INT NOT NULL,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);

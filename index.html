@@ -8,6 +8,76 @@
 <body>
   <h1 class="title">📚 Thư Viện Cá Nhân</h1>
 
+  <div class="index-controls">
+    <div id="userArea">
+      <span id="userGreeting"></span>
+      <button id="loginBtn">🔐 Đăng nhập</button>
+      <button id="logoutBtn" class="hidden">Đăng xuất</button>
+      <button id="adminToggleBtn">⚙ Admin</button>
+    </div>
+  </div>
+
+  <!-- Admin panel -->
+  <div id="adminPanel" class="admin-panel hidden">
+    <h3>Admin — Quản lý truyện</h3>
+    <div class="admin-actions">
+      <button id="adminNewBtn">Thêm truyện mới</button>
+      <button id="adminExportBtn">Xuất JSON</button>
+      <button id="adminCloseBtn">Đóng</button>
+    </div>
+
+    <form id="adminForm" class="admin-form">
+      <input name="id" placeholder="id (unique)" required />
+      <input name="title" placeholder="Tiêu đề" required />
+      <input name="author" placeholder="Tác giả" />
+      <input name="status" placeholder="Trạng thái" />
+      <input name="date" placeholder="Ngày" />
+      <input name="cover" placeholder="Đường dẫn ảnh (images/...)" />
+      <input name="genre" placeholder="Thể loại (ngăn cách bởi ,)" />
+      <div class="admin-form-actions">
+        <button type="submit">Lưu</button>
+        <button type="button" id="adminCancelBtn">Hủy</button>
+      </div>
+    </form>
+
+    <div id="adminList" class="admin-list"></div>
+  </div>
+
+  <!-- Auth modal -->
+  <!-- Separate modals for Login and Register -->
+  <div id="loginModal" class="auth-modal hidden" aria-hidden="true">
+    <div class="auth-box" role="dialog" aria-label="Đăng nhập">
+      <h3>Đăng nhập</h3>
+      <form id="loginForm">
+        <input id="loginUser" placeholder="Tên đăng nhập" required />
+        <input id="loginPass" placeholder="Mật khẩu" type="password" required />
+        <div class="auth-actions">
+          <button type="submit">Đăng nhập</button>
+          <button type="button" class="authCloseBtn">Đóng</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="registerModal" class="auth-modal hidden" aria-hidden="true">
+    <div class="auth-box" role="dialog" aria-label="Đăng ký">
+      <h3>Đăng ký</h3>
+      <form id="registerForm">
+        <input id="regUser" placeholder="Tên đăng nhập" required />
+        <input id="regPass" placeholder="Mật khẩu" type="password" required />
+        <div class="auth-actions">
+          <button type="submit">Đăng ký</button>
+          <button type="button" class="authCloseBtn">Đóng</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Genre filters -->
+  <div class="genre-filters" id="genreFilters">
+    <!-- checkboxes inserted by JS -->
+  </div>
+
   <div class="search-bar">
     <input id="bookSearch" type="search" placeholder="Tìm truyện theo tên..." />
   </div>

@@ -48,6 +48,54 @@ body {
 
 .search-bar input[type="search"]::placeholder { color: rgba(226,232,240,0.5); }
 
+/* Genre filters */
+.genre-filters {
+  max-width: 900px;
+  margin: 8px auto;
+  padding: 0 20px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.genre-filters label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255,255,255,0.03);
+  padding: 6px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.genre-filters input[type="checkbox"] { width: 16px; height: 16px; }
+
+/* Admin panel */
+.index-controls { max-width: 900px; margin: 8px auto; padding: 0 20px; text-align: right; }
+.admin-panel { max-width: 900px; margin: 12px auto; padding: 16px; background: rgba(255,255,255,0.03); border-radius: 10px; }
+.admin-panel.hidden { display:none; }
+
+.auth-modal { position: fixed; left:0; top:0; right:0; bottom:0; background: rgba(0,0,0,0.6); display:flex; align-items:center; justify-content:center; z-index:9999; }
+.auth-modal.hidden { display:none; }
+.auth-box { background:#1e293b; padding:20px; border-radius:8px; width:320px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+.auth-box input { width:100%; padding:8px; margin-bottom:8px; border-radius:6px; border:none; }
+.auth-actions { display:flex; gap:8px; }
+
+/* When modal open, prevent page scrolling */
+body.modal-open { overflow: hidden; }
+
+#userArea { display:flex; gap:8px; align-items:center; justify-content:flex-end; }
+#adminToggleBtn { display:none; }
+.user-logged #adminToggleBtn { display:inline-block; }
+.user-logged #logoutBtn { display:inline-block; }
+.user-logged #loginBtn { display:none; }
+.admin-actions { display:flex; gap:8px; margin-bottom:10px; }
+.admin-form { display:flex; flex-direction:column; gap:8px; margin-bottom:12px; }
+.admin-form input { padding:8px; border-radius:6px; border:none; background: rgba(0,0,0,0.1); color:inherit; }
+.admin-form-actions { display:flex; gap:8px; }
+.admin-list .book { opacity:0.9; }
+
 /* CARD TRUYỆN */
 .book {
   background: rgba(255,255,255,0.05);

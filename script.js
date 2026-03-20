@@ -5,6 +5,19 @@ const CHAPTERS_PER_PART = 200; // số chương trong 1 phần
 
 // LOAD DANH SÁCH TRUYỆN với tính năng tìm kiếm
 let booksData = [];
+let authToken = null; // bearer token when logged in
+
+function apiFetch(path, opts = {}) {
+  opts.headers = opts.headers || {};
+  const sess = localStorage.getItem(SESSION_KEY);
+  if (sess) {
+    try {
+      const s = JSON.parse(sess);
+      if (s && s.token) opts.headers['Authorization'] = 'Bearer ' + s.token;
+    } catch (e) {}
+  }
+  return fetch(path, opts);
+}
 function renderBookList(list) {
   const container = document.getElementById("book-list");
   if (!container) return;
@@ -28,7 +41,7 @@ function renderBookList(list) {
       </div>
     `;
 
-    // if there's saved progress, show a small badge
+    // if there's saved progress (local), show a small badge
     if (saved && saved.chapter) {
       const info = div.querySelector('.book-info');
       const badge = document.createElement('div');
@@ -38,6 +51,30 @@ function renderBookList(list) {
       badge.style.fontSize = '13px';
       badge.style.opacity = '0.9';
       info.appendChild(badge);
+    }
+
+    // if user is logged in, try to fetch server-side progress and update badge
+    const sess = localStorage.getItem(SESSION_KEY);
+    if (sess) {
+      try {
+        const s = JSON.parse(sess);
+        if (s && s.token) {
+          apiFetch(`/api/progress/${encodeURIComponent(book.id)}`, { method: 'GET' })
+            .then(r => r.json())
+            .then(j => {
+              if (j && j.chapter) {
+                // replace or add badge
+                const info = div.querySelector('.book-info');
+                let badge = info.querySelector('.continue-badge');
+                if (!badge) {
+                  badge = document.createElement('div'); badge.className = 'continue-badge';
+                  info.appendChild(badge);
+                }
+                badge.innerText = `Tiếp tục: Chương ${j.chapter}`;
+              }
+            }).catch(()=>{});
+        }
+      } catch(e){}
     }
 
     div.onclick = () => {
@@ -77,29 +114,350 @@ function getProgress(bookId) {
 
 function saveProgress(bookId, chapter) {
   if (!bookId) return;
+  const sess = localStorage.getItem(SESSION_KEY);
+  if (sess) {
+    try {
+      const s = JSON.parse(sess);
+      if (s && s.token) {
+        // send to server
+        apiFetch('/api/progress', { method: 'POST', headers: { 'Content-Type':'application/json' }, body: JSON.stringify({ bookId, chapter }) })
+          .then(r => r.json()).catch(()=>{});
+        return;
+      }
+    } catch(e){}
+  }
+  // fallback to localStorage when not authenticated
   const map = loadProgressMap();
   map[bookId] = { chapter: Number(chapter), updated: Date.now() };
   saveProgressMap(map);
 }
 
 if (document.getElementById("book-list")) {
-  fetch("data/books.json")
+  // try to fetch from API, fallback to local file
+  fetch('/api/books')
     .then(res => res.json())
     .then(data => {
       booksData = data;
-      renderBookList(booksData);
+      // render genre filters and book list
+      const GENRES = ['kinh dị','trinh thám','huyền huyễn','linh dị','bói toán','tiên hiệp','xuyên không'];
 
-      const search = document.getElementById('bookSearch');
-      if (search) {
-        search.addEventListener('input', (e) => {
-          const q = e.target.value.trim().toLowerCase();
-          if (!q) return renderBookList(booksData);
-          const filtered = booksData.filter(b => b.title.toLowerCase().includes(q));
-          renderBookList(filtered);
+      const gContainer = document.getElementById('genreFilters');
+      if (gContainer) {
+        GENRES.forEach(g => {
+          const id = `genre-${g.replace(/\s+/g,'-')}`;
+          const label = document.createElement('label');
+          label.htmlFor = id;
+          label.innerHTML = `<input type="checkbox" id="${id}" value="${g}"> ${g}`;
+          gContainer.appendChild(label);
         });
       }
+
+      // central filter function: combines search query and selected genres
+      function applyFilters() {
+        const qEl = document.getElementById('bookSearch');
+        const q = qEl && qEl.value ? qEl.value.trim().toLowerCase() : '';
+
+        const checked = Array.from(document.querySelectorAll('#genreFilters input[type=checkbox]:checked')).map(i => i.value);
+
+        const filtered = booksData.filter(b => {
+          // title match
+          const titleMatch = !q || (b.title && b.title.toLowerCase().includes(q));
+
+          // genre match: support b.genre as string or array
+          if (!checked.length) return titleMatch;
+          const bookGenres = [];
+          if (b.genre) {
+            if (Array.isArray(b.genre)) bookGenres.push(...b.genre.map(x => String(x).toLowerCase()));
+            else bookGenres.push(String(b.genre).toLowerCase());
+          }
+          const genreMatch = checked.some(c => bookGenres.includes(c.toLowerCase()));
+          return titleMatch && genreMatch;
+        });
+
+        renderBookList(filtered);
+      }
+
+  renderBookList(booksData);
+
+      const search = document.getElementById('bookSearch');
+  if (search) search.addEventListener('input', applyFilters);
+      // bind genre checkbox changes
+      document.getElementById('genreFilters')?.addEventListener('change', applyFilters);
+    })
+    .catch(err => {
+      // fallback to static file
+      fetch('data/books.json').then(r=>r.json()).then(d=>{ booksData = d; renderBookList(booksData); });
     });
 }
+
+// ======================
+// Admin (client-side CRUD stored in localStorage)
+// ======================
+const ADMIN_KEY = 'booksDataAdmin';
+
+// ======================
+// Simple client-side auth (localStorage)
+// WARNING: this is client-only and not secure. For demo/admin only.
+const USERS_KEY = 'webdoc_users';
+const SESSION_KEY = 'webdoc_session';
+
+// Auth helpers will call server API instead of localStorage
+function hashPass(p) { // left for backwards compatibility; not used by server
+  let h=0; for(let i=0;i<p.length;i++){ h=(h<<5)-h + p.charCodeAt(i); h |=0 } return String(h);
+}
+
+function isAdminUser() {
+  try { const s = JSON.parse(localStorage.getItem(SESSION_KEY)); return s && s.role === 'admin'; } catch(e){return false}
+}
+
+// auth UI bindings
+document.addEventListener('DOMContentLoaded', () => {
+  const loginBtn = document.getElementById('loginBtn');
+  const logoutBtn = document.getElementById('logoutBtn');
+  const loginModal = document.getElementById('loginModal');
+  const registerModal = document.getElementById('registerModal');
+  const loginForm = document.getElementById('loginForm');
+  const registerForm = document.getElementById('registerForm');
+  const adminToggle = document.getElementById('adminToggleBtn');
+
+  function refreshUserUI() {
+    const root = document.body;
+    const greet = document.getElementById('userGreeting');
+    const raw = localStorage.getItem(SESSION_KEY);
+    const s = raw ? JSON.parse(raw) : null;
+    if (s) {
+      greet.innerText = 'Xin chào, ' + s.user;
+      root.classList.add('user-logged');
+      authToken = s.token || null;
+    } else {
+      greet.innerText = '';
+      root.classList.remove('user-logged');
+      authToken = null;
+    }
+    // admin button visibility
+    if (adminToggle) adminToggle.style.display = (s && s.role==='admin') ? 'inline-block' : 'none';
+    // hide admin panel if not admin
+    if (!isAdminUser()) document.getElementById('adminPanel').classList.add('hidden');
+  }
+
+  refreshUserUI();
+
+  // open login modal
+  if (loginBtn) loginBtn.addEventListener('click', () => {
+    loginModal.classList.remove('hidden'); document.body.classList.add('modal-open');
+  });
+
+  // Close buttons for both modals
+  document.querySelectorAll('.authCloseBtn').forEach(b => b.addEventListener('click', () => {
+    loginModal.classList.add('hidden'); registerModal.classList.add('hidden'); document.body.classList.remove('modal-open');
+  }));
+
+  // open register modal via a small link in login modal (add link below forms if you want)
+  // we'll also allow opening register via pressing Ctrl+R on login modal
+  loginModal.addEventListener('keydown', (e) => { if (e.ctrlKey && e.key.toLowerCase()==='r') { registerModal.classList.remove('hidden'); loginModal.classList.add('hidden'); } });
+
+  if (loginForm) loginForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const user = document.getElementById('loginUser').value.trim();
+    const pass = document.getElementById('loginPass').value || '';
+    fetch('/api/login', { method: 'POST', headers: { 'Content-Type':'application/json' }, body: JSON.stringify({ user, pass }) })
+      .then(r => r.json())
+      .then(j => {
+        if (j.error) return alert('Đăng nhập thất bại');
+        // store token in session localStorage
+        localStorage.setItem(SESSION_KEY, JSON.stringify({ user: j.user, role: j.role, token: j.token }));
+        loginModal.classList.add('hidden'); document.body.classList.remove('modal-open');
+        refreshUserUI();
+      }).catch(err => alert('Lỗi đăng nhập'));
+  });
+
+  if (registerForm) registerForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const user = document.getElementById('regUser').value.trim();
+    const pass = document.getElementById('regPass').value || '';
+    fetch('/api/register', { method: 'POST', headers: { 'Content-Type':'application/json' }, body: JSON.stringify({ user, pass }) })
+      .then(r => {
+        if (!r.ok) return r.json().then(j=>Promise.reject(j));
+        return r.json();
+      })
+      .then(j => {
+        alert('Đăng ký thành công. Vui lòng đăng nhập.');
+        registerModal.classList.add('hidden'); loginModal.classList.remove('hidden');
+      }).catch(err => {
+        alert(err && err.error ? err.error : 'Lỗi đăng ký');
+      });
+  });
+
+  if (logoutBtn) logoutBtn.addEventListener('click', () => { localStorage.removeItem(SESSION_KEY); refreshUserUI(); });
+
+  // Admin toggle only available when admin logged in
+  const adminToggleBtn = document.getElementById('adminToggleBtn');
+  if (adminToggleBtn) adminToggleBtn.addEventListener('click', () => {
+    if (!isAdminUser()) return alert('Chỉ admin mới truy cập được.');
+    const panel = document.getElementById('adminPanel'); panel.classList.toggle('hidden'); renderAdminList();
+  });
+});
+
+function loadAdminBooks() {
+  try {
+    const raw = localStorage.getItem(ADMIN_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch (e) {}
+  return null;
+}
+
+function saveAdminBooks(list) {
+  try { localStorage.setItem(ADMIN_KEY, JSON.stringify(list)); } catch (e) {}
+}
+
+function openAdminPanel() {
+  document.getElementById('adminPanel').classList.remove('hidden');
+  renderAdminList();
+}
+
+function closeAdminPanel() {
+  document.getElementById('adminPanel').classList.add('hidden');
+}
+
+function getEffectiveBooks() {
+  const admin = loadAdminBooks();
+  return admin && Array.isArray(admin) ? admin : booksData.slice();
+}
+
+function renderAdminList() {
+  const list = getEffectiveBooks();
+  const container = document.getElementById('adminList');
+  if (!container) return;
+  container.innerHTML = '';
+  list.forEach(b => {
+    const el = document.createElement('div'); el.className = 'book';
+    el.innerHTML = `<div class="book-info"><h3>${b.title}</h3><p>${b.author||''}</p></div>`;
+    const edit = document.createElement('button'); edit.innerText = 'Sửa';
+    edit.onclick = () => adminEdit(b.id);
+    const del = document.createElement('button'); del.innerText = 'Xóa';
+    del.onclick = () => adminDelete(b.id);
+    el.appendChild(edit); el.appendChild(del);
+    container.appendChild(el);
+  });
+}
+
+function adminNew() {
+  const form = document.getElementById('adminForm');
+  form.reset();
+  form.dataset.editing = '';
+  form.scrollIntoView({behavior:'smooth'});
+}
+
+function adminEdit(id) {
+  const list = getEffectiveBooks();
+  const book = list.find(b => b.id === id);
+  if (!book) return;
+  const form = document.getElementById('adminForm');
+  form.id.value = book.id;
+  form.title.value = book.title;
+  form.author.value = book.author || '';
+  form.status.value = book.status || '';
+  form.date.value = book.date || '';
+  form.cover.value = book.cover || '';
+  form.genre.value = Array.isArray(book.genre) ? book.genre.join(',') : (book.genre || '');
+  form.dataset.editing = id;
+  form.scrollIntoView({behavior:'smooth'});
+}
+function adminDelete(id) {
+  if (!confirm('Xóa truyện này?')) return;
+  if (isAdminUser()) {
+    apiFetch(`/api/books/${encodeURIComponent(id)}`, { method: 'DELETE' })
+      .then(r => r.json())
+      .then(j => {
+        if (j && j.ok) {
+          alert('Đã xóa trên server');
+          // refresh lists
+          fetch('/api/books').then(r=>r.json()).then(d=>{ booksData = d; renderBookList(booksData); renderAdminList(); });
+        } else alert('Lỗi xóa');
+      }).catch(()=>alert('Lỗi xóa'));
+    return;
+  }
+  const admin = loadAdminBooks() || booksData.slice();
+  const updated = admin.filter(b => b.id !== id);
+  saveAdminBooks(updated);
+  renderAdminList();
+  // refresh main list
+  renderBookList(getEffectiveBooks());
+}
+
+function adminExport() {
+  const list = getEffectiveBooks();
+  const blob = new Blob([JSON.stringify(list, null, 2)], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url; a.download = 'books-export.json'; a.click();
+  URL.revokeObjectURL(url);
+}
+
+// bind admin UI
+document.addEventListener('DOMContentLoaded', () => {
+  const toggle = document.getElementById('adminToggleBtn');
+  if (toggle) toggle.addEventListener('click', () => openAdminPanel());
+
+  const close = document.getElementById('adminCloseBtn');
+  if (close) close.addEventListener('click', () => closeAdminPanel());
+
+  const newBtn = document.getElementById('adminNewBtn');
+  if (newBtn) newBtn.addEventListener('click', adminNew);
+
+  const exportBtn = document.getElementById('adminExportBtn');
+  if (exportBtn) exportBtn.addEventListener('click', adminExport);
+
+  const form = document.getElementById('adminForm');
+  if (form) {
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const data = {
+        id: form.id.value.trim(),
+        title: form.title.value.trim(),
+        author: form.author.value.trim(),
+        status: form.status.value.trim(),
+        date: form.date.value.trim(),
+        cover: form.cover.value.trim(),
+        genre: form.genre.value.split(',').map(s => s.trim()).filter(Boolean)
+      };
+      const editing = form.dataset.editing;
+      // if admin logged in, try server API
+      if (isAdminUser()) {
+        apiFetch('/api/books', { method: 'POST', headers: { 'Content-Type':'application/json' }, body: JSON.stringify(data) })
+          .then(r => r.json())
+          .then(j => {
+            if (j && j.ok) {
+              alert('Đã lưu lên server');
+              renderAdminList();
+              // refresh book list from server
+              fetch('/api/books').then(r=>r.json()).then(d=>{ booksData = d; renderBookList(booksData); });
+              form.reset(); form.dataset.editing = '';
+            } else alert('Lỗi lưu');
+          }).catch(()=>alert('Lỗi lưu'));
+      } else {
+        let admin = loadAdminBooks() || booksData.slice();
+        // replace if exists
+        const existsIdx = admin.findIndex(b => b.id === data.id);
+        if (editing && editing === data.id) {
+          // update
+          if (existsIdx >= 0) admin[existsIdx] = data;
+          else admin.push(data);
+        } else {
+          // new: ensure unique id
+          if (existsIdx >= 0) return alert('ID đã tồn tại');
+          admin.push(data);
+        }
+        saveAdminBooks(admin);
+        renderAdminList();
+        renderBookList(admin);
+        form.reset(); form.dataset.editing = '';
+      }
+    });
+  }
+
+  const cancel = document.getElementById('adminCancelBtn');
+  if (cancel) cancel.addEventListener('click', (e) => { e.preventDefault(); document.getElementById('adminForm').reset(); });
+});
 
 // LOAD TRUYỆN
 if (document.getElementById("content")) {
