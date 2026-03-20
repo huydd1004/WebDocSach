@@ -14,6 +14,10 @@ function renderBookList(list) {
     const div = document.createElement("div");
     div.className = "book";
 
+    // check saved progress for this book
+    const saved = getProgress(book.id);
+    const chapToOpen = saved && saved.chapter ? saved.chapter : 1;
+
     div.innerHTML = `
       <img src="${book.cover}">
       <div class="book-info">
@@ -24,12 +28,58 @@ function renderBookList(list) {
       </div>
     `;
 
+    // if there's saved progress, show a small badge
+    if (saved && saved.chapter) {
+      const info = div.querySelector('.book-info');
+      const badge = document.createElement('div');
+      badge.className = 'continue-badge';
+      badge.innerText = `Tiếp tục: Chương ${saved.chapter}`;
+      badge.style.marginTop = '6px';
+      badge.style.fontSize = '13px';
+      badge.style.opacity = '0.9';
+      info.appendChild(badge);
+    }
+
     div.onclick = () => {
-      window.location.href = `reader.html?book=${book.id}&chap=1`;
+      window.location.href = `reader.html?book=${book.id}&chap=${chapToOpen}`;
     };
 
     container.appendChild(div);
   });
+}
+
+// ======================
+// Reading progress (localStorage)
+// ======================
+const PROGRESS_KEY = 'readingProgress';
+
+function loadProgressMap() {
+  try {
+    const raw = localStorage.getItem(PROGRESS_KEY);
+    return raw ? JSON.parse(raw) : {};
+  } catch (e) {
+    return {};
+  }
+}
+
+function saveProgressMap(map) {
+  try {
+    localStorage.setItem(PROGRESS_KEY, JSON.stringify(map));
+  } catch (e) {
+    // ignore
+  }
+}
+
+function getProgress(bookId) {
+  const map = loadProgressMap();
+  return map[bookId] || null;
+}
+
+function saveProgress(bookId, chapter) {
+  if (!bookId) return;
+  const map = loadProgressMap();
+  map[bookId] = { chapter: Number(chapter), updated: Date.now() };
+  saveProgressMap(map);
 }
 
 if (document.getElementById("book-list")) {
@@ -89,6 +139,8 @@ function loadChapter() {
     .catch(() => tryFetch(fallbackPath))
     .then(text => {
       contentEl.innerText = text;
+        // save that user opened this chapter
+        saveProgress(currentBook, currentChapter);
     })
     .catch(err => {
       const msg = err && err.status
@@ -152,6 +204,7 @@ function loadSelects() {
 function nextChapter() {
   if (currentChapter < totalChapters) {
     currentChapter++;
+    saveProgress(currentBook, currentChapter);
     updateURL();
   }
 }
@@ -159,17 +212,20 @@ function nextChapter() {
 function prevChapter() {
   if (currentChapter > 1) {
     currentChapter--;
+    saveProgress(currentBook, currentChapter);
     updateURL();
   }
 }
 
 function firstChapter() {
   currentChapter = 1;
+  saveProgress(currentBook, currentChapter);
   updateURL();
 }
 
 function lastChapter() {
   currentChapter = totalChapters;
+  saveProgress(currentBook, currentChapter);
   updateURL();
 }
 
@@ -295,6 +351,7 @@ function changePart() {
 function changeChapter() {
   const select = document.getElementById("chapterSelect");
   currentChapter = parseInt(select.value);
+  saveProgress(currentBook, currentChapter);
   updateURL();
 }
 
@@ -303,6 +360,7 @@ function changeChapter() {
 function changeChapterBottom() {
   const select = document.getElementById("chapterSelectBottom");
   currentChapter = parseInt(select.value);
+  saveProgress(currentBook, currentChapter);
   updateURL();
 }
 
