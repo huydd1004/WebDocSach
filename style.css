@@ -215,6 +215,21 @@ select {
   transition: font-family 0.2s, line-height 0.2s, letter-spacing 0.2s;
 }
 
+.chapter-title {
+  text-align: center;
+  font-family: 'Merriweather', 'Times New Roman', serif;
+  font-size: clamp(14px, 2.1vw, 21px);
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+  margin: 0 0 28px;
+  text-wrap: balance;
+}
+
+.chapter-body {
+  white-space: pre-line;
+}
+
 /* CARD TRUYỆN */
 .book {
   background: rgba(255,255,255,0.05);

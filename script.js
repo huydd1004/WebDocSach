@@ -652,6 +652,40 @@ function getChapterPath(chap) {
   return `data/${currentBook}/phần ${part}/${chap}.txt`;
 }
 
+function renderChapterContent(contentEl, text) {
+  const normalized = String(text || '').replace(/\r\n/g, '\n');
+  const lines = normalized.split('\n');
+  const titleIndex = lines.findIndex(line => line.trim());
+
+  contentEl.innerHTML = '';
+
+  if (titleIndex === -1) {
+    contentEl.innerText = normalized;
+    return;
+  }
+
+  const title = lines[titleIndex].trim();
+  const body = lines.slice(titleIndex + 1).join('\n').trim();
+  const hasChapterTitle =
+    title.length <= 160 &&
+    (body.length > 0 || /^ch/i.test(title) || title.includes(':'));
+
+  if (!hasChapterTitle) {
+    contentEl.innerText = normalized;
+    return;
+  }
+
+  const titleEl = document.createElement('div');
+  titleEl.className = 'chapter-title';
+  titleEl.textContent = title;
+  contentEl.appendChild(titleEl);
+
+  const bodyEl = document.createElement('div');
+  bodyEl.className = 'chapter-body';
+  bodyEl.textContent = body;
+  contentEl.appendChild(bodyEl);
+}
+
 function loadChapter() {
   const contentEl = document.getElementById("content");
   if (!contentEl) return;
@@ -669,7 +703,7 @@ function loadChapter() {
   tryFetch(partPath)
     .catch(() => tryFetch(fallbackPath))
     .then(text => {
-      contentEl.innerText = text;
+      renderChapterContent(contentEl, text);
         // save that user opened this chapter
         saveProgress(currentBook, currentChapter);
     })
