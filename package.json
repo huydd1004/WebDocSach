@@ -1,0 +1,17 @@
+{
+  "name": "webdocsach",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Thư viện truyện online - Backend API + Frontend",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "seed": "node seed-admin.js"
+  },
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "express": "^4.21.0",
+    "jsonwebtoken": "^9.0.2",
+    "better-sqlite3": "^11.7.0"
+  }
+}

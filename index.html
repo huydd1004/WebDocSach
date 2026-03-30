@@ -23,6 +23,7 @@
     <div class="admin-actions">
       <button id="adminNewBtn">Thêm truyện mới</button>
       <button id="adminExportBtn">Xuất JSON</button>
+      <button id="adminChapterBtn">Quản lý chương</button>
       <button id="adminCloseBtn">Đóng</button>
     </div>
 
@@ -41,35 +42,85 @@
     </form>
 
     <div id="adminList" class="admin-list"></div>
+      <!-- Modal quản lý chương -->
+      <div id="chapterModal" class="chapter-modal hidden">
+        <div class="chapter-box">
+          <h3>Quản lý chương truyện</h3>
+          <div>
+            <label>Chọn truyện:
+              <select id="chapterBookSelect"></select>
+            </label>
+          </div>
+          <div id="chapterListArea">
+            <ul id="chapterList"></ul>
+            <button id="addChapterBtn">Thêm chương mới</button>
+          </div>
+          <div id="chapterEditArea" class="hidden">
+            <h4 id="chapterEditTitle"></h4>
+            <textarea id="chapterContent" rows="16" style="width:100%"></textarea>
+            <div style="margin-top:8px">
+              <button id="saveChapterBtn">Lưu</button>
+              <button id="deleteChapterBtn">Xóa</button>
+              <button id="cancelChapterBtn">Hủy</button>
+            </div>
+          </div>
+          <button id="closeChapterModalBtn" style="margin-top:12px">Đóng</button>
+        </div>
+      </div>
   </div>
 
   <!-- Auth modal -->
   <!-- Separate modals for Login and Register -->
   <div id="loginModal" class="auth-modal hidden" aria-hidden="true">
     <div class="auth-box" role="dialog" aria-label="Đăng nhập">
-      <h3>Đăng nhập</h3>
+      <h3>🔐 Đăng nhập</h3>
+      <div id="loginError" class="auth-error hidden"></div>
       <form id="loginForm">
-        <input id="loginUser" placeholder="Tên đăng nhập" required />
-        <input id="loginPass" placeholder="Mật khẩu" type="password" required />
+        <input id="loginUser" placeholder="Tên đăng nhập" required autocomplete="username" />
+        <input id="loginPass" placeholder="Mật khẩu" type="password" required autocomplete="current-password" />
         <div class="auth-actions">
           <button type="submit">Đăng nhập</button>
           <button type="button" class="authCloseBtn">Đóng</button>
         </div>
       </form>
+      <p class="auth-switch">Chưa có tài khoản? <a href="#" id="switchToRegister">Đăng ký ngay</a></p>
+      <p class="auth-switch"><a href="#" id="switchToForgot">Quên mật khẩu?</a></p>
+    </div>
+  </div>
+
+  <div id="forgotModal" class="auth-modal hidden" aria-hidden="true">
+    <div class="auth-box" role="dialog" aria-label="Quên mật khẩu">
+      <h3>🔑 Đặt lại mật khẩu</h3>
+      <div id="forgotError" class="auth-error hidden"></div>
+      <div id="forgotSuccess" class="auth-success hidden"></div>
+      <form id="forgotForm">
+        <input id="forgotUser" placeholder="Tên đăng nhập" required autocomplete="username" />
+        <input id="forgotNewPass" placeholder="Mật khẩu mới (ít nhất 4 ký tự)" type="password" required minlength="4" autocomplete="new-password" />
+        <input id="forgotNewPassConfirm" placeholder="Nhập lại mật khẩu mới" type="password" required minlength="4" autocomplete="new-password" />
+        <div class="auth-actions">
+          <button type="submit">Đặt lại mật khẩu</button>
+          <button type="button" class="authCloseBtn">Đóng</button>
+        </div>
+      </form>
+      <p class="auth-switch">Nhớ mật khẩu rồi? <a href="#" id="switchForgotToLogin">Đăng nhập</a></p>
     </div>
   </div>
 
   <div id="registerModal" class="auth-modal hidden" aria-hidden="true">
     <div class="auth-box" role="dialog" aria-label="Đăng ký">
-      <h3>Đăng ký</h3>
+      <h3>📝 Đăng ký</h3>
+      <div id="registerError" class="auth-error hidden"></div>
+      <div id="registerSuccess" class="auth-success hidden"></div>
       <form id="registerForm">
-        <input id="regUser" placeholder="Tên đăng nhập" required />
-        <input id="regPass" placeholder="Mật khẩu" type="password" required />
+        <input id="regUser" placeholder="Tên đăng nhập" required minlength="3" autocomplete="username" />
+        <input id="regPass" placeholder="Mật khẩu (ít nhất 4 ký tự)" type="password" required minlength="4" autocomplete="new-password" />
+        <input id="regPassConfirm" placeholder="Nhập lại mật khẩu" type="password" required minlength="4" autocomplete="new-password" />
         <div class="auth-actions">
           <button type="submit">Đăng ký</button>
           <button type="button" class="authCloseBtn">Đóng</button>
         </div>
       </form>
+      <p class="auth-switch">Đã có tài khoản? <a href="#" id="switchToLogin">Đăng nhập</a></p>
     </div>
   </div>
 

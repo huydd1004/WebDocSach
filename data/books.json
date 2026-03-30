@@ -5,7 +5,8 @@
     "author": "Cửu Phẩm Nhất Cục",
     "status": "Hoàn thành",
     "date": "14/06/2024",
-    "cover": "images/ToanAmMenh.jpg"
+    "cover": "images/ToanAmMenh.jpg",
+    "genre": []
   },
   {
     "id": "ToanTuMenh",
@@ -13,7 +14,8 @@
     "author": "Cửu Phẩm Nhất Cục",
     "status": "Hoàn thành",
     "date": "27/01/2022",
-    "cover": "images/ToanTuMenh.jpg"
+    "cover": "images/ToanTuMenh.jpg",
+    "genre": []
   },
   {
     "id": "ThienMenhXaDaoNhan",
@@ -21,7 +23,8 @@
     "author": "Khốn Đích Thụy Bất Trứ",
     "status": "Hoàn thành",
     "date": "31/10/2021",
-    "cover": "images/XaDaoNhan.jpg"
+    "cover": "images/XaDaoNhan.jpg",
+    "genre": []
   },
   {
     "id": "ChangReManhNhatLichSu",
@@ -29,6 +32,7 @@
     "author": "Trầm Mặc Đích Cao Điểm",
     "status": "Hoàn thành",
     "date": "31/10/2021",
-    "cover": "images/ChangreManhNhatLichSu.jpg"
+    "cover": "images/ChangreManhNhatLichSu.jpg",
+    "genre": []
   }
 ]

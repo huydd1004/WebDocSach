@@ -1,9 +1,203 @@
+// ======================
+// Admin Chapter Management
+// ======================
+document.addEventListener('DOMContentLoaded', () => {
+  const chapterBtn = document.getElementById('adminChapterBtn');
+  const chapterModal = document.getElementById('chapterModal');
+  const closeChapterModalBtn = document.getElementById('closeChapterModalBtn');
+  const chapterBookSelect = document.getElementById('chapterBookSelect');
+  const chapterList = document.getElementById('chapterList');
+  const addChapterBtn = document.getElementById('addChapterBtn');
+  const chapterEditArea = document.getElementById('chapterEditArea');
+  const chapterEditTitle = document.getElementById('chapterEditTitle');
+  const chapterContent = document.getElementById('chapterContent');
+  const saveChapterBtn = document.getElementById('saveChapterBtn');
+  const deleteChapterBtn = document.getElementById('deleteChapterBtn');
+  const cancelChapterBtn = document.getElementById('cancelChapterBtn');
+  let editingBook = null;
+  let editingChapter = null;
+
+  function openChapterModal() {
+    if (!isAdminUser()) return alert('Chỉ admin mới truy cập được.');
+    chapterModal.classList.remove('hidden');
+    document.body.classList.add('modal-open');
+    // fill book select
+    chapterBookSelect.innerHTML = '';
+    booksData.forEach(b => {
+      const opt = document.createElement('option');
+      opt.value = b.id; opt.innerText = b.title;
+      chapterBookSelect.appendChild(opt);
+    });
+    if (booksData.length) {
+      editingBook = booksData[0].id;
+      loadChapterList(editingBook);
+    }
+    chapterEditArea.classList.add('hidden');
+  }
+
+  function closeChapterModal() {
+    chapterModal.classList.add('hidden');
+    document.body.classList.remove('modal-open');
+    chapterEditArea.classList.add('hidden');
+    chapterList.innerHTML = '';
+    editingBook = null; editingChapter = null;
+  }
+
+  async function loadChapterList(bookId) {
+    editingBook = bookId;
+    chapterList.innerHTML = '<li>Đang tải...</li>';
+    try {
+      const data = await apiFetch(`/api/chapters/${encodeURIComponent(bookId)}`);
+      chapterList.innerHTML = '';
+      data.chapters.forEach(chap => {
+        const li = document.createElement('li');
+        li.innerText = 'Chương ' + chap;
+        li.onclick = () => editChapter(chap);
+        chapterList.appendChild(li);
+      });
+    } catch(e) {
+      chapterList.innerHTML = '<li>Lỗi tải danh sách chương.</li>';
+    }
+  }
+
+  async function editChapter(chap) {
+    editingChapter = chap;
+    chapterEditTitle.innerText = `Chỉnh sửa chương ${chap}`;
+    chapterEditArea.classList.remove('hidden');
+    chapterContent.value = 'Đang tải...';
+    try {
+      const text = await fetch(`/api/chapter/${encodeURIComponent(editingBook)}/${chap}`, {
+        headers: { 'Authorization': 'Bearer ' + getAuthToken() }
+      }).then(r => r.ok ? r.text() : '');
+      chapterContent.value = text;
+    } catch {
+      chapterContent.value = '';
+    }
+  }
+
+  if (chapterBookSelect) chapterBookSelect.addEventListener('change', e => loadChapterList(e.target.value));
+  if (chapterBtn) chapterBtn.addEventListener('click', openChapterModal);
+  if (closeChapterModalBtn) closeChapterModalBtn.addEventListener('click', closeChapterModal);
+  if (cancelChapterBtn) cancelChapterBtn.addEventListener('click', () => { chapterEditArea.classList.add('hidden'); });
+
+  if (addChapterBtn) addChapterBtn.addEventListener('click', () => {
+    const chap = prompt('Nhập số chương mới:');
+    if (!chap || isNaN(Number(chap))) return;
+    editingChapter = Number(chap);
+    chapterEditTitle.innerText = `Thêm chương ${editingChapter}`;
+    chapterContent.value = '';
+    chapterEditArea.classList.remove('hidden');
+  });
+
+  if (saveChapterBtn) saveChapterBtn.addEventListener('click', async () => {
+    if (!editingBook || !editingChapter) return;
+    try {
+      await apiFetch(`/api/chapter/${encodeURIComponent(editingBook)}/${editingChapter}`, {
+        method: 'POST',
+        body: JSON.stringify({ content: chapterContent.value })
+      });
+      alert('Đã lưu chương!');
+      chapterEditArea.classList.add('hidden');
+      loadChapterList(editingBook);
+    } catch(e) {
+      alert(e.error || 'Lỗi lưu chương.');
+    }
+  });
+
+  if (deleteChapterBtn) deleteChapterBtn.addEventListener('click', async () => {
+    if (!editingBook || !editingChapter) return;
+    if (!confirm('Xóa chương này?')) return;
+    try {
+      await apiFetch(`/api/chapter/${encodeURIComponent(editingBook)}/${editingChapter}`, {
+        method: 'DELETE'
+      });
+      alert('Đã xóa chương!');
+      chapterEditArea.classList.add('hidden');
+      loadChapterList(editingBook);
+    } catch(e) {
+      alert(e.error || 'Lỗi xóa chương.');
+    }
+  });
+});
 let currentBook = "";
 let currentChapter = 1;
 let totalChapters = 1;
 const CHAPTERS_PER_PART = 200; // số chương trong 1 phần
 
-// LOAD DANH SÁCH TRUYỆN với tính năng tìm kiếm
+// ======================
+// API helper
+// ======================
+const SESSION_KEY = 'webdoc_session';
+let authToken = null;
+
+function getSession() {
+  try { return JSON.parse(localStorage.getItem(SESSION_KEY)); } catch(e) { return null; }
+}
+
+function getAuthToken() {
+  const s = getSession();
+  return s ? s.token : null;
+}
+
+async function apiFetch(url, opts = {}) {
+  const token = getAuthToken();
+  const headers = { 'Content-Type': 'application/json', ...(opts.headers || {}) };
+  if (token) headers['Authorization'] = 'Bearer ' + token;
+  const res = await fetch(url, { ...opts, headers });
+  const data = await res.json();
+  if (!res.ok) throw { status: res.status, ...data };
+  return data;
+}
+
+function isAdminUser() {
+  const s = getSession();
+  return s && s.role === 'admin';
+}
+
+// ======================
+// Reading progress (localStorage + server sync)
+// ======================
+const PROGRESS_KEY = 'readingProgress';
+let serverProgressMap = {};
+
+function loadProgressMap() {
+  try { return JSON.parse(localStorage.getItem(PROGRESS_KEY) || '{}'); } catch(e) { return {}; }
+}
+
+function saveProgressMap(map) {
+  try { localStorage.setItem(PROGRESS_KEY, JSON.stringify(map)); } catch(e) {}
+}
+
+function getProgress(bookId) {
+  // Prefer server progress if available
+  if (serverProgressMap[bookId]) return serverProgressMap[bookId];
+  const map = loadProgressMap();
+  return map[bookId] || null;
+}
+
+function saveProgress(bookId, chapter) {
+  if (!bookId) return;
+  const map = loadProgressMap();
+  map[bookId] = { chapter: Number(chapter), updated: Date.now() };
+  saveProgressMap(map);
+  // Sync to server if logged in
+  if (getAuthToken()) {
+    apiFetch(`/api/progress/${encodeURIComponent(bookId)}`, {
+      method: 'POST', body: JSON.stringify({ chapter: Number(chapter) })
+    }).catch(() => {});
+  }
+}
+
+async function fetchServerProgress() {
+  if (!getAuthToken()) { serverProgressMap = {}; return; }
+  try {
+    serverProgressMap = await apiFetch('/api/progress');
+  } catch(e) { serverProgressMap = {}; }
+}
+
+// ======================
+// Book list
+// ======================
 let booksData = [];
 function renderBookList(list) {
   const container = document.getElementById("book-list");
@@ -14,7 +208,6 @@ function renderBookList(list) {
     const div = document.createElement("div");
     div.className = "book";
 
-    // check saved progress for this book
     const saved = getProgress(book.id);
     const chapToOpen = saved && saved.chapter ? saved.chapter : 1;
 
@@ -28,7 +221,6 @@ function renderBookList(list) {
       </div>
     `;
 
-    // if there's saved progress (local), show a small badge
     if (saved && saved.chapter) {
       const info = div.querySelector('.book-info');
       const badge = document.createElement('div');
@@ -40,8 +232,6 @@ function renderBookList(list) {
       info.appendChild(badge);
     }
 
-    // serverless: no remote progress fetch — rely on localStorage progress only
-
     div.onclick = () => {
       window.location.href = `reader.html?book=${book.id}&chap=${chapToOpen}`;
     };
@@ -50,108 +240,69 @@ function renderBookList(list) {
   });
 }
 
-// ======================
-// Reading progress (localStorage)
-// ======================
-const PROGRESS_KEY = 'readingProgress';
-
-function loadProgressMap() {
-  try {
-    const raw = localStorage.getItem(PROGRESS_KEY);
-    return raw ? JSON.parse(raw) : {};
-  } catch (e) {
-    return {};
-  }
-}
-
-function saveProgressMap(map) {
-  try {
-    localStorage.setItem(PROGRESS_KEY, JSON.stringify(map));
-  } catch (e) {
-    // ignore
-  }
-}
-
-function getProgress(bookId) {
-  const map = loadProgressMap();
-  return map[bookId] || null;
-}
-
-function saveProgress(bookId, chapter) {
-  if (!bookId) return;
-  const map = loadProgressMap();
-  map[bookId] = { chapter: Number(chapter), updated: Date.now() };
-  saveProgressMap(map);
-}
-
 if (document.getElementById("book-list")) {
-  fetch('data/books.json')
-    .then(res => res.json())
-    .then(data => {
-      booksData = data;
-      // render genre filters and book list
-      const GENRES = ['kinh dị','trinh thám','huyền huyễn','linh dị','bói toán','tiên hiệp','xuyên không'];
+  // Fetch from API first, fallback to static file
+  const loadBooks = async () => {
+    try {
+      booksData = await apiFetch('/api/books');
+    } catch(e) {
+      // Fallback to static JSON
+      try {
+        const res = await fetch('data/books.json');
+        booksData = await res.json();
+      } catch(e2) { booksData = []; }
+    }
 
-      const gContainer = document.getElementById('genreFilters');
-      if (gContainer) {
-        GENRES.forEach(g => {
-          const id = `genre-${g.replace(/\s+/g,'-')}`;
-          const label = document.createElement('label');
-          label.htmlFor = id;
-          label.innerHTML = `<input type="checkbox" id="${id}" value="${g}"> ${g}`;
-          gContainer.appendChild(label);
-        });
-      }
+    // Fetch server reading progress before rendering
+    await fetchServerProgress();
 
-      // central filter function: combines search query and selected genres
-      function applyFilters() {
-        const qEl = document.getElementById('bookSearch');
-        const q = qEl && qEl.value ? qEl.value.trim().toLowerCase() : '';
+    // render genre filters
+    const GENRES = ['kinh dị','trinh thám','huyền huyễn','linh dị','bói toán','tiên hiệp','xuyên không'];
+    const gContainer = document.getElementById('genreFilters');
+    if (gContainer) {
+      GENRES.forEach(g => {
+        const id = `genre-${g.replace(/\s+/g,'-')}`;
+        const label = document.createElement('label');
+        label.htmlFor = id;
+        label.innerHTML = `<input type="checkbox" id="${id}" value="${g}"> ${g}`;
+        gContainer.appendChild(label);
+      });
+    }
 
-        const checked = Array.from(document.querySelectorAll('#genreFilters input[type=checkbox]:checked')).map(i => i.value);
+    function applyFilters() {
+      const qEl = document.getElementById('bookSearch');
+      const q = qEl && qEl.value ? qEl.value.trim().toLowerCase() : '';
+      const checked = Array.from(document.querySelectorAll('#genreFilters input[type=checkbox]:checked')).map(i => i.value);
 
-        const filtered = booksData.filter(b => {
-          // title match
-          const titleMatch = !q || (b.title && b.title.toLowerCase().includes(q));
+      const filtered = booksData.filter(b => {
+        const titleMatch = !q || (b.title && b.title.toLowerCase().includes(q));
+        if (!checked.length) return titleMatch;
+        const bookGenres = [];
+        if (b.genre) {
+          if (Array.isArray(b.genre)) bookGenres.push(...b.genre.map(x => String(x).toLowerCase()));
+          else bookGenres.push(String(b.genre).toLowerCase());
+        }
+        const genreMatch = checked.some(c => bookGenres.includes(c.toLowerCase()));
+        return titleMatch && genreMatch;
+      });
+      renderBookList(filtered);
+    }
 
-          // genre match: support b.genre as string or array
-          if (!checked.length) return titleMatch;
-          const bookGenres = [];
-          if (b.genre) {
-            if (Array.isArray(b.genre)) bookGenres.push(...b.genre.map(x => String(x).toLowerCase()));
-            else bookGenres.push(String(b.genre).toLowerCase());
-          }
-          const genreMatch = checked.some(c => bookGenres.includes(c.toLowerCase()));
-          return titleMatch && genreMatch;
-        });
-
-        renderBookList(filtered);
-      }
-
-  renderBookList(booksData);
-
-      const search = document.getElementById('bookSearch');
-  if (search) search.addEventListener('input', applyFilters);
-      // bind genre checkbox changes
-      document.getElementById('genreFilters')?.addEventListener('change', applyFilters);
-    }).catch(()=>{});
+    renderBookList(booksData);
+    const search = document.getElementById('bookSearch');
+    if (search) search.addEventListener('input', applyFilters);
+    document.getElementById('genreFilters')?.addEventListener('change', applyFilters);
+  };
+  loadBooks();
 }
 
 // ======================
-// Admin (client-side CRUD stored in localStorage)
+// Admin (API-backed CRUD)
 // ======================
-const ADMIN_KEY = 'booksDataAdmin';
 
 // ======================
-// Simple client-side auth (localStorage)
-// WARNING: this is client-only and not secure. For demo/admin only.
-const USERS_KEY = 'webdoc_users';
-const SESSION_KEY = 'webdoc_session';
-
-// Auth helpers will call server API instead of localStorage
-function hashPass(p) { // left for backwards compatibility; not used by server
-  let h=0; for(let i=0;i<p.length;i++){ h=(h<<5)-h + p.charCodeAt(i); h |=0 } return String(h);
-}
+// Auth — uses backend API with JWT
+// ======================
 
 function isAdminUser() {
   try { const s = JSON.parse(localStorage.getItem(SESSION_KEY)); return s && s.role === 'admin'; } catch(e){return false}
@@ -163,74 +314,158 @@ document.addEventListener('DOMContentLoaded', () => {
   const logoutBtn = document.getElementById('logoutBtn');
   const loginModal = document.getElementById('loginModal');
   const registerModal = document.getElementById('registerModal');
+  const forgotModal = document.getElementById('forgotModal');
   const loginForm = document.getElementById('loginForm');
   const registerForm = document.getElementById('registerForm');
+  const forgotForm = document.getElementById('forgotForm');
   const adminToggle = document.getElementById('adminToggleBtn');
+  const switchToRegister = document.getElementById('switchToRegister');
+  const switchToLogin = document.getElementById('switchToLogin');
+  const switchToForgot = document.getElementById('switchToForgot');
+  const switchForgotToLogin = document.getElementById('switchForgotToLogin');
+  const allModals = [loginModal, registerModal, forgotModal].filter(Boolean);
+
+  function showError(id, msg) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.textContent = msg;
+    el.classList.remove('hidden');
+  }
+  function hideMessages() {
+    ['loginError','registerError','registerSuccess','forgotError','forgotSuccess'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) { el.textContent = ''; el.classList.add('hidden'); }
+    });
+  }
+
+  function openModal(modal) {
+    hideMessages();
+    allModals.forEach(m => { m.classList.add('hidden'); m.setAttribute('aria-hidden', 'true'); });
+    modal.classList.remove('hidden');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('modal-open');
+    const firstInput = modal.querySelector('input');
+    if (firstInput) setTimeout(() => firstInput.focus(), 50);
+  }
+
+  function closeModals() {
+    hideMessages();
+    allModals.forEach(m => { m.classList.add('hidden'); m.setAttribute('aria-hidden', 'true'); });
+    document.body.classList.remove('modal-open');
+  }
 
   function refreshUserUI() {
     const root = document.body;
     const greet = document.getElementById('userGreeting');
-    const raw = localStorage.getItem(SESSION_KEY);
-    const s = raw ? JSON.parse(raw) : null;
-    if (s) {
-      greet.innerText = 'Xin chào, ' + s.user;
+    const s = getSession();
+    if (s && s.user) {
+      greet.innerText = '👋 Xin chào, ' + s.user;
       root.classList.add('user-logged');
-      authToken = s.token || null;
     } else {
       greet.innerText = '';
       root.classList.remove('user-logged');
-      authToken = null;
     }
-    // admin button visibility
     if (adminToggle) adminToggle.style.display = (s && s.role==='admin') ? 'inline-block' : 'none';
-    // hide admin panel if not admin
-    if (!isAdminUser()) document.getElementById('adminPanel').classList.add('hidden');
+    if (!isAdminUser()) {
+      const panel = document.getElementById('adminPanel');
+      if (panel) panel.classList.add('hidden');
+    }
   }
 
   refreshUserUI();
 
-  // open login modal
-  if (loginBtn) loginBtn.addEventListener('click', () => {
-    loginModal.classList.remove('hidden'); document.body.classList.add('modal-open');
-  });
+  if (loginBtn) loginBtn.addEventListener('click', () => openModal(loginModal));
+  if (switchToRegister) switchToRegister.addEventListener('click', (e) => { e.preventDefault(); openModal(registerModal); });
+  if (switchToLogin) switchToLogin.addEventListener('click', (e) => { e.preventDefault(); openModal(loginModal); });
+  if (switchToForgot) switchToForgot.addEventListener('click', (e) => { e.preventDefault(); openModal(forgotModal); });
+  if (switchForgotToLogin) switchForgotToLogin.addEventListener('click', (e) => { e.preventDefault(); openModal(loginModal); });
+  document.querySelectorAll('.authCloseBtn').forEach(b => b.addEventListener('click', closeModals));
+  allModals.forEach(modal => { modal.addEventListener('click', (e) => { if (e.target === modal) closeModals(); }); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModals(); });
 
-  // Close buttons for both modals
-  document.querySelectorAll('.authCloseBtn').forEach(b => b.addEventListener('click', () => {
-    loginModal.classList.add('hidden'); registerModal.classList.add('hidden'); document.body.classList.remove('modal-open');
-  }));
-
-  // open register modal via a small link in login modal (add link below forms if you want)
-  // we'll also allow opening register via pressing Ctrl+R on login modal
-  loginModal.addEventListener('keydown', (e) => { if (e.ctrlKey && e.key.toLowerCase()==='r') { registerModal.classList.remove('hidden'); loginModal.classList.add('hidden'); } });
-
-  if (loginForm) loginForm.addEventListener('submit', (e) => {
+  // LOGIN — calls /api/auth/login
+  if (loginForm) loginForm.addEventListener('submit', async (e) => {
     e.preventDefault();
+    hideMessages();
     const user = document.getElementById('loginUser').value.trim();
     const pass = document.getElementById('loginPass').value || '';
-    const users = (function(){ try { return JSON.parse(localStorage.getItem(USERS_KEY) || '[]'); } catch(e){return []} })();
-    const found = users.find(u => u.user === user && u.pass === hashPass(pass));
-    if (!found) return alert('Đăng nhập thất bại');
-    localStorage.setItem(SESSION_KEY, JSON.stringify({ user: user, role: found.role || 'user' }));
-    loginModal.classList.add('hidden'); document.body.classList.remove('modal-open');
-    refreshUserUI();
+    if (!user || !pass) { showError('loginError', 'Vui lòng nhập đầy đủ thông tin.'); return; }
+    try {
+      const data = await apiFetch('/api/auth/login', {
+        method: 'POST', body: JSON.stringify({ username: user, password: pass })
+      });
+      localStorage.setItem(SESSION_KEY, JSON.stringify({ user: data.user.username, role: data.user.role, token: data.token }));
+      closeModals();
+      loginForm.reset();
+      refreshUserUI();
+      // Refresh progress & book list
+      await fetchServerProgress();
+      if (booksData.length) renderBookList(booksData);
+    } catch(err) {
+      showError('loginError', err.error || 'Đăng nhập thất bại.');
+    }
   });
 
-  if (registerForm) registerForm.addEventListener('submit', (e) => {
+  // REGISTER — calls /api/auth/register
+  if (registerForm) registerForm.addEventListener('submit', async (e) => {
     e.preventDefault();
+    hideMessages();
     const user = document.getElementById('regUser').value.trim();
     const pass = document.getElementById('regPass').value || '';
-    const users = (function(){ try { return JSON.parse(localStorage.getItem(USERS_KEY) || '[]'); } catch(e){return []} })();
-    if (users.find(u=>u.user===user)) return alert('User đã tồn tại');
-    const role = (users.length===0 && user==='admin') ? 'admin' : 'user';
-    users.push({ user: user, pass: hashPass(pass), role });
-    try { localStorage.setItem(USERS_KEY, JSON.stringify(users)); } catch(e){}
-    alert('Đăng ký thành công. Vui lòng đăng nhập.');
-    registerModal.classList.add('hidden'); loginModal.classList.remove('hidden');
+    const passConfirm = document.getElementById('regPassConfirm').value || '';
+    if (!user || !pass) { showError('registerError', 'Vui lòng nhập đầy đủ thông tin.'); return; }
+    if (pass !== passConfirm) { showError('registerError', 'Mật khẩu nhập lại không khớp.'); return; }
+    try {
+      await apiFetch('/api/auth/register', {
+        method: 'POST', body: JSON.stringify({ username: user, password: pass })
+      });
+      registerForm.reset();
+      const successEl = document.getElementById('registerSuccess');
+      if (successEl) { successEl.textContent = 'Đăng ký thành công! Đang chuyển sang đăng nhập...'; successEl.classList.remove('hidden'); }
+      setTimeout(() => {
+        openModal(loginModal);
+        const loginUserInput = document.getElementById('loginUser');
+        if (loginUserInput) { loginUserInput.value = user; document.getElementById('loginPass').focus(); }
+      }, 1200);
+    } catch(err) {
+      showError('registerError', err.error || 'Đăng ký thất bại.');
+    }
   });
 
-  if (logoutBtn) logoutBtn.addEventListener('click', () => { localStorage.removeItem(SESSION_KEY); refreshUserUI(); });
+  // FORGOT PASSWORD — calls /api/auth/forgot-password
+  if (forgotForm) forgotForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    hideMessages();
+    const user = document.getElementById('forgotUser').value.trim();
+    const newPass = document.getElementById('forgotNewPass').value || '';
+    const newPassConfirm = document.getElementById('forgotNewPassConfirm').value || '';
+    if (!user) { showError('forgotError', 'Vui lòng nhập tên đăng nhập.'); return; }
+    if (newPass.length < 4) { showError('forgotError', 'Mật khẩu mới phải có ít nhất 4 ký tự.'); return; }
+    if (newPass !== newPassConfirm) { showError('forgotError', 'Mật khẩu nhập lại không khớp.'); return; }
+    try {
+      await apiFetch('/api/auth/forgot-password', {
+        method: 'POST', body: JSON.stringify({ username: user, newPassword: newPass })
+      });
+      forgotForm.reset();
+      const successEl = document.getElementById('forgotSuccess');
+      if (successEl) { successEl.textContent = 'Đặt lại mật khẩu thành công! Đang chuyển sang đăng nhập...'; successEl.classList.remove('hidden'); }
+      setTimeout(() => {
+        openModal(loginModal);
+        const loginUserInput = document.getElementById('loginUser');
+        if (loginUserInput) { loginUserInput.value = user; document.getElementById('loginPass').focus(); }
+      }, 1200);
+    } catch(err) {
+      showError('forgotError', err.error || 'Đặt lại mật khẩu thất bại.');
+    }
+  });
 
-  // Admin toggle only available when admin logged in
+  if (logoutBtn) logoutBtn.addEventListener('click', () => {
+    localStorage.removeItem(SESSION_KEY);
+    serverProgressMap = {};
+    refreshUserUI();
+    if (booksData.length) renderBookList(booksData);
+  });
+
   const adminToggleBtn = document.getElementById('adminToggleBtn');
   if (adminToggleBtn) adminToggleBtn.addEventListener('click', () => {
     if (!isAdminUser()) return alert('Chỉ admin mới truy cập được.');
@@ -239,15 +474,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function loadAdminBooks() {
-  try {
-    const raw = localStorage.getItem(ADMIN_KEY);
-    if (raw) return JSON.parse(raw);
-  } catch (e) {}
-  return null;
-}
-
-function saveAdminBooks(list) {
-  try { localStorage.setItem(ADMIN_KEY, JSON.stringify(list)); } catch (e) {}
+  return booksData.slice();
 }
 
 function openAdminPanel() {
@@ -259,13 +486,8 @@ function closeAdminPanel() {
   document.getElementById('adminPanel').classList.add('hidden');
 }
 
-function getEffectiveBooks() {
-  const admin = loadAdminBooks();
-  return admin && Array.isArray(admin) ? admin : booksData.slice();
-}
-
 function renderAdminList() {
-  const list = getEffectiveBooks();
+  const list = booksData;
   const container = document.getElementById('adminList');
   if (!container) return;
   container.innerHTML = '';
@@ -289,8 +511,7 @@ function adminNew() {
 }
 
 function adminEdit(id) {
-  const list = getEffectiveBooks();
-  const book = list.find(b => b.id === id);
+  const book = booksData.find(b => b.id === id);
   if (!book) return;
   const form = document.getElementById('adminForm');
   form.id.value = book.id;
@@ -303,20 +524,21 @@ function adminEdit(id) {
   form.dataset.editing = id;
   form.scrollIntoView({behavior:'smooth'});
 }
-function adminDelete(id) {
+
+async function adminDelete(id) {
   if (!confirm('Xóa truyện này?')) return;
-  // serverless: remove from local admin storage/list
-  const admin = loadAdminBooks() || booksData.slice();
-  const updated = admin.filter(b => b.id !== id);
-  saveAdminBooks(updated);
-  renderAdminList();
-  // refresh main list
-  renderBookList(getEffectiveBooks());
+  try {
+    await apiFetch(`/api/books/${encodeURIComponent(id)}`, { method: 'DELETE' });
+    booksData = booksData.filter(b => b.id !== id);
+    renderAdminList();
+    renderBookList(booksData);
+  } catch(err) {
+    alert(err.error || 'Xóa thất bại.');
+  }
 }
 
 function adminExport() {
-  const list = getEffectiveBooks();
-  const blob = new Blob([JSON.stringify(list, null, 2)], {type:'application/json'});
+  const blob = new Blob([JSON.stringify(booksData, null, 2)], {type:'application/json'});
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a'); a.href = url; a.download = 'books-export.json'; a.click();
   URL.revokeObjectURL(url);
@@ -338,7 +560,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const form = document.getElementById('adminForm');
   if (form) {
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
       const data = {
         id: form.id.value.trim(),
@@ -349,27 +571,17 @@ document.addEventListener('DOMContentLoaded', () => {
         cover: form.cover.value.trim(),
         genre: form.genre.value.split(',').map(s => s.trim()).filter(Boolean)
       };
-      const editing = form.dataset.editing;
-      // if admin logged in, try server API
-      if (false) {
-        // kept for previous server branch (disabled)
-      } else {
-        let admin = loadAdminBooks() || booksData.slice();
-        // replace if exists
-        const existsIdx = admin.findIndex(b => b.id === data.id);
-        if (editing && editing === data.id) {
-          // update
-          if (existsIdx >= 0) admin[existsIdx] = data;
-          else admin.push(data);
-        } else {
-          // new: ensure unique id
-          if (existsIdx >= 0) return alert('ID đã tồn tại');
-          admin.push(data);
-        }
-        saveAdminBooks(admin);
+      try {
+        await apiFetch('/api/books', { method: 'POST', body: JSON.stringify(data) });
+        // Update local data
+        const idx = booksData.findIndex(b => b.id === data.id);
+        if (idx >= 0) booksData[idx] = data;
+        else booksData.push(data);
         renderAdminList();
-        renderBookList(admin);
+        renderBookList(booksData);
         form.reset(); form.dataset.editing = '';
+      } catch(err) {
+        alert(err.error || 'Lưu thất bại.');
       }
     });
   }
