@@ -10,10 +10,23 @@
 
   <div class="index-controls">
     <div id="userArea">
-      <span id="userGreeting"></span>
-      <button id="loginBtn">🔐 Đăng nhập</button>
-      <button id="logoutBtn" class="hidden">Đăng xuất</button>
-      <button id="adminToggleBtn">⚙ Admin</button>
+  <span id="userGreeting"></span>
+  <button id="profileBtn" class="hidden">👤 Hồ sơ</button>
+  <button id="loginBtn">🔐 Đăng nhập</button>
+  <button id="logoutBtn" class="hidden">Đăng xuất</button>
+  <button id="adminToggleBtn">⚙ Admin</button>
+  <!-- User Profile Modal -->
+  <div id="profileModal" class="auth-modal hidden" aria-hidden="true">
+    <div class="auth-box" role="dialog" aria-label="Hồ sơ người dùng">
+      <h3>👤 Hồ sơ người dùng</h3>
+      <div id="profileInfo">
+        <!-- Thông tin sẽ được JS chèn vào đây -->
+      </div>
+      <div class="auth-actions">
+        <button type="button" id="closeProfileBtn">Đóng</button>
+      </div>
+    </div>
+  </div>
     </div>
   </div>
 
@@ -21,10 +34,11 @@
   <div id="adminPanel" class="admin-panel hidden">
     <h3>Admin — Quản lý truyện</h3>
     <div class="admin-actions">
-      <button id="adminNewBtn">Thêm truyện mới</button>
-      <button id="adminExportBtn">Xuất JSON</button>
-      <button id="adminChapterBtn">Quản lý chương</button>
-      <button id="adminCloseBtn">Đóng</button>
+  <button id="adminNewBtn">Thêm truyện mới</button>
+  <button id="adminExportBtn">Xuất JSON</button>
+  <button id="adminChapterBtn">Quản lý chương</button>
+  <button id="adminCloseBtn">Đóng</button>
+  <button id="adminHomeBtn" style="background:#64748b;color:#fff;">Về trang chính</button>
     </div>
 
     <form id="adminForm" class="admin-form">
@@ -83,6 +97,11 @@
           <button type="button" class="authCloseBtn">Đóng</button>
         </div>
       </form>
+      <div class="oauth-divider"><span>hoặc</span></div>
+      <div class="oauth-btns">
+        <a href="/api/auth/google" class="oauth-btn oauth-google">Đăng nhập với Google</a>
+        <a href="/api/auth/facebook" class="oauth-btn oauth-facebook">Đăng nhập với Facebook</a>
+      </div>
       <p class="auth-switch">Chưa có tài khoản? <a href="#" id="switchToRegister">Đăng ký ngay</a></p>
       <p class="auth-switch"><a href="#" id="switchToForgot">Quên mật khẩu?</a></p>
     </div>

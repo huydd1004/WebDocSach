@@ -4,6 +4,10 @@
 // ============================================================
 
 const express = require('express');
+const session = require('express-session');
+const passport = require('passport');
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const FacebookStrategy = require('passport-facebook').Strategy;
 const path = require('path');
 const fs = require('fs');
 const crypto = require('crypto');
@@ -25,8 +29,10 @@ db.exec(`
   CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     username TEXT UNIQUE NOT NULL,
-    password TEXT NOT NULL,
+    password TEXT,
     role TEXT NOT NULL DEFAULT 'user',
+    google_id TEXT,
+    facebook_id TEXT,
     created_at TEXT NOT NULL DEFAULT (datetime('now'))
   );
   CREATE TABLE IF NOT EXISTS progress (
@@ -68,8 +74,70 @@ function adminRequired(req, res, next) {
 }
 
 // --------------- Express App ---------------
+
 const app = express();
 app.use(express.json());
+app.use(session({
+  secret: JWT_SECRET,
+  resave: false,
+  saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
+passport.deserializeUser((id, done) => {
+  const user = db.prepare('SELECT * FROM users WHERE id = ?').get(id);
+  done(null, user);
+});
+
+// Google OAuth Strategy
+passport.use(new GoogleStrategy({
+  clientID: process.env.GOOGLE_CLIENT_ID || 'GOOGLE_CLIENT_ID',
+  clientSecret: process.env.GOOGLE_CLIENT_SECRET || 'GOOGLE_CLIENT_SECRET',
+  callbackURL: '/api/auth/google/callback',
+}, (accessToken, refreshToken, profile, done) => {
+  let user = db.prepare('SELECT * FROM users WHERE google_id = ?').get(profile.id);
+  if (!user) {
+    // Tạo user mới nếu chưa có
+    const username = profile.displayName || profile.emails?.[0]?.value || `google_${profile.id}`;
+    const info = db.prepare('INSERT INTO users (username, google_id, role) VALUES (?, ?, ?)').run(username, profile.id, 'user');
+    user = db.prepare('SELECT * FROM users WHERE id = ?').get(info.lastInsertRowid);
+  }
+  return done(null, user);
+}));
+
+// Facebook OAuth Strategy
+passport.use(new FacebookStrategy({
+  clientID: process.env.FACEBOOK_CLIENT_ID || 'FACEBOOK_CLIENT_ID',
+  clientSecret: process.env.FACEBOOK_CLIENT_SECRET || 'FACEBOOK_CLIENT_SECRET',
+  callbackURL: '/api/auth/facebook/callback',
+  profileFields: ['id', 'displayName', 'emails']
+}, (accessToken, refreshToken, profile, done) => {
+  let user = db.prepare('SELECT * FROM users WHERE facebook_id = ?').get(profile.id);
+  if (!user) {
+    const username = profile.displayName || profile.emails?.[0]?.value || `fb_${profile.id}`;
+    const info = db.prepare('INSERT INTO users (username, facebook_id, role) VALUES (?, ?, ?)').run(username, profile.id, 'user');
+    user = db.prepare('SELECT * FROM users WHERE id = ?').get(info.lastInsertRowid);
+  }
+  return done(null, user);
+}));
+// ========== GOOGLE AUTH ==========
+app.get('/api/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+app.get('/api/auth/google/callback', passport.authenticate('google', { failureRedirect: '/' }), (req, res) => {
+  // Đăng nhập thành công, trả về JWT
+  const token = generateToken(req.user);
+  res.redirect(`/reader.html?token=${token}`);
+});
+
+// ========== FACEBOOK AUTH ==========
+app.get('/api/auth/facebook', passport.authenticate('facebook', { scope: ['email'] }));
+app.get('/api/auth/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/' }), (req, res) => {
+  const token = generateToken(req.user);
+  res.redirect(`/reader.html?token=${token}`);
+});
 
 // Serve static files
 app.use(express.static(__dirname, {

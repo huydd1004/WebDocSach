@@ -2,6 +2,45 @@
 // Admin Chapter Management
 // ======================
 document.addEventListener('DOMContentLoaded', () => {
+  // Hồ sơ người dùng
+  const profileBtn = document.getElementById('profileBtn');
+  const profileModal = document.getElementById('profileModal');
+  const closeProfileBtn = document.getElementById('closeProfileBtn');
+  const profileInfo = document.getElementById('profileInfo');
+
+  function openProfileModal() {
+    if (!profileModal) return;
+    // Lấy thông tin user từ session/localStorage
+    const s = getSession();
+    let html = '';
+    if (s && s.user) {
+      html += `<div><b>Tên đăng nhập:</b> ${s.user}</div>`;
+      html += `<div><b>Vai trò:</b> ${s.role || 'user'}</div>`;
+      if (s.provider) html += `<div><b>Đăng nhập qua:</b> ${s.provider}</div>`;
+    } else {
+      html = '<div>Không có thông tin người dùng.</div>';
+    }
+    if (profileInfo) profileInfo.innerHTML = html;
+    profileModal.classList.remove('hidden');
+    profileModal.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('modal-open');
+  }
+  function closeProfileModal() {
+    if (!profileModal) return;
+    profileModal.classList.add('hidden');
+    profileModal.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('modal-open');
+  }
+  if (profileBtn) profileBtn.addEventListener('click', openProfileModal);
+  if (closeProfileBtn) closeProfileBtn.addEventListener('click', closeProfileModal);
+  if (profileModal) profileModal.addEventListener('click', (e) => { if (e.target === profileModal) closeProfileModal(); });
+  // Nút về trang chính trong admin panel
+  const adminHomeBtn = document.getElementById('adminHomeBtn');
+  if (adminHomeBtn) {
+    adminHomeBtn.addEventListener('click', () => {
+      document.getElementById('adminPanel').classList.add('hidden');
+    });
+  }
   const chapterBtn = document.getElementById('adminChapterBtn');
   const chapterModal = document.getElementById('chapterModal');
   const closeChapterModalBtn = document.getElementById('closeChapterModalBtn');
@@ -358,12 +397,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const root = document.body;
     const greet = document.getElementById('userGreeting');
     const s = getSession();
+    const profileBtn = document.getElementById('profileBtn');
     if (s && s.user) {
       greet.innerText = '👋 Xin chào, ' + s.user;
       root.classList.add('user-logged');
+      if (profileBtn) profileBtn.classList.remove('hidden');
     } else {
       greet.innerText = '';
       root.classList.remove('user-logged');
+      if (profileBtn) profileBtn.classList.add('hidden');
     }
     if (adminToggle) adminToggle.style.display = (s && s.role==='admin') ? 'inline-block' : 'none';
     if (!isAdminUser()) {
