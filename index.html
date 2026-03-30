@@ -6,7 +6,10 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1 class="title">📚 Thư Viện Cá Nhân</h1>
+  <h1 class="title library-title">
+    <img class="library-title-logo" src="images/logo.png" alt="Thư viện truyện logo">
+    <span class="library-title-text">Thư viện truyện</span>
+  </h1>
 
   <div class="index-controls">
     <div id="userArea">
@@ -38,7 +41,9 @@
   <button id="adminExportBtn">Xuất JSON</button>
   <button id="adminChapterBtn">Quản lý chương</button>
   <button id="adminCloseBtn">Đóng</button>
-  <button id="adminHomeBtn" style="background:#64748b;color:#fff;">Về trang chính</button>
+  <button id="adminHomeBtn" class="home-logo-btn" aria-label="Về trang chính" title="Về trang chính">
+    <img class="home-logo" src="images/logo.png" alt="Về trang chính">
+  </button>
     </div>
 
     <form id="adminForm" class="admin-form">
