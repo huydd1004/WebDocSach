@@ -48,10 +48,30 @@
     <button onclick="applyTheme(2)">💛 Sepia</button>
   </div>
 
+  <h3>Chọn font chữ</h3>
+  <div class="font-controls">
+    <button onclick="setFont('Noto Sans')">Noto Sans</button>
+    <button onclick="setFont('Merriweather')">Merriweather</button>
+  </div>
+
   <h3>Chọn cỡ chữ</h3>
   <div class="fontsize-controls">
     <input id="fontSlider" type="range" min="14" max="30" step="1" value="20">
     <span id="fontSizeLabel">20px</span>
+  </div>
+
+  <h3>Khoảng cách dòng</h3>
+  <div class="lineheight-controls">
+    <button onclick="setLineHeight(1.5)">1.5</button>
+    <button onclick="setLineHeight(2)">2.0</button>
+    <button onclick="setLineHeight(2.5)">2.5</button>
+  </div>
+
+  <h3>Khoảng cách chữ</h3>
+  <div class="letterspacing-controls">
+    <button onclick="setLetterSpacing('normal')">Chuẩn</button>
+    <button onclick="setLetterSpacing('0.06em')">Rộng</button>
+    <button onclick="setLetterSpacing('0.12em')">Rộng hơn</button>
   </div>
 
   <h3>Đọc to (Text-to-Speech)</h3>
@@ -70,6 +90,8 @@
     </div>
   </div>
 </div>
+
+
 
 <script src="script.js"></script>
 <!-- Scroll to top button -->
