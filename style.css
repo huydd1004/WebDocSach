@@ -521,6 +521,11 @@ select {
   padding: 20px;
   border-radius: 14px;
   box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+  z-index: 1100;
+  pointer-events: auto;
+  max-width: min(420px, calc(100vw - 20px));
+  max-height: calc(100vh - 100px);
+  overflow-y: auto;
 }
 
 .settings-close {

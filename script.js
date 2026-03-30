@@ -770,6 +770,16 @@ function toggleSettings() {
   document.getElementById("settings").classList.toggle("hidden");
 }
 
+function getReaderContent() {
+  return document.getElementById("content");
+}
+
+function getDefaultLineHeight(px) {
+  if (px <= 16) return "1.6";
+  if (px <= 20) return "2";
+  return "2.2";
+}
+
 function applySettings() {
   const bg = document.getElementById("bgColor").value;
   const text = document.getElementById("textColor").value;
@@ -790,14 +800,20 @@ const themes = [
 
 // Chỉ load theme & font nếu có div #content (trang đọc)
 window.addEventListener("load", () => {
-  const content = document.getElementById("content");
+  const content = getReaderContent();
   if(!content) return; // Nếu không có content, thoát, không áp dụng gì
 
   const savedTheme = localStorage.getItem("theme");
   const savedFont = localStorage.getItem("fontsize");
+  const savedFontFamily = localStorage.getItem("fontFamily");
+  const savedLineHeight = localStorage.getItem("lineHeight");
+  const savedLetterSpacing = localStorage.getItem("letterSpacing");
 
-  if(savedTheme !== null) applyTheme(parseInt(savedTheme));
-  if(savedFont !== null) applyFontSize(savedFont);
+  if(savedTheme !== null) applyTheme(parseInt(savedTheme), false);
+  if(savedFont !== null) applyFontSize(savedFont, false);
+  if(savedFontFamily !== null) setFont(savedFontFamily, false);
+  if(savedLineHeight !== null) setLineHeight(savedLineHeight, false);
+  if(savedLetterSpacing !== null) setLetterSpacing(savedLetterSpacing, false);
 
   // initialize font slider (if present) and bind
   const fontSlider = document.getElementById('fontSlider');
@@ -826,15 +842,21 @@ window.addEventListener("load", () => {
 });
 
 // Áp dụng theme và lưu
-function applyTheme(index) {
-  const content = document.getElementById("content");
+function applyTheme(index, close = true) {
+  const content = getReaderContent();
   if(!content) return; // Chỉ áp dụng nếu đang đọc truyện
 
   const theme = themes[index];
+  if (!theme) return;
   document.body.style.background = theme.bg;
   document.body.style.color = theme.text;
 
   content.style.background = index === 0 ? "rgba(255,255,255,0.04)" : "rgba(0,0,0,0.04)";
+
+  if (!close) {
+    localStorage.setItem("theme", index);
+    return;
+  }
 
   localStorage.setItem("theme", index); // lưu theme
 
@@ -844,7 +866,7 @@ function applyTheme(index) {
 // Áp dụng font size và lưu
 // Áp dụng font size; `size` can be 'small'|'medium'|'large' or numeric px value.
 function applyFontSize(size, close = true) {
-  const content = document.getElementById("content");
+  const content = getReaderContent();
   if(!content) return; // Chỉ áp dụng nếu đang đọc truyện
 
   let px;
@@ -856,14 +878,57 @@ function applyFontSize(size, close = true) {
   if (isNaN(px)) px = 20;
 
   content.style.fontSize = px + 'px';
-  // reasonable default line-height based on size
-  if (px <= 16) content.style.lineHeight = '1.6';
-  else if (px <= 20) content.style.lineHeight = '2';
-  else content.style.lineHeight = '2.2';
+  if (!localStorage.getItem('lineHeight')) {
+    content.style.setProperty('--line-height', getDefaultLineHeight(px));
+  }
 
   localStorage.setItem('fontsize', String(px)); // lưu cỡ chữ (px)
 
   if (close) toggleSettings(); // only close settings when requested
+}
+
+function setFont(fontName, close = true) {
+  const content = getReaderContent();
+  if (!content) return;
+
+  const fontMap = {
+    'Noto Sans': "'Noto Sans', 'Segoe UI', 'Verdana', sans-serif",
+    'Merriweather': "'Merriweather', 'Times New Roman', serif"
+  };
+
+  const nextFont = fontMap[fontName] ? fontName : 'Noto Sans';
+  content.style.setProperty('--font-family', fontMap[nextFont]);
+  localStorage.setItem('fontFamily', nextFont);
+
+  if (close) toggleSettings();
+}
+
+function setLineHeight(value, close = true) {
+  const content = getReaderContent();
+  if (!content) return;
+
+  const numeric = parseFloat(value);
+  const nextValue = Number.isFinite(numeric)
+    ? String(numeric)
+    : getDefaultLineHeight(parseFloat(content.style.fontSize) || 20);
+
+  content.style.setProperty('--line-height', nextValue);
+  localStorage.setItem('lineHeight', nextValue);
+
+  if (close) toggleSettings();
+}
+
+function setLetterSpacing(value, close = true) {
+  const content = getReaderContent();
+  if (!content) return;
+
+  const allowed = new Set(['normal', '0.06em', '0.12em']);
+  const nextValue = allowed.has(value) ? value : 'normal';
+
+  content.style.setProperty('--letter-spacing', nextValue);
+  localStorage.setItem('letterSpacing', nextValue);
+
+  if (close) toggleSettings();
 }
 
 // LOAD SELECT BOX
