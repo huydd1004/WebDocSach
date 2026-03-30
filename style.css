@@ -169,6 +169,21 @@ button:hover {
   object-fit: cover;
 }
 
+.home-brand-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 3px 10px 3px 3px;
+  line-height: 1;
+}
+
+.home-brand-text {
+  font-size: clamp(18px, 2.4vw, 26px);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+}
+
 /* SELECT */
 select {
   background: #1e293b;
@@ -866,6 +881,15 @@ select {
   /* Điều chỉnh button trong top-bar */
   .top-bar button {
     font-size: 25px;
+  }
+
+  .home-brand-btn {
+    gap: 8px;
+    padding: 2px 8px 2px 2px;
+  }
+
+  .home-brand-text {
+    font-size: clamp(16px, 4.2vw, 22px);
   }
   
   /* Điều chỉnh panel settings */
