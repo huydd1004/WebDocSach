@@ -5,99 +5,127 @@
   <title>Đọc truyện</title>
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="reader-page">
 
-<div class="top-bar">
-  <button class="home-logo-btn home-brand-btn" onclick="goHome()" aria-label="Trang chủ" title="Trang chủ">
-    <img class="home-logo" src="images/logo.png" alt="Trang chủ">
-    <span class="home-brand-text">Thư viện truyện</span>
-  </button>
-</div>
+<div id="readerTopChrome" class="reader-top-chrome">
+  <div class="top-bar">
+    <button class="home-logo-btn home-brand-btn" onclick="goHome()" aria-label="Trang chủ" title="Trang chủ">
+      <img class="home-logo" src="images/logo.png" alt="Trang chủ">
+      <span class="home-brand-text">Thư viện truyện</span>
+    </button>
+    <div id="readerBookTitle" class="reader-book-title" title=""></div>
+    <div class="top-bar-balance" aria-hidden="true"></div>
+  </div>
 
-<div class="nav">
-  <button onclick="firstChapter()">⏮</button>
-  <button onclick="prevChapter()">◀</button>
+  <div class="nav top-nav">
+    <button class="top-nav-chapter-btn top-nav-prev" type="button" onclick="prevChapter()" aria-label="Chương trước">
+      <span class="top-nav-chapter-icon" aria-hidden="true">&larr;</span>
+      <span>Trước</span>
+    </button>
 
-  <select id="partSelect" onchange="changePart()"></select>
-  <select id="chapterSelect" onchange="changeChapter()"></select>
+    <select id="partSelect" onchange="changePart()"></select>
+    <select id="chapterSelect" onchange="changeChapter()"></select>
 
-  <button onclick="nextChapter()">▶</button>
-  <button onclick="lastChapter()">⏭</button>
+    <button class="top-nav-chapter-btn top-nav-next" type="button" onclick="nextChapter()" aria-label="Chương sau">
+      <span>Sau</span>
+      <span class="top-nav-chapter-icon" aria-hidden="true">&rarr;</span>
+    </button>
 
-  <button onclick="toggleSettings()">⚙</button>
+    <button type="button" onclick="toggleSettings()" aria-label="Mở cài đặt">&#9881;</button>
+  </div>
 </div>
 
 <div id="content" class="content"></div>
 
+<div class="nav bottom bottom-bar" aria-label="Điều hướng chương">
+  <button class="bottom-bar-btn bottom-bar-prev" type="button" onclick="prevChapter()" aria-label="Chương trước">&larr;</button>
 
+  <button id="chapterPickerTrigger" class="bottom-bar-btn chapter-picker-trigger" type="button" onclick="toggleChapterPicker()" aria-label="Chọn chương" aria-expanded="false" aria-controls="bottomChapterMenu">
+    <span class="chapter-picker-icon" aria-hidden="true">
+      <span></span>
+      <span></span>
+      <span></span>
+    </span>
+  </button>
 
-<div class="nav bottom">
-  <button onclick="firstChapter()">⏮</button>
-  <button onclick="prevChapter()">◀</button>
+  <button class="bottom-bar-btn bottom-bar-next" type="button" onclick="nextChapter()" aria-label="Chương sau">&rarr;</button>
 
-  <!-- SELECT CHỌN CHƯƠNG Ở GIỮA -->
-  <select id="chapterSelectBottom" onchange="changeChapterBottom()"></select>
-
-  <button onclick="nextChapter()">▶</button>
-  <button onclick="lastChapter()">⏭</button>
+  <div id="bottomChapterMenu" class="bottom-chapter-menu hidden" aria-hidden="true">
+    <label class="bottom-chapter-menu-label" for="chapterSelectBottom">Danh sách chương</label>
+    <select id="chapterSelectBottom" class="bottom-chapter-select" onchange="changeChapterBottom()" aria-label="Chọn chương"></select>
+  </div>
 </div>
 
-<div id="settings" class="settings hidden">
-  <button class="settings-close" onclick="toggleSettings()" aria-label="Đóng cài đặt">✖</button>
-  <h3>Chọn giao diện đọc</h3>
-  <div class="theme-btns">
-    <button onclick="applyTheme(0)">🌙 Dark</button>
-    <button onclick="applyTheme(1)">📖 Light</button>
-    <button onclick="applyTheme(2)">💛 Sepia</button>
+<div id="settings" class="settings hidden" aria-hidden="true">
+  <button class="settings-close" type="button" onclick="toggleSettings()" aria-label="Đóng cài đặt">&times;</button>
+  <div class="settings-row settings-row-top">
+    <div class="settings-control settings-size-stepper" aria-label="Cỡ chữ">
+      <button class="settings-step-btn" type="button" onclick="adjustFontSize(-1)" aria-label="Giảm cỡ chữ">A-</button>
+      <span id="fontSizeLabel" class="settings-size-value">20</span>
+      <button class="settings-step-btn" type="button" onclick="adjustFontSize(1)" aria-label="Tăng cỡ chữ">A+</button>
+    </div>
+
+    <div class="settings-theme-swatches" role="group" aria-label="Giao diện màu">
+      <button class="theme-swatch theme-swatch-dark" type="button" data-theme="0" onclick="applyTheme(0)" aria-label="Dark"></button>
+      <button class="theme-swatch theme-swatch-light" type="button" data-theme="1" onclick="applyTheme(1)" aria-label="Light"></button>
+      <button class="theme-swatch theme-swatch-sepia" type="button" data-theme="2" onclick="applyTheme(2)" aria-label="Sepia"></button>
+    </div>
+
+    <div class="settings-control settings-segment font-segment" role="group" aria-label="Font chữ">
+      <button type="button" data-font="Merriweather" onclick="setFont('Merriweather')">Serif</button>
+      <button type="button" data-font="Noto Sans" onclick="setFont('Noto Sans')">Sans</button>
+      <button type="button" data-font="Verdana" onclick="setFont('Verdana')">Verdana</button>
+    </div>
   </div>
 
-  <h3>Chọn font chữ</h3>
-  <div class="font-controls">
-    <button onclick="setFont('Noto Sans')">Noto Sans</button>
-    <button onclick="setFont('Merriweather')">Merriweather</button>
-  </div>
+  <div class="settings-divider" aria-hidden="true"></div>
 
-  <h3>Chọn cỡ chữ</h3>
-  <div class="fontsize-controls">
-    <input id="fontSlider" type="range" min="14" max="30" step="1" value="20">
-    <span id="fontSizeLabel">20px</span>
-  </div>
+  <div class="settings-row settings-row-bottom">
+    <div class="settings-inline-group">
+      <span class="settings-inline-label" aria-hidden="true">&#8597;</span>
+      <div class="settings-control settings-segment" role="group" aria-label="Khoảng cách dòng">
+        <button type="button" data-lineheight="1.6" onclick="setLineHeight(1.6)">1.6</button>
+        <button type="button" data-lineheight="1.8" onclick="setLineHeight(1.8)">1.8</button>
+        <button type="button" data-lineheight="2" onclick="setLineHeight(2)">2</button>
+      </div>
+    </div>
 
-  <h3>Khoảng cách dòng</h3>
-  <div class="lineheight-controls">
-    <button onclick="setLineHeight(1.5)">1.5</button>
-    <button onclick="setLineHeight(2)">2.0</button>
-    <button onclick="setLineHeight(2.5)">2.5</button>
-  </div>
+    <div class="settings-inline-group">
+      <span class="settings-inline-label settings-inline-label-text">AV</span>
+      <div class="settings-control settings-segment" role="group" aria-label="Khoảng cách chữ">
+        <button type="button" data-letterspacing="normal" onclick="setLetterSpacing('normal')">0</button>
+        <button type="button" data-letterspacing="0.06em" onclick="setLetterSpacing('0.06em')">1</button>
+        <button type="button" data-letterspacing="0.12em" onclick="setLetterSpacing('0.12em')">2</button>
+      </div>
+    </div>
 
-  <h3>Khoảng cách chữ</h3>
-  <div class="letterspacing-controls">
-    <button onclick="setLetterSpacing('normal')">Chuẩn</button>
-    <button onclick="setLetterSpacing('0.06em')">Rộng</button>
-    <button onclick="setLetterSpacing('0.12em')">Rộng hơn</button>
-  </div>
+    <div class="settings-control settings-segment align-segment" role="group" aria-label="Canh chữ">
+      <button type="button" data-align="left" onclick="setTextAlign('left')" aria-label="Canh trái">
+        <span class="text-align-icon text-align-left" aria-hidden="true">
+          <span></span>
+          <span></span>
+          <span></span>
+        </span>
+      </button>
+      <button type="button" data-align="justify" onclick="setTextAlign('justify')" aria-label="Canh đều">
+        <span class="text-align-icon text-align-justify" aria-hidden="true">
+          <span></span>
+          <span></span>
+          <span></span>
+        </span>
+      </button>
+    </div>
 
-  <h3>Đọc to (Text-to-Speech)</h3>
-  <div class="tts-controls">
-    <label for="voiceSelect">Giọng:</label>
-    <select id="voiceSelect"></select>
-
-    <label for="ttsRate">Tốc độ:</label>
-    <input id="ttsRate" type="range" min="0.6" max="1.8" step="0.1" value="1">
-    <span id="ttsRateVal">1.0x</span>
-
-    <div class="tts-buttons">
-      <button id="ttsPlayBtn" type="button">▶ Play</button>
-      <button id="ttsPauseBtn" type="button">⏸ Pause</button>
-      <button id="ttsStopBtn" type="button">⏹ Stop</button>
+    <div class="settings-switch-group">
+      <span class="settings-switch-label">Nhớ vị trí</span>
+      <button id="rememberProgressToggle" class="settings-switch" type="button" role="switch" aria-checked="true" onclick="toggleRememberProgress()">
+        <span class="settings-switch-thumb" aria-hidden="true"></span>
+      </button>
     </div>
   </div>
 </div>
 
-
-
 <script src="script.js"></script>
-<!-- Scroll to top button -->
-<button id="scrollTopBtn" class="scroll-top" title="Lên đầu trang">⬆</button>
+<button id="scrollTopBtn" class="scroll-top" type="button" title="Lên đầu trang">&#11014;</button>
 </body>
 </html>

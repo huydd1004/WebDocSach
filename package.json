@@ -5,17 +5,9 @@
   "description": "Thư viện truyện online - Backend API + Frontend",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
-    "seed": "node seed-admin.js"
+    "start": "node server.js"
   },
   "dependencies": {
-    "bcrypt": "^5.1.1",
-    "better-sqlite3": "^11.7.0",
-    "express": "^4.21.0",
-    "express-session": "^1.19.0",
-    "jsonwebtoken": "^9.0.2",
-    "passport": "^0.7.0",
-    "passport-facebook": "^3.0.0",
-    "passport-google-oauth20": "^2.0.0"
+    "express": "^4.21.0"
   }
 }
