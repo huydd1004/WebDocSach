@@ -283,20 +283,44 @@ function loadSelects() {
     partTop.appendChild(opt);
   }
 
+  // Lấy tiêu đề chương cho dropdown
   const range = partRange(currentPart);
+  const chapterTitlePromises = [];
   for (let chap = range.start; chap <= range.end; chap += 1) {
-    const topOption = document.createElement('option');
-    topOption.value = chap;
-    topOption.innerText = `Chương ${chap}`;
-    if (chap === currentChapter) topOption.selected = true;
-    selectTop.appendChild(topOption);
-
-    const bottomOption = document.createElement('option');
-    bottomOption.value = chap;
-    bottomOption.innerText = `Chương ${chap}`;
-    if (chap === currentChapter) bottomOption.selected = true;
-    selectBottom.appendChild(bottomOption);
+    const chapterPath = getChapterPath(chap);
+    chapterTitlePromises.push(
+      fetch(encodeURI(chapterPath))
+        .then(res => res.ok ? res.text() : '')
+        .then(text => {
+          let title = `Chương ${chap}`;
+          if (text) {
+            const firstLine = text.split('\n').find(line => line.trim());
+            if (firstLine) {
+              // Loại bỏ dấu ** nếu có
+              title = firstLine.replace(/^\*+|\*+$/g, '').trim();
+            }
+          }
+          return { chap, title };
+        })
+        .catch(() => ({ chap, title: `Chương ${chap}` }))
+    );
   }
+
+  Promise.all(chapterTitlePromises).then(chapterTitles => {
+    chapterTitles.forEach(({ chap, title }) => {
+      const topOption = document.createElement('option');
+      topOption.value = chap;
+      topOption.innerText = title;
+      if (chap === currentChapter) topOption.selected = true;
+      selectTop.appendChild(topOption);
+
+      const bottomOption = document.createElement('option');
+      bottomOption.value = chap;
+      bottomOption.innerText = title;
+      if (chap === currentChapter) bottomOption.selected = true;
+      selectBottom.appendChild(bottomOption);
+    });
+  });
 }
 
 function nextChapter() {
