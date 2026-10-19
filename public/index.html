@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Thư Viện Truyện — Khám phá câu chuyện tiếp theo</title>
+
+  <script src="assets/js/theme.js"></script>
+
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/home.css">
+  <link rel="stylesheet" href="assets/css/theme.css">
+</head>
+
+<body class="home-page">
+  <header class="site-header">
+    <div class="home-container header-inner">
+      <a class="site-brand" href="index.html">
+        <img src="assets/images/Logo.png" alt="" width="44" height="44">
+        <span>Thư Viện Truyện</span>
+      </a>
+
+      <div class="header-actions">
+        <a class="library-link" href="#library">Khám phá sách</a>
+
+          <button
+            class="site-theme-toggle"
+            type="button"
+            data-theme-toggle
+            aria-label="Chuyển giao diện"
+          >
+            <span class="theme-toggle-icon" aria-hidden="true">☾</span>
+          </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="home-container">
+    <section class="home-intro" aria-labelledby="introTitle">
+      <p class="intro-label">MỘT CHÚT THỜI GIAN, MỘT CÂU CHUYỆN</p>
+
+      <h1 id="introTitle">
+        Mở một trang sách.<br>
+        Bước vào thế giới mới.
+      </h1>
+
+      <p class="intro-description">
+        Tìm câu chuyện bạn yêu thích và tận hưởng từng chương
+        theo nhịp đọc của riêng mình.
+      </p>
+
+      <div class="home-search">
+        <label for="bookSearch">Hôm nay bạn muốn đọc gì?</label>
+
+        <input
+          id="bookSearch"
+          type="search"
+          placeholder="Nhập tên truyện hoặc tác giả..."
+          autocomplete="off"
+        >
+      </div>
+    </section>
+
+    <section id="library" class="home-library" aria-labelledby="libraryTitle">
+      <div class="library-heading">
+        <div>
+          <p class="section-label">KHÁM PHÁ</p>
+          <h2 id="libraryTitle">Tủ sách của bạn</h2>
+        </div>
+
+        <p class="library-hint">Chọn một cuốn để bắt đầu đọc</p>
+      </div>
+
+      <div
+        id="genreFilters"
+        class="genre-filters"
+        role="group"
+        aria-label="Lọc truyện theo thể loại"
+      ></div>
+
+      <div class="library-results">
+        <p id="bookResultCount" aria-live="polite"></p>
+
+        <button
+          id="clearBookFilters"
+          class="clear-book-filters"
+          type="button"
+          hidden>
+          Xóa bộ lọc
+        </button>
+      </div>
+
+      <p id="emptyBookState" class="empty-book-state" hidden>
+        Không tìm thấy truyện phù hợp. Hãy thử tên hoặc thể loại khác.
+      </p>
+
+      <div id="book-list" class="grid"></div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="home-container">
+      <p>Thư Viện Truyện — Một góc nhỏ dành cho người thích đọc.</p>
+    </div>
+  </footer>
+
+  <button
+    id="scrollTopBtn"
+    class="scroll-top"
+    type="button"
+    aria-label="Lên đầu trang"
+    title="Lên đầu trang"
+  >↑</button>
+
+  <script src="assets/js/script.js"></script>
+</body>
+</html>

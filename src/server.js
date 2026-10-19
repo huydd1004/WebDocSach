@@ -4,16 +4,17 @@ const path = require('path');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const publicDirectory = path.join(__dirname, '..', 'public');
 
 app.use(express.json());
 
-app.use(express.static(__dirname, {
+app.use(express.static(publicDirectory, {
   index: 'index.html',
   extensions: ['html']
 }));
 
 app.get('/api/books', (req, res) => {
-  const filePath = path.join(__dirname, 'data', 'books.json');
+  const filePath = path.join(publicDirectory, 'data', 'books.json');
   if (!fs.existsSync(filePath)) {
     res.json([]);
     return;

@@ -1,18 +1,30 @@
-# WebDocSach Server
+# WebDocSach
 
-Server hiện chỉ phục vụ:
+## Cấu trúc thư mục
 
-- file tĩnh của website
-- API `GET /api/books` để trả danh sách truyện từ `data/books.json`
+```text
+WebDocSach/
+├── public/                 # Nội dung được gửi tới trình duyệt
+│   ├── assets/
+│   │   ├── css/            # Giao diện
+│   │   ├── images/         # Logo và bìa truyện
+│   │   └── js/             # JavaScript phía trình duyệt
+│   ├── data/               # Danh sách truyện và nội dung chương
+│   ├── index.html           # Trang chủ
+│   └── reader.html          # Trang đọc truyện
+├── src/
+│   └── server.js            # Máy chủ Express
+├── package.json
+└── README_SERVER.md
+```
 
-Chạy server:
+Máy chủ phục vụ website và API `GET /api/books`, lấy dữ liệu từ
+`public/data/books.json`.
+
+## Khởi động
 
 ```bash
 npm start
 ```
 
-Mặc định server chạy tại:
-
-```text
-http://localhost:3000
-```
+Sau đó mở `http://localhost:3000`.

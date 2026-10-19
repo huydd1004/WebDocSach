@@ -1,7 +1,6 @@
 const PROGRESS_KEY = 'readingProgress';
 const REMEMBER_PROGRESS_KEY = 'rememberReadingPosition';
 const CHAPTERS_PER_PART = 200;
-const GENRES = ['kinh dị', 'trinh thám', 'huyền huyễn', 'linh dị', 'bói toán', 'tiên hiệp', 'xuyên không'];
 const THEMES = [
   { bg: '#0f172a', text: '#e2e8f0' },
   { bg: '#fdf6e3', text: '#222222' },
@@ -12,6 +11,9 @@ let booksData = [];
 let currentBook = '';
 let currentChapter = 1;
 let totalChapters = 1;
+
+let loadedChapter = 0;
+let readingPositionTimer = null;
 
 async function apiFetch(url, opts = {}) {
   const headers = { 'Content-Type': 'application/json', ...(opts.headers || {}) };
@@ -89,9 +91,175 @@ function getProgress(bookId) {
 
 function saveProgress(bookId, chapter) {
   if (!bookId || !shouldRememberProgress()) return;
+
   const map = loadProgressMap();
-  map[bookId] = { chapter: Number(chapter), updated: Date.now() };
+  const previousProgress = map[bookId] || {};
+
+  map[bookId] = {
+    ...previousProgress,
+    chapter: Number(chapter),
+    updated: Date.now()
+  };
+
   saveProgressMap(map);
+}
+
+function getMaximumScroll() {
+  return Math.max(
+    document.documentElement.scrollHeight - window.innerHeight,
+    0
+  );
+}
+
+function saveCurrentReadingPosition() {
+  if (
+    !currentBook ||
+    loadedChapter <= 0 ||
+    !shouldRememberProgress()
+  ) {
+    return;
+  }
+
+  const map = loadProgressMap();
+  const previousProgress = map[currentBook] || {};
+  const maximumScroll = getMaximumScroll();
+  const scrollY = Math.max(Math.round(window.scrollY), 0);
+
+  map[currentBook] = {
+    ...previousProgress,
+
+    // Giữ chương mà người dùng vừa chọn khi trang đang chuyển chương.
+    chapter:
+      Number(previousProgress.chapter) || loadedChapter,
+
+    positionChapter: loadedChapter,
+    scrollY,
+
+    scrollRatio:
+      maximumScroll > 0
+        ? Math.min(scrollY / maximumScroll, 1)
+        : 0,
+
+    updated: Date.now()
+  };
+
+  saveProgressMap(map);
+}
+
+function restoreReadingPosition(bookId, chapter) {
+  const progress = getProgress(bookId);
+
+  const restore = () => {
+    window.requestAnimationFrame(() => {
+      window.requestAnimationFrame(() => {
+        let targetPosition = 0;
+
+        if (
+          progress &&
+          Number(progress.positionChapter) === Number(chapter)
+        ) {
+          const maximumScroll = getMaximumScroll();
+          const savedRatio = Number(progress.scrollRatio);
+          const savedScrollY = Number(progress.scrollY);
+
+          if (
+            Number.isFinite(savedRatio) &&
+            savedRatio >= 0 &&
+            maximumScroll > 0
+          ) {
+            targetPosition = savedRatio * maximumScroll;
+          } else if (Number.isFinite(savedScrollY)) {
+            targetPosition = savedScrollY;
+          }
+        }
+
+        const root = document.documentElement;
+        const previousScrollBehavior = root.style.scrollBehavior;
+
+        root.style.scrollBehavior = 'auto';
+
+        window.scrollTo({
+          top: Math.min(
+            Math.max(targetPosition, 0),
+            getMaximumScroll()
+          ),
+          behavior: 'auto'
+        });
+
+        window.requestAnimationFrame(() => {
+          root.style.scrollBehavior = previousScrollBehavior;
+        });
+      });
+    });
+  };
+
+  if (document.readyState === 'complete') {
+    restore();
+  } else {
+    window.addEventListener('load', restore, { once: true });
+  }
+}
+
+function scheduleReadingPositionSave() {
+  if (!loadedChapter || !shouldRememberProgress()) {
+    return;
+  }
+
+  window.clearTimeout(readingPositionTimer);
+
+  readingPositionTimer = window.setTimeout(() => {
+    saveCurrentReadingPosition();
+  }, 250);
+}
+
+function normalizeSearchText(value) {
+  return String(value || '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/đ/g, 'd')
+    .trim();
+}
+
+function getBookGenres(book) {
+  if (Array.isArray(book.genre)) {
+    return book.genre
+      .map(genre => String(genre).trim())
+      .filter(Boolean);
+  }
+
+  if (typeof book.genre === 'string' && book.genre.trim()) {
+    return [book.genre.trim()];
+  }
+
+  return [];
+}
+
+function updateBookResultStatus(list) {
+  const resultCount = document.getElementById('bookResultCount');
+  const emptyState = document.getElementById('emptyBookState');
+  const clearButton = document.getElementById('clearBookFilters');
+  const bookList = document.getElementById('book-list');
+
+  if (resultCount) {
+    resultCount.textContent = `Hiển thị ${list.length} trong ${booksData.length} truyện`;
+  }
+
+  if (emptyState) {
+    emptyState.hidden = list.length !== 0;
+  }
+
+  if (bookList) {
+    bookList.hidden = list.length === 0;
+  }
+
+  const hasSearch = Boolean(document.getElementById('bookSearch')?.value.trim());
+
+  const hasSelectedGenre = Boolean(document.querySelector('#genreFilters input[type="checkbox"]:checked'));
+
+  if (clearButton) {
+    clearButton.hidden = !hasSearch && !hasSelectedGenre;
+  }
 }
 
 function renderBookList(list) {
@@ -103,88 +271,129 @@ function renderBookList(list) {
   list.forEach(book => {
     const card = document.createElement('div');
     card.className = 'book';
+    card.tabIndex = 0;
+    card.setAttribute('role', 'link');
+    card.setAttribute('aria-label', `Xem truyện ${book.title}`);
 
     const saved = getProgress(book.id);
-    const chapToOpen = saved && saved.chapter ? saved.chapter : 1;
 
     card.innerHTML = `
-      <img src="${book.cover}" alt="${book.title}">
+      <img src="${book.cover}" alt="Bìa truyện ${book.title}">
       <div class="book-info">
         <h3>${book.title}</h3>
-        <p>${book.author || ''}</p>
-        <p>${book.status || ''}</p>
+        <p>${book.author || 'Chưa cập nhật tác giả'}</p>
         <p>${book.date || ''}</p>
-      </div>
-    `;
+      </div>`;
 
-    if (saved && saved.chapter) {
-      const info = card.querySelector('.book-info');
-      const badge = document.createElement('div');
-      badge.className = 'continue-badge';
-      badge.innerText = `Tiếp tục: Chương ${saved.chapter}`;
-      badge.style.marginTop = '6px';
-      badge.style.fontSize = '13px';
-      badge.style.opacity = '0.9';
-      info.appendChild(badge);
-    }
+      if (saved && saved.chapter) {
+        const info = card.querySelector('.book-info');
+        const badge = document.createElement('div');
 
-    card.addEventListener('click', () => {
-      window.location.href = `reader.html?book=${book.id}&chap=${chapToOpen}`;
-    });
+        badge.className = 'continue-badge';
+        badge.textContent = `Tiếp tục: Chương ${saved.chapter}`;
 
-    container.appendChild(card);
+        info.appendChild(badge);
+      }
+
+      const openBookDetail = () => {
+        window.location.href = `book.html?id=${encodeURIComponent(book.id)}`;
+      };
+
+      card.addEventListener('click', openBookDetail);
+
+      card.addEventListener('keydown', event => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          openBookDetail();
+        }
+      });
+
+      container.appendChild(card);
   });
+
+  updateBookResultStatus(list);
 }
 
 function buildGenreFilters() {
   const container = document.getElementById('genreFilters');
   if (!container) return;
 
+  const genres = [
+    ...new Set(
+      booksData.flatMap(book => getBookGenres(book))
+    )
+  ].sort((first, second) => first.localeCompare(second, 'vi', { sensitivity: 'base'}));
+  
   container.innerHTML = '';
-  GENRES.forEach(genre => {
-    const id = `genre-${genre.replace(/\s+/g, '-')}`;
+
+  genres.forEach((genre, index) => {
+    const input = document.createElement('input');
     const label = document.createElement('label');
-    label.htmlFor = id;
-    label.innerHTML = `<input type="checkbox" id="${id}" value="${genre}"> ${genre}`;
+    const text = document.createElement('span');
+
+    input.type = 'checkbox';
+    input.id = `genre-${index}`;
+    input.value = genre;
+
+    label.htmlFor = input.id;
+    text.textContent = genre;
+
+    label.append(input, text);
     container.appendChild(label);
   });
 }
 
 function applyBookFilters() {
-  const query = (document.getElementById('bookSearch')?.value || '').trim().toLowerCase();
-  const checkedGenres = Array.from(
-    document.querySelectorAll('#genreFilters input[type="checkbox"]:checked')
-  ).map(input => input.value.toLowerCase());
+  const query = normalizeSearchText(document.getElementById('bookSearch')?.value);
 
-  const filtered = booksData.filter(book => {
-    const titleMatch = !query || (book.title && book.title.toLowerCase().includes(query));
-    if (!checkedGenres.length) return titleMatch;
+  const selectedGenres = Array.from(document.querySelectorAll('#genreFilters input[type="checkbox"]:checked')).map(input => normalizeSearchText(input.value));
 
-    const bookGenres = [];
-    if (book.genre) {
-      if (Array.isArray(book.genre)) {
-        bookGenres.push(...book.genre.map(item => String(item).toLowerCase()));
-      } else {
-        bookGenres.push(String(book.genre).toLowerCase());
-      }
+  const filteredBooks = booksData.filter(book => {
+    const searchableInformation = normalizeSearchText(`${book.title || ''} ${book.author || ''}`);
+
+    const matchesSearch = !query || searchableInformation.includes(query);
+
+    if (!selectedGenres.length) {
+      return matchesSearch;
     }
 
-    const genreMatch = checkedGenres.some(genre => bookGenres.includes(genre));
-    return titleMatch && genreMatch;
+    const bookGenres = getBookGenres(book).map(genre => normalizeSearchText(genre));
+
+    const matchesGenre = selectedGenres.some(selectedGenre => bookGenres.includes(selectedGenre));
+
+    return matchesSearch && matchesGenre;
   });
 
-  renderBookList(filtered);
+  renderBookList(filteredBooks);
+}
+
+function clearBookFilters() {
+  const searchInput = document.getElementById('bookSearch');
+
+  if (searchInput) {
+    searchInput.value = '';
+  }
+
+  document.querySelectorAll('#genreFilters input[type="checkbox"]').forEach(input => {
+    input.checked = false;
+  });
+
+  applyBookFilters();
 }
 
 async function loadBooks() {
   if (!document.getElementById('book-list')) return;
 
   booksData = await fetchBooksData();
+
   buildGenreFilters();
-  renderBookList(booksData);
+  applyBookFilters();
 
   document.getElementById('bookSearch')?.addEventListener('input', applyBookFilters);
+
   document.getElementById('genreFilters')?.addEventListener('change', applyBookFilters);
+
+  document.getElementById('clearBookFilters')?.addEventListener('click', clearBookFilters);
 }
 
 function chapterToPart(chap) {
@@ -253,8 +462,12 @@ function loadChapter() {
   tryFetch(partPath)
     .catch(() => tryFetch(fallbackPath))
     .then(text => {
-      renderChapterContent(contentEl, text);
-      saveProgress(currentBook, currentChapter);
+    renderChapterContent(contentEl, text);
+
+    loadedChapter = currentChapter;
+
+    saveProgress(currentBook, currentChapter);
+    restoreReadingPosition(currentBook, currentChapter);
     })
     .catch(err => {
       const msg = err && err.status
@@ -847,4 +1060,33 @@ window.addEventListener('load', () => {
   playBtn?.addEventListener('click', playTTS);
   pauseBtn?.addEventListener('click', pauseTTS);
   stopBtn?.addEventListener('click', stopTTS);
+})();
+
+(function setupReadingPositionMemory() {
+  const readerPage = document.body;
+
+  if (
+    !readerPage ||
+    !readerPage.classList.contains('reader-page')
+  ) {
+    return;
+  }
+
+  window.addEventListener(
+    'scroll',
+    scheduleReadingPositionSave,
+    { passive: true }
+  );
+
+  window.addEventListener('pagehide', () => {
+    window.clearTimeout(readingPositionTimer);
+    saveCurrentReadingPosition();
+  });
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'hidden') {
+      window.clearTimeout(readingPositionTimer);
+      saveCurrentReadingPosition();
+    }
+  });
 })();

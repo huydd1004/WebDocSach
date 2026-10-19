@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Thông tin truyện | Thư Viện Truyện</title>
+
+  <script src="assets/js/theme.js"></script>
+
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/book.css">
+    <link rel="stylesheet" href="assets/css/theme.css">
+</head>
+
+<body class="book-detail-page">
+  <header class="detail-header">
+    <div class="detail-header-inner">
+      <a class="detail-brand" href="index.html">
+        <img src="assets/images/Logo.png" alt="" width="40" height="40">
+        <span>Thư Viện Truyện</span>
+      </a>
+
+      <div class="detail-header-actions">
+        <a class="back-library" href="index.html">← Trở về thư viện</a>
+
+    <button
+            class="site-theme-toggle"
+            type="button"
+            data-theme-toggle
+            aria-label="Chuyển giao diện">
+            <span class="theme-toggle-icon" aria-hidden="true">☾</span>
+    </button>
+</div>
+    </div>
+  </header>
+
+  <main class="detail-shell">
+    <p id="detailStatus" class="detail-status" aria-live="polite">
+      Đang tải thông tin truyện...
+    </p>
+
+    <article id="bookDetail" class="detail-card" hidden>
+      <div class="detail-cover-wrapper">
+        <img id="detailCover" class="detail-cover" src="" alt="">
+      </div>
+
+      <div class="detail-information">
+        <p class="detail-label">THÔNG TIN TRUYỆN</p>
+
+        <h1 id="detailTitle"></h1>
+        <p id="detailAuthor" class="detail-author"></p>
+
+        <div class="detail-badges">
+          <span id="detailBookStatus"></span>
+          <span id="detailChapterCount"></span>
+        </div>
+
+        <dl class="detail-metadata">
+          <div>
+            <dt>Thể loại</dt>
+            <dd id="detailGenres"></dd>
+          </div>
+
+          <div>
+            <dt>Ngày cập nhật</dt>
+            <dd id="detailDate"></dd>
+          </div>
+        </dl>
+
+        <section class="detail-description">
+          <h2>Giới thiệu</h2>
+          <p id="detailDescription"></p>
+        </section>
+
+        <div class="detail-actions">
+          <a id="startReadingButton" class="detail-button detail-button-primary">
+            Đọc từ đầu
+          </a>
+
+          <a
+            id="continueReadingButton"
+            class="detail-button detail-button-secondary"
+            hidden
+          ></a>
+        </div>
+      </div>
+    </article>
+
+    <section
+  id="chapterSection"
+  class="chapter-section"
+  aria-labelledby="chapterSectionTitle"
+  hidden
+>
+  <div class="chapter-section-header">
+    <div>
+      <p class="detail-label">MỤC LỤC</p>
+      <h2 id="chapterSectionTitle">Danh sách chương</h2>
+    </div>
+
+    <p id="chapterRangeSummary" class="chapter-range-summary"></p>
+  </div>
+
+  <div class="chapter-pagination" aria-label="Chuyển nhóm chương">
+    <button
+      id="previousChapterPage"
+      class="chapter-page-button"
+      type="button"
+    >
+      ← Nhóm trước
+    </button>
+
+    <select
+      id="chapterPageSelect"
+      class="chapter-page-select"
+      aria-label="Chọn nhóm chương"
+    ></select>
+
+    <button
+      id="nextChapterPage"
+      class="chapter-page-button"
+      type="button"
+    >
+      Nhóm sau →
+    </button>
+  </div>
+
+  <div id="chapterList" class="chapter-list"></div>
+</section>
+  </main>
+
+  <script src="assets/js/book.js"></script>
+</body>
+</html>

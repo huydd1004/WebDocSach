@@ -1,0 +1,312 @@
+:root {
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+/* Nút chuyển giao diện */
+.header-actions,
+.detail-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.site-theme-toggle {
+  width: 42px;
+  height: 42px;
+  min-width: 42px;
+  min-height: 42px;
+  padding: 0;
+  border: 1px solid #dbe3e8;
+  border-radius: 50%;
+  background: #f8fafc;
+  color: #334155;
+  box-shadow: 0 4px 12px rgb(15 23 42 / 6%);
+}
+
+.site-theme-toggle:hover {
+  border-color: #94a3b8;
+  background: #ffffff;
+  transform: translateY(-1px);
+}
+
+.theme-toggle-icon {
+  font-size: 21px;
+  line-height: 1;
+}
+
+/* Làm thanh đầu trang gọn và chuyên nghiệp hơn */
+.site-header,
+.detail-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.home-page .site-header {
+  background: rgb(255 255 255 / 84%);
+  box-shadow: 0 1px 16px rgb(15 23 42 / 4%);
+  backdrop-filter: blur(16px);
+}
+
+.book-detail-page .detail-header {
+  background: rgb(255 255 255 / 84%);
+  box-shadow: 0 1px 16px rgb(15 23 42 / 4%);
+  backdrop-filter: blur(16px);
+}
+
+/* Làm giao diện sáng có chiều sâu hơn */
+.home-page {
+  background:
+    radial-gradient(
+      circle at 12% 4%,
+      rgb(15 118 110 / 9%),
+      transparent 26rem
+    ),
+    var(--home-background);
+}
+
+.home-page .book {
+  border-color: rgb(203 213 225 / 76%);
+  box-shadow:
+    0 1px 2px rgb(15 23 42 / 3%),
+    0 8px 24px rgb(15 23 42 / 5%);
+}
+
+.home-page .book:hover {
+  border-color: rgb(15 118 110 / 35%);
+  box-shadow:
+    0 4px 12px rgb(15 23 42 / 6%),
+    0 18px 38px rgb(15 23 42 / 10%);
+}
+
+.home-page .home-search input {
+  border-color: rgb(203 213 225 / 80%);
+  box-shadow:
+    0 1px 2px rgb(15 23 42 / 2%),
+    0 10px 30px rgb(15 23 42 / 5%);
+}
+
+/* Giao diện tối của trang chủ */
+:root[data-theme="dark"] .home-page {
+  --home-background: #080d18;
+  --home-surface: #111827;
+  --home-text: #e8eef6;
+  --home-muted: #94a3b8;
+  --home-accent: #5eead4;
+  --home-border: #263247;
+
+  background:
+    radial-gradient(
+      circle at 12% 4%,
+      rgb(20 184 166 / 15%),
+      transparent 28rem
+    ),
+    #080d18;
+}
+
+:root[data-theme="dark"] .home-page .site-header {
+  background: rgb(8 13 24 / 82%);
+  border-color: #202b3d;
+  box-shadow: 0 1px 20px rgb(0 0 0 / 24%);
+}
+
+:root[data-theme="dark"] .home-page .home-search input {
+  border-color: #2a364a;
+  background: #111827;
+  color: #e8eef6;
+  box-shadow: 0 12px 34px rgb(0 0 0 / 20%);
+}
+
+:root[data-theme="dark"]
+  .home-page
+  .genre-filters
+  label:has(input:checked) {
+  border-color: #2dd4bf;
+  background: rgb(20 184 166 / 15%);
+  color: #5eead4;
+}
+
+:root[data-theme="dark"] .home-page .book {
+  border-color: #263247;
+  background: #111827;
+  box-shadow: 0 10px 30px rgb(0 0 0 / 18%);
+}
+
+:root[data-theme="dark"] .home-page .book:hover {
+  border-color: rgb(94 234 212 / 45%);
+  box-shadow: 0 20px 44px rgb(0 0 0 / 32%);
+}
+
+:root[data-theme="dark"] .home-page .book-info h3 {
+  color: #f1f5f9;
+}
+
+:root[data-theme="dark"] .home-page .empty-book-state {
+  border-color: #334155;
+  background: #111827;
+}
+
+:root[data-theme="dark"] .home-page .site-footer {
+  border-color: #202b3d;
+}
+
+/* Giao diện tối của trang chi tiết */
+:root[data-theme="dark"] .book-detail-page {
+  background:
+    radial-gradient(
+      circle at top left,
+      rgb(20 184 166 / 14%),
+      transparent 30rem
+    ),
+    #080d18;
+  color: #e8eef6;
+}
+
+:root[data-theme="dark"] .book-detail-page .detail-header {
+  border-color: #202b3d;
+  background: rgb(8 13 24 / 82%);
+  box-shadow: 0 1px 20px rgb(0 0 0 / 24%);
+}
+
+:root[data-theme="dark"] .book-detail-page .detail-card,
+:root[data-theme="dark"] .book-detail-page .chapter-section {
+  border-color: #263247;
+  background: rgb(17 24 39 / 94%);
+  box-shadow: 0 24px 60px rgb(0 0 0 / 30%);
+}
+
+:root[data-theme="dark"] .book-detail-page .detail-status {
+  background: #111827;
+  color: #94a3b8;
+}
+
+:root[data-theme="dark"] .book-detail-page .detail-status.is-error {
+  background: #35171b;
+  color: #fda4af;
+}
+
+:root[data-theme="dark"] .book-detail-page .detail-information h1,
+:root[data-theme="dark"] .book-detail-page .chapter-section-header h2 {
+  color: #f1f5f9;
+}
+
+:root[data-theme="dark"] .book-detail-page .detail-author,
+:root[data-theme="dark"] .book-detail-page .detail-description p,
+:root[data-theme="dark"] .book-detail-page .chapter-range-summary {
+  color: #94a3b8;
+}
+
+:root[data-theme="dark"] .book-detail-page .detail-badges span {
+  background: rgb(20 184 166 / 15%);
+  color: #5eead4;
+}
+
+:root[data-theme="dark"] .book-detail-page .detail-metadata div {
+  border-color: #2a364a;
+  background: #0d1422;
+}
+
+:root[data-theme="dark"] .book-detail-page .detail-metadata dt {
+  color: #94a3b8;
+}
+
+:root[data-theme="dark"] .book-detail-page .detail-metadata dd {
+  color: #e2e8f0;
+}
+
+:root[data-theme="dark"]
+  .book-detail-page
+  .detail-button-secondary {
+  border-color: #315f5c;
+  background: rgb(20 184 166 / 12%);
+  color: #5eead4 !important;
+}
+
+:root[data-theme="dark"]
+  .book-detail-page
+  .chapter-page-button {
+  border-color: #2a364a;
+  background: #151e2d;
+  color: #5eead4;
+}
+
+:root[data-theme="dark"]
+  .book-detail-page
+  .chapter-page-button:hover:not(:disabled) {
+  background: #1b2937;
+}
+
+:root[data-theme="dark"]
+  .book-detail-page
+  .chapter-page-select {
+  border-color: #2a364a;
+  background: #0d1422;
+  color: #e2e8f0;
+}
+
+:root[data-theme="dark"] .book-detail-page .chapter-link {
+  border-color: #263247;
+  background: #0d1422;
+  color: #a9b6c8;
+}
+
+:root[data-theme="dark"] .book-detail-page .chapter-link:hover {
+  border-color: #2dd4bf;
+  background: rgb(20 184 166 / 13%);
+  color: #5eead4;
+}
+
+:root[data-theme="dark"]
+  .book-detail-page
+  .chapter-link.is-current {
+  border-color: #14b8a6;
+  background: #0f766e;
+  color: #ffffff;
+}
+
+/* Nút giao diện trong chế độ tối */
+:root[data-theme="dark"] .site-theme-toggle {
+  border-color: #334155;
+  background: #172033;
+  color: #f8fafc;
+  box-shadow: 0 6px 18px rgb(0 0 0 / 25%);
+}
+
+:root[data-theme="dark"] .site-theme-toggle:hover {
+  border-color: #5eead4;
+  background: #202c3e;
+}
+
+@media (max-width: 640px) {
+  .header-actions,
+  .detail-header-actions {
+    gap: 8px;
+  }
+
+  .site-theme-toggle {
+    width: 38px;
+    height: 38px;
+    min-width: 38px;
+    min-height: 38px;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .home-page,
+  .book-detail-page,
+  .site-header,
+  .detail-header,
+  .book,
+  .detail-card,
+  .chapter-section {
+    transition:
+      color 180ms ease,
+      background-color 180ms ease,
+      border-color 180ms ease,
+      box-shadow 180ms ease;
+  }
+}
