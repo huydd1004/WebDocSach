@@ -129,8 +129,8 @@ function renderBookList(list) {
     }
 
     card.addEventListener('click', () => {
-      window.location.href = `reader.html?book=${book.id}&chap=${chapToOpen}`;
-    });
+  window.location.href = `book.html?id=${encodeURIComponent(book.id)}`;
+  });
 
     container.appendChild(card);
   });
