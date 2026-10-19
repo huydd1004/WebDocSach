@@ -6,8 +6,11 @@
 
   <title>Thư Viện Truyện — Khám phá câu chuyện tiếp theo</title>
 
+  <script src="assets/js/theme.js"></script>
+
   <link rel="stylesheet" href="assets/css/style.css">
   <link rel="stylesheet" href="assets/css/home.css">
+  <link rel="stylesheet" href="assets/css/theme.css">
 </head>
 
 <body class="home-page">
@@ -18,7 +21,18 @@
         <span>Thư Viện Truyện</span>
       </a>
 
-      <a class="library-link" href="#library">Khám phá sách</a>
+      <div class="header-actions">
+        <a class="library-link" href="#library">Khám phá sách</a>
+
+          <button
+            class="site-theme-toggle"
+            type="button"
+            data-theme-toggle
+            aria-label="Chuyển giao diện"
+          >
+            <span class="theme-toggle-icon" aria-hidden="true">☾</span>
+          </button>
+      </div>
     </div>
   </header>
 
@@ -42,7 +56,7 @@
         <input
           id="bookSearch"
           type="search"
-          placeholder="Nhập tên truyện để tìm..."
+          placeholder="Nhập tên truyện hoặc tác giả..."
           autocomplete="off"
         >
       </div>
@@ -64,6 +78,22 @@
         role="group"
         aria-label="Lọc truyện theo thể loại"
       ></div>
+
+      <div class="library-results">
+        <p id="bookResultCount" aria-live="polite"></p>
+
+        <button
+          id="clearBookFilters"
+          class="clear-book-filters"
+          type="button"
+          hidden>
+          Xóa bộ lọc
+        </button>
+      </div>
+
+      <p id="emptyBookState" class="empty-book-state" hidden>
+        Không tìm thấy truyện phù hợp. Hãy thử tên hoặc thể loại khác.
+      </p>
 
       <div id="book-list" class="grid"></div>
     </section>

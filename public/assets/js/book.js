@@ -1,5 +1,10 @@
 const READING_PROGRESS_KEY = 'readingProgress';
 const REMEMBER_PROGRESS_KEY = 'rememberReadingPosition';
+const CHAPTERS_PER_PAGE = 100;
+
+let selectedBookId = '';
+let availableChapters = 0;
+let currentChapterPage = 1;
 
 function getBookIdFromUrl() {
     const params = new URLSearchParams(window.location.search);
@@ -80,6 +85,129 @@ function createReaderUrl(bookId, chapter) {
     return `reader.html?${params.toString()}`;
 }
 
+function getTotalChapterPages() {
+    return Math.ceil(availableChapters / CHAPTERS_PER_PAGE);
+}
+
+function renderChapterPage(page) {
+    const chapterList = document.getElementById('chapterList');
+    const pageSelect = document.getElementById('chapterPageSelect');
+    const previousButton = document.getElementById('previousChapterPage');
+    const nextButton = document.getElementById('nextChapterPage');
+    const rangeSummary = document.getElementById('chapterRangeSummary');
+
+    if (!chapterList || availableChapters <= 0) {
+        return;
+    }
+
+    const totalPages = getTotalChapterPages();
+
+    currentChapterPage = Math.min(
+        Math.max(Number(page) || 1, 1),
+        totalPages
+    );
+
+    const startChapter =
+        (currentChapterPage - 1) * CHAPTERS_PER_PAGE + 1;
+
+    const endChapter = Math.min(
+        currentChapterPage * CHAPTERS_PER_PAGE,
+        availableChapters
+    );
+
+    const savedChapter = getSavedChapter(selectedBookId);
+    const fragment = document.createDocumentFragment();
+
+    for (
+        let chapter = startChapter;
+        chapter <= endChapter;
+        chapter += 1
+    ) {
+        const link = document.createElement('a');
+
+        link.className = 'chapter-link';
+        link.href = createReaderUrl(selectedBookId, chapter);
+        link.textContent = `Chương ${chapter}`;
+
+        if (chapter === savedChapter) {
+            link.classList.add('is-current');
+            link.setAttribute('aria-current', 'page');
+            link.title = 'Chương đang đọc';
+        }
+
+        fragment.appendChild(link);
+    }
+
+    chapterList.replaceChildren(fragment);
+
+    pageSelect.value = String(currentChapterPage);
+    previousButton.disabled = currentChapterPage === 1;
+    nextButton.disabled = currentChapterPage === totalPages;
+
+    rangeSummary.textContent =
+        `Chương ${startChapter}–${endChapter} / ` +
+        `${availableChapters.toLocaleString('vi-VN')}`;
+}
+
+function initializeChapterList(bookId, totalChapters) {
+    const section = document.getElementById('chapterSection');
+    const pageSelect = document.getElementById('chapterPageSelect');
+    const previousButton = document.getElementById('previousChapterPage');
+    const nextButton = document.getElementById('nextChapterPage');
+
+    if (!section || !pageSelect || totalChapters <= 0) {
+        return;
+    }
+
+    selectedBookId = bookId;
+    availableChapters = totalChapters;
+
+    const totalPages = getTotalChapterPages();
+    const options = document.createDocumentFragment();
+
+    for (let page = 1; page <= totalPages; page += 1) {
+        const startChapter = (page - 1) * CHAPTERS_PER_PAGE + 1;
+        const endChapter = Math.min(
+            page * CHAPTERS_PER_PAGE,
+            availableChapters
+        );
+
+        const option = document.createElement('option');
+
+        option.value = String(page);
+        option.textContent =
+            `Chương ${startChapter}–${endChapter}`;
+
+        options.appendChild(option);
+    }
+
+    pageSelect.replaceChildren(options);
+
+    const savedChapter = getSavedChapter(bookId);
+
+    currentChapterPage = savedChapter
+        ? Math.ceil(
+            Math.min(savedChapter, totalChapters) /
+            CHAPTERS_PER_PAGE
+        )
+        : 1;
+
+    previousButton.addEventListener('click', () => {
+        renderChapterPage(currentChapterPage - 1);
+    });
+
+    nextButton.addEventListener('click', () => {
+        renderChapterPage(currentChapterPage + 1);
+    });
+
+    pageSelect.addEventListener('change', event => {
+        renderChapterPage(Number(event.target.value));
+    });
+
+    renderChapterPage(currentChapterPage);
+    section.hidden = false;
+}
+
 function showError(message) {
     const status = document.getElementById('detailStatus');
     status.textContent = message;
@@ -127,6 +255,8 @@ function renderBookDetail(book, totalChapters) {
     }
 
     document.title = `${book.title} | Thư Viện Truyện`;
+
+    initializeChapterList(book.id, totalChapters);
 
     status.hidden = true;
     detail.hidden = false;

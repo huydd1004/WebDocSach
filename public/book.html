@@ -6,8 +6,11 @@
 
   <title>Thông tin truyện | Thư Viện Truyện</title>
 
-  <link rel="stylesheet" href="assets/css/style.css">
-  <link rel="stylesheet" href="assets/css/book.css">
+  <script src="assets/js/theme.js"></script>
+
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/book.css">
+    <link rel="stylesheet" href="assets/css/theme.css">
 </head>
 
 <body class="book-detail-page">
@@ -18,7 +21,17 @@
         <span>Thư Viện Truyện</span>
       </a>
 
-      <a class="back-library" href="index.html">← Trở về thư viện</a>
+      <div class="detail-header-actions">
+        <a class="back-library" href="index.html">← Trở về thư viện</a>
+
+    <button
+            class="site-theme-toggle"
+            type="button"
+            data-theme-toggle
+            aria-label="Chuyển giao diện">
+            <span class="theme-toggle-icon" aria-hidden="true">☾</span>
+    </button>
+</div>
     </div>
   </header>
 
@@ -73,6 +86,48 @@
         </div>
       </div>
     </article>
+
+    <section
+  id="chapterSection"
+  class="chapter-section"
+  aria-labelledby="chapterSectionTitle"
+  hidden
+>
+  <div class="chapter-section-header">
+    <div>
+      <p class="detail-label">MỤC LỤC</p>
+      <h2 id="chapterSectionTitle">Danh sách chương</h2>
+    </div>
+
+    <p id="chapterRangeSummary" class="chapter-range-summary"></p>
+  </div>
+
+  <div class="chapter-pagination" aria-label="Chuyển nhóm chương">
+    <button
+      id="previousChapterPage"
+      class="chapter-page-button"
+      type="button"
+    >
+      ← Nhóm trước
+    </button>
+
+    <select
+      id="chapterPageSelect"
+      class="chapter-page-select"
+      aria-label="Chọn nhóm chương"
+    ></select>
+
+    <button
+      id="nextChapterPage"
+      class="chapter-page-button"
+      type="button"
+    >
+      Nhóm sau →
+    </button>
+  </div>
+
+  <div id="chapterList" class="chapter-list"></div>
+</section>
   </main>
 
   <script src="assets/js/book.js"></script>

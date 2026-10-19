@@ -255,6 +255,69 @@
     font-size: 13px;
 }
 
+/* ẩn ô checkbox nhưng vẫn giữ khả năng sử dụng bằng bàn phím */
+.home-page .genre-filters input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.home-page .genre-filters label:has(input:focus-visible) {
+    outline: 3px solid var(--home-accent);
+    outline-offset: 3px;
+}
+
+.library-results {
+    min-height: 32px;
+    margin: 0 0 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.library-results p {
+    margin: 0;
+    color: var(--home-muted);
+    font-size: 13px;
+}
+
+.home-page .clear-book-filters {
+    min-width: 0;
+    min-height: 0;
+    padding: 4px 0;
+    border-radius: 0;
+    background: transparent;
+    color: var(--home-accent);
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.home-page .clear-book-filters:hover {
+    background: transparent;
+    text-decoration: underline;
+    transform: none;
+}
+
+.empty-book-state {
+    margin: 0;
+    padding: 42px 20px;
+    border: 1px dashed var(--home-border);
+    border-radius: 16px;
+    background: var(--home-surface);
+    color: var(--home-muted);
+    text-align: center;
+}
+
+.home-page .continue-badge {
+    margin-top: 10px;
+    font-size: 13px;
+    opacity: 0.9;
+}
+
 /* máy tính bảng */
 @media (max-width: 900px) {
     .home-page .grid {

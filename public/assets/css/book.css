@@ -223,6 +223,163 @@
   outline-offset: 4px;
 }
 
+/* Danh sách chương */
+.chapter-section {
+  margin-top: 32px;
+  padding: clamp(22px, 4vw, 40px);
+  border: 1px solid #e1e7e4;
+  border-radius: 24px;
+  background: rgb(255 255 255 / 94%);
+  box-shadow: 0 18px 45px rgb(15 23 42 / 7%);
+}
+
+.chapter-section-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.chapter-section-header h2 {
+  margin: 0;
+  color: #172033;
+  font-size: 26px;
+}
+
+.chapter-section-header .detail-label {
+  margin-bottom: 5px;
+}
+
+.chapter-range-summary {
+  margin: 0;
+  color: #64748b;
+  font-size: 13px;
+}
+
+.chapter-pagination {
+  display: grid;
+  grid-template-columns: auto minmax(180px, 280px) auto;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 26px;
+}
+
+.book-detail-page .chapter-page-button {
+  min-width: 0;
+  min-height: 44px;
+  padding: 10px 16px;
+  border: 1px solid #d7e2df;
+  border-radius: 10px;
+  background: #f4f8f7;
+  color: #0f766e;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.book-detail-page .chapter-page-button:hover:not(:disabled) {
+  background: #e7f4f1;
+  transform: none;
+}
+
+.book-detail-page .chapter-page-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.book-detail-page .chapter-page-select {
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  margin: 0;
+  padding: 10px 38px 10px 14px;
+  border: 1px solid #d7e2df;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #263244;
+  font-size: 14px;
+  text-align: center;
+}
+
+.chapter-list {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.book-detail-page .chapter-link {
+  min-width: 0;
+  padding: 11px 8px;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  background: #fafcfb;
+  color: #526071;
+  font-size: 13px;
+  text-align: center;
+  transition:
+    border-color 160ms ease,
+    background 160ms ease,
+    color 160ms ease;
+}
+
+.book-detail-page .chapter-link:hover {
+  border-color: #78aaa3;
+  background: #edf8f5;
+  color: #0f766e;
+}
+
+.book-detail-page .chapter-link.is-current {
+  border-color: #0f766e;
+  background: #0f766e;
+  color: #ffffff;
+  font-weight: 700;
+}
+
+@media (max-width: 900px) {
+  .chapter-list {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .chapter-section {
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 20px;
+  }
+
+  .chapter-section-header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .chapter-pagination {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .book-detail-page .chapter-page-select {
+    grid-column: 1 / -1;
+    grid-row: 1;
+  }
+
+  .chapter-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 460px) {
+  .chapter-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .book-detail-page .chapter-page-button {
+    padding-inline: 10px;
+    font-size: 12px;
+  }
+}
+
 @media (max-width: 760px) {
   .detail-header-inner,
   .detail-shell {
