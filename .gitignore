@@ -6,3 +6,6 @@ database.sqlite-shm
 **/.dev.vars*
 .env.r2.local
 public/data/ToanAmMenh/
+public/data/ToanTuMenh/
+public/data/ThienMenhXaDaoNhan/
+public/data/ChangReManhNhatLichSu/

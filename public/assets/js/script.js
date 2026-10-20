@@ -2,23 +2,7 @@ const PROGRESS_KEY = 'readingProgress';
 const REMEMBER_PROGRESS_KEY = 'rememberReadingPosition';
 const CHAPTERS_PER_PART = 200;
 
-const R2_DATA_BASE_URL =
-  'https://webdocsach-data-api.huydd12401.workers.dev';
-
-const R2_BOOK_IDS = new Set([
-  'ToanAmMenh'
-]);
-
-function createBookDataUrl(bookId, relativePath) {
-  const cleanPath = String(relativePath || '')
-    .replace(/^\/+/, '');
-
-  if (R2_BOOK_IDS.has(bookId)) {
-    return `${R2_DATA_BASE_URL}/data/${bookId}/${cleanPath}`;
-  }
-
-  return `data/${bookId}/${cleanPath}`;
-}
+const {createBookDataUrl} = window.WebDocSachData;
 
 const THEMES = [
   { bg: '#0f172a', text: '#e2e8f0' },
@@ -544,7 +528,9 @@ function renderChapterContent(contentEl, text) {
   contentEl.innerHTML = '';
 
   if (titleIndex === -1) {
-    contentEl.innerText = normalized;
+    contentEl.innerText =
+      `Chương ${currentChapter} đang được cập nhật nội dung.`;
+
     return;
   }
 
