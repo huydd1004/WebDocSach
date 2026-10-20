@@ -2,3 +2,7 @@ node_modules/
 database.sqlite
 database.sqlite-wal
 database.sqlite-shm
+**/.wrangler/
+**/.dev.vars*
+.env.r2.local
+public/data/ToanAmMenh/

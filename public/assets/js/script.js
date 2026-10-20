@@ -1,6 +1,25 @@
 const PROGRESS_KEY = 'readingProgress';
 const REMEMBER_PROGRESS_KEY = 'rememberReadingPosition';
 const CHAPTERS_PER_PART = 200;
+
+const R2_DATA_BASE_URL =
+  'https://webdocsach-data-api.huydd12401.workers.dev';
+
+const R2_BOOK_IDS = new Set([
+  'ToanAmMenh'
+]);
+
+function createBookDataUrl(bookId, relativePath) {
+  const cleanPath = String(relativePath || '')
+    .replace(/^\/+/, '');
+
+  if (R2_BOOK_IDS.has(bookId)) {
+    return `${R2_DATA_BASE_URL}/data/${bookId}/${cleanPath}`;
+  }
+
+  return `data/${bookId}/${cleanPath}`;
+}
+
 const THEMES = [
   { bg: '#0f172a', text: '#e2e8f0' },
   { bg: '#fdf6e3', text: '#222222' },
@@ -252,12 +271,15 @@ function renderFeaturedBook(book) {
   cover.src = book.cover;
   cover.alt = `Bìa truyện ${book.title}`;
 
-  section.style.setProperty('--featured-cover-image', `url("${encodeURI(book.cover)})`);
+  section.style.setProperty(
+    '--featured-cover-image',
+    `url("${encodeURI(book.cover)}")`
+  );
 
   genres.replaceChildren();
 
   getBookGenres(book).slice(0, 4).forEach(genre => {
-    const genreId = document.createElement('span');
+    const genreItem = document.createElement('span');
 
     genreItem.className = 'featured-genre';
     genreItem.textContent = genre;
@@ -437,6 +459,11 @@ async function loadBooks() {
 
   booksData = await fetchBooksData();
 
+  const featuredBook =
+  booksData.find(book => book.featured === true) ||
+  booksData[0];
+
+  renderFeaturedBook(featuredBook);
   buildGenreFilters();
   applyBookFilters();
 
@@ -490,14 +517,23 @@ function selectExistingChapter() {
 }
 
 function getChapterPath(chap) {
-  const chapter = chapterIndex.find(item => item.number === chap);
+  const chapter = chapterIndex.find(
+    item => item.number === chap
+  );
 
   if (chapter?.path) {
-    return `data/${currentBook}/${chapter.path}`;
+    return createBookDataUrl(
+      currentBook,
+      chapter.path
+    );
   }
 
   const part = chapterToPart(chap);
-  return `data/${currentBook}/phần ${part}/${chap}.txt`;
+
+  return createBookDataUrl(
+    currentBook,
+    `phần ${part}/${chap}.txt`
+  );
 }
 
 function renderChapterContent(contentEl, text) {
@@ -539,8 +575,10 @@ function loadChapter() {
   if (!contentEl) return;
 
   const partPath = getChapterPath(currentChapter);
-  const fallbackPath = `data/${currentBook}/${currentChapter}.txt`;
-
+  const fallbackPath = createBookDataUrl(
+    currentBook,
+    `${currentChapter}.txt`
+  );
   const tryFetch = (url) => (
     fetch(encodeURI(url)).then(res => {
       if (!res.ok) throw res;
@@ -899,7 +937,12 @@ if (document.getElementById('content')) {
   currentChapter = parseInt(url.get('chap'), 10) || 1;
   updateReaderBookTitle(currentBook);
 
-  fetch(encodeURI(`data/${currentBook}/chapters.json`))
+  fetch(encodeURI(
+      createBookDataUrl(
+        currentBook,
+        'chapters.json'
+      )
+    ))
     .then(res => {
       if (!res.ok) throw res;
       return res.json();

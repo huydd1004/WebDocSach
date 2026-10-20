@@ -297,6 +297,40 @@
   background: #202c3e;
 }
 
+:root[data-theme="dark"]
+  .book-detail-page
+  .chapter-search-box {
+  border-color: #2a364a;
+  background: #0d1422;
+}
+
+:root[data-theme="dark"]
+  .book-detail-page
+  .chapter-search-label {
+  color: #e2e8f0;
+}
+
+:root[data-theme="dark"]
+  .book-detail-page
+  .chapter-search-input {
+  border-color: #334155;
+  background: #111827;
+  color: #e8eef6;
+}
+
+:root[data-theme="dark"]
+  .book-detail-page
+  .chapter-search-input::placeholder {
+  color: #718096;
+}
+
+:root[data-theme="dark"]
+  .book-detail-page
+  .chapter-search-clear {
+  background: rgb(20 184 166 / 15%);
+  color: #5eead4;
+}
+
 @media (max-width: 640px) {
   .header-actions,
   .detail-header-actions {

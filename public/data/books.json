@@ -14,6 +14,7 @@
     "title": "Toán Tử Mệnh",
     "author": "Cửu Phẩm Nhất Cục",
     "status": "Hoàn thành",
+    "featured": true,
     "date": "27/01/2022",
     "cover": "assets/images/ToanTuMenh.jpg",
     "genre": ["Kinh dị", "Linh dị", "Bói toán"],

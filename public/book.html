@@ -74,7 +74,10 @@
         </section>
 
         <div class="detail-actions">
-          <a id="startReadingButton" class="detail-button detail-button-primary">
+          <a
+            id="startReadingButton"
+            class="detail-button detail-button-primary"
+          >
             Đọc từ đầu
           </a>
 
@@ -110,6 +113,52 @@
 
     <p id="chapterRangeSummary" class="chapter-range-summary"></p>
   </div>
+  <section
+    class="latest-chapters"
+    aria-labelledby="latestChaptersTitle"
+  >
+    <div class="latest-chapters-heading">
+      <div>
+        <p class="detail-label">VỪA CẬP NHẬT</p>
+        <h3 id="latestChaptersTitle">Chương mới nhất</h3>
+      </div>
+
+      <span>5 chương gần nhất</span>
+    </div>
+
+    <div
+      id="latestChapterList"
+      class="latest-chapter-list"
+    ></div>
+  </section>
+
+  <div class="chapter-search-box">
+    <label
+      class="chapter-search-label"
+      for="chapterSearchInput">Tìm chương</label>
+
+
+      <div class="chapter-search-control">
+        <input
+          id="chapterSearchInput"
+          class="chapter-search-input"
+          type="search"
+          placeholder="Nhập số hoặc tên chương..."
+          aria-controls="chapterList"
+          autocomplete="off">
+
+          <button
+            id="clearChapterSearch"
+            class="chapter-search-clear"
+            type="button"
+            hidden>Xóa</button>
+      </div>
+
+      <p
+        id="chapterSearchStatus"
+        class="chapter-search-status"
+        aria-live="polite">Nhập số chương hoặc một phần tên chương.</p>
+  </div>
 
   <div class="chapter-pagination" aria-label="Chuyển nhóm chương">
     <button
@@ -138,7 +187,6 @@
   <div id="chapterList" class="chapter-list"></div>
 </section>
   </main>
-
   <script src="assets/js/book.js"></script>
 </body>
 </html>

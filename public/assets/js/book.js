@@ -1,7 +1,25 @@
 const READING_PROGRESS_KEY = 'readingProgress';
 const REMEMBER_PROGRESS_KEY = 'rememberReadingPosition';
 const FAVORITE_BOOKS_KEY = 'favoriteBooks';
-const CHAPTERS_PER_PAGE = 100;
+const CHAPTERS_PER_PAGE = 50;
+
+const R2_DATA_BASE_URL =
+    'https://webdocsach-data-api.huydd12401.workers.dev';
+
+const R2_BOOK_IDS = new Set([
+    'ToanAmMenh'
+]);
+
+function createBookDataUrl(bookId, relativePath) {
+    const cleanPath = String(relativePath || '')
+        .replace(/^\/+/, '');
+
+    if (R2_BOOK_IDS.has(bookId)) {
+        return `${R2_DATA_BASE_URL}/data/${bookId}/${cleanPath}`;
+    }
+
+    return `data/${bookId}/${cleanPath}`;
+}
 
 let selectedBookId = '';
 let availableChapters = [];
@@ -24,7 +42,10 @@ async function fetchBookList() {
 
 async function fetchChapterIndex(bookId) {
     try {
-        const path = `data/${bookId}/chapters.json`;
+        const path = createBookDataUrl(
+            bookId,
+            'chapters.json'
+        );
         const response = await fetch(encodeURI(path));
 
         if (!response.ok) {
@@ -93,6 +114,137 @@ function getTotalChapterPages() {
     return Math.ceil(availableChapters.length / CHAPTERS_PER_PAGE);
 }
 
+function renderLatestChapters(bookId, chapters) {
+    const container = document.getElementById('latestChapterList');
+
+    if (!container) return;
+
+    const latestChapters = chapters.slice(-5).reverse();
+
+    const fragment = document.createDocumentFragment();
+
+    latestChapters.forEach((chapter, index) => {
+        const link = document.createElement('a');
+        const number = document.createElement('span');
+        const title = document.createElement('strong');
+
+        const chapterTitle = String(chapter.title || '').replace(new RegExp(`^Chương\\s*${chapter.number}\\s*[:\\-]?\\s*`,'i'), '').trim();
+
+        link.className = 'latest-chapter-link';
+        link.href = createReaderUrl(bookId, chapter.number);
+        link.setAttribute('aria-label', `Đọc chương ${chapter.number}: ${chapterTitle}`);
+
+        number.className = 'latest-chapter-number';
+        number.textContent = `Chương ${chapter.number}`;
+
+        title.className = 'latest-chapter-title';
+        title.textContent = chapterTitle || `Chương ${chapter.number}`;
+
+        link.append(number, title);
+
+        if (index === 0) {
+            const badge = document.createElement('span');
+
+            badge.className = 'latest-chapter-badge';
+            badge.textContent = 'MỚI NHẤT';
+
+            link.appendChild(badge);
+        }
+
+        fragment.appendChild(link);
+    });
+
+    container.replaceChildren(fragment);
+}
+
+function normalizeChapterSearch(value) {
+    return String(value || '')
+        .toLocaleLowerCase('vi-VN')
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/đ/g, 'd')
+        .trim();
+}
+
+function createChapterLink(chapter, savedChapter) {
+    const link = document.createElement('a');
+
+    link.className = 'chapter-link';
+    link.href = createReaderUrl(selectedBookId, chapter.number);
+    link.textContent = chapter.title || `Chương ${chapter.number}`;
+
+    if (chapter.number === savedChapter) {
+        link.classList.add('is-current');
+        link.setAttribute('aria-current', 'page');
+        link.title = 'Chương đang đọc';
+    }
+
+    return link;
+}
+
+function renderChapterSearch(query) {
+    const chapterList = document.getElementById('chapterList');
+    const pagination = document.querySelector('.chapter-pagination');
+    const rangeSummary = document.getElementById('chapterRangeSummary');
+    const clearButton = document.getElementById('clearChapterSearch');
+    const searchStatus = document.getElementById('chapterSearchStatus');
+
+    if (
+        !chapterList ||
+        !pagination ||
+        !rangeSummary ||
+        !clearButton ||
+        !searchStatus
+    ) {
+        return;
+    }
+
+    const normalizedQuery = normalizeChapterSearch(query);
+
+    if (!normalizedQuery) {
+        pagination.hidden = false;
+        clearButton.hidden = true;
+        searchStatus.textContent = 'Nhập số chương hoặc một phần tên chương.';
+
+        renderChapterPage(currentChapterPage);
+        return;
+    }
+
+    const matchingChapters = availableChapters.filter(chapter => {
+        const searchText = normalizeChapterSearch(`${chapter.number} ${chapter.title || ''}`);
+
+        return searchText.includes(normalizedQuery);
+    });
+
+    const displayedChapters = matchingChapters.slice(0, 100);
+    const savedChapter = getSavedChapter(selectedBookId);
+    const fragment = document.createDocumentFragment();
+
+    displayedChapters.forEach(chapter => {
+        fragment.appendChild(createChapterLink(chapter, savedChapter));
+    });
+
+    if (matchingChapters.length === 0) {
+        const emptyState = document.createElement('p');
+
+        emptyState.className = 'chapter-search-empty';
+        emptyState.textContent = 'Không tìm thấy chương phù hợp';
+
+        fragment.appendChild(emptyState);
+    }
+
+    chapterList.replaceChildren(fragment);
+
+    pagination.hidden = true;
+    clearButton.hidden = false;
+
+    rangeSummary.textContent = `Tìm thấy ${matchingChapters.length.toLocaleString('vi-VN')} chương`;
+
+    searchStatus.textContent = matchingChapters.length > 100 ? 'Đang hiển thị 100 kết quả đầu tiên.' : 'Bấm vào một chương để bắt đầu đọc.';
+
+
+}
+
 function renderChapterPage(page) {
     const chapterList = document.getElementById('chapterList');
     const pageSelect = document.getElementById('chapterPageSelect');
@@ -121,19 +273,7 @@ function renderChapterPage(page) {
     const fragment = document.createDocumentFragment();
 
     chaptersOnPage.forEach(chapter => {
-        const link = document.createElement('a');
-
-        link.className = 'chapter-link';
-        link.href = createReaderUrl(selectedBookId, chapter.number);
-        link.textContent = chapter.title || `Chương ${chapter.number}`;
-
-        if (chapter.number === savedChapter) {
-            link.classList.add('is-current');
-            link.setAttribute('aria-current', 'page');
-            link.title = 'Chương đang đọc';
-        }
-
-        fragment.appendChild(link);
+        fragment.appendChild(createChapterLink(chapter, savedChapter));
     });
 
     chapterList.replaceChildren(fragment);
@@ -156,6 +296,8 @@ function initializeChapterList(bookId, chapters) {
     const pageSelect = document.getElementById('chapterPageSelect');
     const previousButton = document.getElementById('previousChapterPage');
     const nextButton = document.getElementById('nextChapterPage');
+    const searchInput = document.getElementById('chapterSearchInput');
+    const clearSearchButton = document.getElementById('clearChapterSearch');
 
     if (!section || !pageSelect || chapters.length === 0) {
         return;
@@ -163,6 +305,8 @@ function initializeChapterList(bookId, chapters) {
 
     selectedBookId = bookId;
     availableChapters = chapters;
+
+    renderLatestChapters(bookId, chapters);
 
     const totalPages = getTotalChapterPages();
     const options = document.createDocumentFragment();
@@ -184,6 +328,18 @@ function initializeChapterList(bookId, chapters) {
     }
 
     pageSelect.replaceChildren(options);
+
+    if (searchInput && clearSearchButton) {
+        searchInput.addEventListener('input', event => {
+            renderChapterSearch(event.target.value);
+        });
+
+        clearSearchButton.addEventListener('click', () => {
+            searchInput.value = '';
+            renderChapterSearch('');
+            searchInput.focus();
+        });
+    }
 
     const savedChapter = getSavedChapter(bookId);
     const savedChapterIndex = availableChapters.findIndex(
