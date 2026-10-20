@@ -206,6 +206,14 @@
   transform: translateY(-2px);
 }
 
+.detail-button.is-disabled,
+.detail-button.is-disabled:hover {
+  opacity: 0.56;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
 .detail-button-primary {
   background: #0f766e;
   color: #ffffff !important;

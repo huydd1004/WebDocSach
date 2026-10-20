@@ -2,6 +2,7 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Đọc truyện</title>
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
@@ -123,6 +124,33 @@
       </button>
     </div>
   </div>
+
+  <div class="settings-divider" aria-hidden="true"></div>
+
+  <section class="settings-tts" aria-labelledby="ttsTitle">
+    <div class="settings-tts-heading">
+      <span id="ttsTitle" class="settings-tts-title">Đọc thành tiếng</span>
+      <span id="ttsStatus" class="settings-tts-status" aria-live="polite"></span>
+    </div>
+
+    <div class="settings-tts-controls">
+      <label for="voiceSelect">Giọng đọc</label>
+      <select id="voiceSelect" aria-label="Chọn giọng đọc">
+        <option>Đang tải giọng đọc...</option>
+      </select>
+
+      <div class="settings-tts-rate">
+        <label for="ttsRate">Tốc độ <span id="ttsRateVal">1.0x</span></label>
+        <input id="ttsRate" type="range" min="0.6" max="1.6" step="0.1" value="1">
+      </div>
+
+      <div class="settings-tts-actions" role="group" aria-label="Điều khiển đọc thành tiếng">
+        <button id="ttsPlayBtn" type="button">&#9654; Đọc</button>
+        <button id="ttsPauseBtn" type="button">&#8545; Tạm dừng</button>
+        <button id="ttsStopBtn" type="button">&#9632; Dừng</button>
+      </div>
+    </div>
+  </section>
 </div>
 
 <script src="assets/js/script.js"></script>

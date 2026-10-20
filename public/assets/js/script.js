@@ -259,7 +259,7 @@ function renderBookList(list) {
   const container = document.getElementById('book-list');
   if (!container) return;
 
-  container.innerHTML = '';
+  container.replaceChildren();
 
   list.forEach(book => {
     const card = document.createElement('div');
@@ -270,38 +270,47 @@ function renderBookList(list) {
 
     const saved = getProgress(book.id);
 
-    card.innerHTML = `
-      <img src="${book.cover}" alt="Bìa truyện ${book.title}">
-      <div class="book-info">
-        <h3>${book.title}</h3>
-        <p>${book.author || 'Chưa cập nhật tác giả'}</p>
-        <p>${book.date || ''}</p>
-      </div>`;
+    const cover = document.createElement('img');
+    cover.src = book.cover;
+    cover.alt = `Bìa truyện ${book.title}`;
 
-      if (saved && saved.chapter) {
-        const info = card.querySelector('.book-info');
-        const badge = document.createElement('div');
+    const info = document.createElement('div');
+    info.className = 'book-info';
 
-        badge.className = 'continue-badge';
-        badge.textContent = `Tiếp tục: Chương ${saved.chapter}`;
+    const title = document.createElement('h3');
+    title.textContent = book.title;
 
-        info.appendChild(badge);
+    const author = document.createElement('p');
+    author.textContent = book.author || 'Chưa cập nhật tác giả';
+
+    const date = document.createElement('p');
+    date.textContent = book.date || '';
+
+    info.append(title, author, date);
+
+    if (saved && saved.chapter) {
+      const badge = document.createElement('div');
+      badge.className = 'continue-badge';
+      badge.textContent = `Tiếp tục: Chương ${saved.chapter}`;
+      info.appendChild(badge);
+    }
+
+    card.append(cover, info);
+
+    const openBookDetail = () => {
+      window.location.href = `book.html?id=${encodeURIComponent(book.id)}`;
+    };
+
+    card.addEventListener('click', openBookDetail);
+
+    card.addEventListener('keydown', event => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        openBookDetail();
       }
+    });
 
-      const openBookDetail = () => {
-        window.location.href = `book.html?id=${encodeURIComponent(book.id)}`;
-      };
-
-      card.addEventListener('click', openBookDetail);
-
-      card.addEventListener('keydown', event => {
-        if (event.key === 'Enter' || event.key === ' ') {
-          event.preventDefault();
-          openBookDetail();
-        }
-      });
-
-      container.appendChild(card);
+    container.appendChild(card);
   });
 
   updateBookResultStatus(list);
@@ -997,6 +1006,20 @@ window.addEventListener('load', () => {
   const playBtn = document.getElementById('ttsPlayBtn');
   const pauseBtn = document.getElementById('ttsPauseBtn');
   const stopBtn = document.getElementById('ttsStopBtn');
+  const statusEl = document.getElementById('ttsStatus');
+
+  const controls = [voiceSelect, rateInput, playBtn, pauseBtn, stopBtn];
+  const setStatus = message => {
+    if (statusEl) statusEl.textContent = message;
+  };
+
+  if (!('speechSynthesis' in window) || typeof SpeechSynthesisUtterance === 'undefined') {
+    controls.forEach(control => {
+      if (control) control.disabled = true;
+    });
+    setStatus('Trình duyệt không hỗ trợ');
+    return;
+  }
 
   const synth = window.speechSynthesis;
   let voices = [];
@@ -1021,26 +1044,35 @@ window.addEventListener('load', () => {
         opt.innerText = `${voice.name} (${voice.lang})`;
         voiceSelect.appendChild(opt);
       });
+      setStatus('');
     } else {
       const note = document.createElement('option');
       note.disabled = true;
       note.selected = true;
       note.innerText = 'Không tìm thấy giọng Tiếng Việt trên trình duyệt này';
       voiceSelect.appendChild(note);
+      setStatus('Dùng giọng mặc định');
     }
   }
 
   function stopTTS() {
     synth.cancel();
     utter = null;
+    setStatus('Đã dừng');
   }
 
   function pauseTTS() {
-    if (synth.speaking && !synth.paused) synth.pause();
+    if (synth.speaking && !synth.paused) {
+      synth.pause();
+      setStatus('Đang tạm dừng');
+    }
   }
 
   function resumeTTS() {
-    if (synth.paused) synth.resume();
+    if (synth.paused) {
+      synth.resume();
+      setStatus('Đang đọc');
+    }
   }
 
   function playTTS() {
@@ -1052,7 +1084,10 @@ window.addEventListener('load', () => {
     stopTTS();
 
     const text = contentEl.innerText || contentEl.textContent;
-    if (!text || !text.trim()) return;
+    if (!text || !text.trim()) {
+      setStatus('Chương này chưa có nội dung');
+      return;
+    }
 
     utter = new SpeechSynthesisUtterance(text);
     if (voiceSelect && voiceSelect.value) {
@@ -1062,6 +1097,15 @@ window.addEventListener('load', () => {
 
     if (rateInput) utter.rate = parseFloat(rateInput.value) || 1;
     if (!utter.lang) utter.lang = 'vi-VN';
+    utter.onstart = () => setStatus('Đang đọc');
+    utter.onend = () => {
+      utter = null;
+      setStatus('Đã đọc xong');
+    };
+    utter.onerror = event => {
+      utter = null;
+      if (event.error !== 'canceled') setStatus('Không thể đọc chương này');
+    };
     synth.speak(utter);
   }
 
@@ -1079,6 +1123,7 @@ window.addEventListener('load', () => {
   playBtn?.addEventListener('click', playTTS);
   pauseBtn?.addEventListener('click', pauseTTS);
   stopBtn?.addEventListener('click', stopTTS);
+  window.addEventListener('pagehide', () => synth.cancel());
 })();
 
 (function setupReadingPositionMemory() {

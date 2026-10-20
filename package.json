@@ -9,6 +9,6 @@
     "build:chapters": "node scripts/build-chapter-indexes.js"
   },
   "dependencies": {
-    "express": "^4.21.0"
+    "express": "^4.22.3"
   }
 }

@@ -303,12 +303,23 @@ function renderBookDetail(book, chapters) {
         'Phần giới thiệu của truyện đang được cập nhật. Bạn có thể bắt đầu đọc ngay để khám phá nội dung.';
 
     const startButton = document.getElementById('startReadingButton');
-    startButton.href = createReaderUrl(book.id, chapters[0]?.number || 1);
-
     const savedChapter = getSavedChapter(book.id);
     const continueButton = document.getElementById('continueReadingButton');
+    continueButton.hidden = true;
 
-    if (savedChapter) {
+    if (chapters.length > 0) {
+        startButton.href = createReaderUrl(book.id, chapters[0].number);
+        startButton.textContent = 'Đọc từ đầu';
+        startButton.classList.remove('is-disabled');
+        startButton.removeAttribute('aria-disabled');
+    } else {
+        startButton.removeAttribute('href');
+        startButton.textContent = 'Chưa có chương';
+        startButton.classList.add('is-disabled');
+        startButton.setAttribute('aria-disabled', 'true');
+    }
+
+    if (savedChapter && chapters.length > 0) {
         const savedChapterExists = chapters.some(
             chapter => chapter.number === savedChapter
         );
