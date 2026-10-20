@@ -17,49 +17,86 @@
   <header class="site-header">
     <div class="home-container header-inner">
       <a class="site-brand" href="index.html">
-        <img src="assets/images/Logo.png" alt="" width="44" height="44">
-        <span>Thư Viện Truyện</span>
+        <img
+          src="assets/images/Logo.png"
+          alt="Logo Thư Viện Truyện"
+          width="44"
+          height="44">
+
+        <span class="site-brand-copy">
+          <strong>Thư Viện Truyện</strong>
+          <small>Đọc theo nhịp của bạn</small>
+        </span>
       </a>
 
-      <div class="header-actions">
-        <a class="library-link" href="#library">Khám phá sách</a>
+      <div class="header-search">
+        <span class="header-search-icon" aria-hidden="true">⌕</span>
 
-          <button
-            class="site-theme-toggle"
-            type="button"
-            data-theme-toggle
-            aria-label="Chuyển giao diện"
-          >
-            <span class="theme-toggle-icon" aria-hidden="true">☾</span>
-          </button>
+        <label class="screen-reader-only" for="bookSearch">Tìm kiếm truyện</label>
+
+        <input 
+          id="bookSearch"
+          type="search"
+          placeholder="Tìm tên truyện hoặc tác giả..."
+          autocomplete="off">
+      </div>
+
+      <div class="header-actions">
+        <a class="library-link" href="#library">Tủ sách</a>
+
+        <button 
+          class="site-theme-toggle"
+          type="button"
+          data-theme-toggle
+          aria-label="Chuyển giao diện">
+
+          <span class="theme-toggle-icon" aria-hidden="true">☾</span>
+        </button>
       </div>
     </div>
   </header>
 
   <main class="home-container">
-    <section class="home-intro" aria-labelledby="introTitle">
-      <p class="intro-label">MỘT CHÚT THỜI GIAN, MỘT CÂU CHUYỆN</p>
+    <section
+      id="featuredBook"
+      class="featured-book"
+      aria-labelledby="featuredTitle">
+    
+    <div class="featured-content">
+      <p class="featured-label">TRUYỆN NỔI BẬT</p>
 
-      <h1 id="introTitle">
-        Mở một trang sách.<br>
-        Bước vào thế giới mới.
-      </h1>
+      <h1 id="featuredTitle">Đang tải truyện...</h1>
 
-      <p class="intro-description">
-        Tìm câu chuyện bạn yêu thích và tận hưởng từng chương
-        theo nhịp đọc của riêng mình.
+      <p class="featured-author">
+        <span>Tác giả</span>
+        <strong id="featuredAuthor">Đang cập nhật</strong>
       </p>
 
-      <div class="home-search">
-        <label for="bookSearch">Hôm nay bạn muốn đọc gì?</label>
-
-        <input
-          id="bookSearch"
-          type="search"
-          placeholder="Nhập tên truyện hoặc tác giả..."
-          autocomplete="off"
-        >
+      <div
+        id="featuredGenres"
+        class="featured-genres"
+        aria-label="Thể loại truyện">
       </div>
+
+      <p id="featuredDescription" class="featured-description"></p>
+
+      <div class="featured-actions">
+        <a id="featuredReadButton" class="featured-read-button" href="#">
+          Đọc ngay
+        </a>
+
+        <a id="featuredDetailButton" class="featured-detail-button" href="#">
+          Thông tin truyện
+        </a>
+      </div>
+    </div>
+
+    <div class="featured-cover-frame">
+      <img
+        id="featuredCover"
+        src="assets/images/Logo.png"
+        alt="">
+    </div>
     </section>
 
     <section id="library" class="home-library" aria-labelledby="libraryTitle">

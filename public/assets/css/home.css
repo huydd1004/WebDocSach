@@ -318,21 +318,177 @@
     opacity: 0.9;
 }
 
-/* máy tính bảng */
+/* Thanh đầu trang mới */
+.header-inner {
+    min-height: 76px;
+    display: grid;
+    grid-template-columns: auto minmax(260px, 600px) auto;
+    align-items: center;
+    gap: 28px;
+}
+
+.site-brand {
+    min-width: max-content;
+}
+
+.site-brand-copy {
+    display: grid;
+    gap: 1px;
+    line-height: 1.25;
+}
+
+.site-brand-copy strong {
+    font-size: 18px;
+}
+
+.site-brand-copy small {
+    color: var(--home-muted);
+    font-size: 11px;
+    font-weight: 500;
+}
+
+.header-search {
+    position: relative;
+    width: 100%;
+}
+
+.header-search-icon {
+    position: absolute;
+    top: 50%;
+    left: 16px;
+    color: var(--home-muted);
+    font-size: 23px;
+    line-height: 1;
+    transform: translateY(-52%);
+    pointer-events: none;
+}
+
+.header-search input {
+    width: 100%;
+    min-height: 48px;
+    padding: 11px 18px 11px 48px;
+    border: 1px solid var(--home-border);
+    border-radius: 14px;
+    background: var(--home-surface);
+    color: var(--home-text);
+    font: inherit;
+    font-size: 14px;
+    box-shadow: 0 7px 24px rgb(15 23 42 / 6%);
+}
+
+.header-search input::placeholder {
+    color: var(--home-muted);
+}
+
+.header-search input:focus {
+    border-color: var(--home-accent);
+}
+
+.home-page .library-link {
+    min-width: max-content;
+    padding: 9px 14px;
+    border: 1px solid var(--home-border);
+    border-radius: 999px;
+    color: var(--home-text);
+    text-decoration: none;
+}
+
+.home-page .library-link:hover {
+    border-color: var(--home-accent);
+    color: var(--home-accent);
+    text-decoration: none;
+}
+
+.screen-reader-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.intro-actions {
+    margin-top: 30px;
+}
+
+.intro-primary-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 48px;
+    padding: 11px 20px;
+    border-radius: 999px;
+    background: var(--home-accent);
+    color: #ffffff !important;
+    font-size: 14px;
+    font-weight: 700;
+    box-shadow: 0 12px 26px rgb(15 118 110 / 22%);
+    transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.intro-primary-action:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 32px rgb(15 118 110 / 28%);
+}
+
+
+/* Máy tính bảng */
+@media (max-width: 820px) {
+    .header-inner {
+        gap: 16px;
+    }
+
+    .site-brand-copy small {
+        display: none;
+    }
+
+    .site-brand-copy strong {
+        font-size: 16px;
+    }
+}
+
+/* Điện thoại */
+@media (max-width: 640px) {
+    .header-inner {
+        min-height: auto;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 10px 12px;
+        padding-block: 10px;
+    }
+
+    .header-search {
+        grid-column: 1 / -1;
+        grid-row: 2;
+    }
+
+    .header-search input {
+        min-height: 44px;
+    }
+
+    .site-brand-copy strong {
+        font-size: 15px;
+    }
+
+    .home-page .library-link {
+        padding: 7px 10px;
+        font-size: 12px;
+    }
+}
+
+/* Giữ bố cục lưới truyện trên máy tính bảng */
 @media (max-width: 900px) {
     .home-page .grid {
         grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 }
 
-/* Điện thoai */
+/* Giữ bố cục trang chủ trên điện thoại */
 @media (max-width: 640px) {
     .home-container {
         width: calc(100% - 32px);
-    }
-
-    .header-inner {
-        min-height: 72px;
     }
 
     .site-brand {
@@ -343,10 +499,6 @@
     .site-brand img {
         width: 36px;
         height: 36px;
-    }
-
-    .home-page .library-link {
-        font-size: 12px;
     }
 
     .home-intro {
@@ -374,12 +526,15 @@
     }
 }
 
+/* Hạn chế chuyển động nếu người dùng yêu cầu */
 @media (prefers-reduced-motion: reduce) {
-    .home-page .book {
+    .home-page .book,
+    .intro-primary-action {
         transition: none;
     }
 
-    .home-page .book:hover {
+    .home-page .book:hover,
+    .intro-primary-action:hover {
         transform: none;
     }
 }
