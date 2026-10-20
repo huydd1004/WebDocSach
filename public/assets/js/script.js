@@ -228,6 +228,55 @@ function getBookGenres(book) {
   return [];
 }
 
+function renderFeaturedBook(book) {
+  const section = document.getElementById('featuredBook');
+
+  if (!section) return;
+
+  if (!book) {
+    section.hidden = true;
+    return;
+  }
+
+  const title = document.getElementById('featuredTitle');
+  const author = document.getElementById('featuredAuthor');
+  const description = document.getElementById('featuredDescription');
+  const genres = document.getElementById('featuredGenres');
+  const cover = document.getElementById('featuredCover');
+  const readButton = document.getElementById('featuredReadButton');
+  const detailButton = document.getElementById('featuredDetailButton');
+
+  title.textContent = book.title;
+  author.textContent = book.author || 'Chưa cập nhật';
+  description.textContent = book.description || 'Nội dung truyện đang được cập nhật.';
+  cover.src = book.cover;
+  cover.alt = `Bìa truyện ${book.title}`;
+
+  section.style.setProperty('--featured-cover-image', `url("${encodeURI(book.cover)})`);
+
+  genres.replaceChildren();
+
+  getBookGenres(book).slice(0, 4).forEach(genre => {
+    const genreId = document.createElement('span');
+
+    genreItem.className = 'featured-genre';
+    genreItem.textContent = genre;
+
+    genres.appendChild(genreItem);
+  });
+
+  const savedProgress = getProgress(book.id);
+  const chapter = Number(savedProgress?.chapter) || 1;
+
+  readButton.href = `reader.html?book=${encodeURIComponent(book.id)}&chap=${chapter}`;
+
+  readButton.textContent = savedProgress?.chapter ? `Đọc tiếp chương ${chapter}` : 'Đọc ngay';
+
+  detailButton.href = `book.html?id=${encodeURIComponent(book.id)}`;
+
+  section.hidden = false;
+}
+
 function updateBookResultStatus(list) {
   const resultCount = document.getElementById('bookResultCount');
   const emptyState = document.getElementById('emptyBookState');
