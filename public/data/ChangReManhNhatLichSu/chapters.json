@@ -1,0 +1,6002 @@
+[
+  {
+    "number": 1,
+    "title": "Chương 1: Chuyển kiếp",
+    "path": "phần 1/1.txt"
+  },
+  {
+    "number": 2,
+    "title": "Chương 2: Ta làm thân ở rể đẹp trai",
+    "path": "phần 1/2.txt"
+  },
+  {
+    "number": 3,
+    "title": "Chương 3: Nhà quyền thế, hì hì",
+    "path": "phần 1/3.txt"
+  },
+  {
+    "number": 4,
+    "title": "Chương 4: Cảm giác có chút xấu hổ với cái bàn tay vàng này",
+    "path": "phần 1/4.txt"
+  },
+  {
+    "number": 5,
+    "title": "Chương 5: Đại nghiệp ăn cơm mềm cao cấp",
+    "path": "phần 1/5.txt"
+  },
+  {
+    "number": 6,
+    "title": "Chương 6: Kịch bản này không khớp à",
+    "path": "phần 1/6.txt"
+  },
+  {
+    "number": 7,
+    "title": "Chương 7: Nhìn bằng cặp mắt khác xưa",
+    "path": "phần 1/7.txt"
+  },
+  {
+    "number": 8,
+    "title": "Chương 8: Biểu hiện kinh ngạc",
+    "path": "phần 1/8.txt"
+  },
+  {
+    "number": 9,
+    "title": "Chương 9: Kiếm tiền! Bắt đầu đến màn trình diễn của ngươi rồi",
+    "path": "phần 1/9.txt"
+  },
+  {
+    "number": 10,
+    "title": "Chương 10: Phát tài rồi!",
+    "path": "phần 1/10.txt"
+  },
+  {
+    "number": 11,
+    "title": "Chương 11: Ép ta vả mặt ngươi ấy à? Được thôi!",
+    "path": "phần 1/11.txt"
+  },
+  {
+    "number": 12,
+    "title": "Chương 12: Ta muốn không chỉ thắng cuộc, mà đè bẹp cơ!",
+    "path": "phần 1/12.txt"
+  },
+  {
+    "number": 13,
+    "title": "Chương 13: Vả bôm bốp vào mặt vợ cũ, chịu nhận lỗi!",
+    "path": "phần 1/13.txt"
+  },
+  {
+    "number": 14,
+    "title": "Chương 14: Duyên phận của Thẩm Lãng và thiên kim Bá Tước",
+    "path": "phần 1/14.txt"
+  },
+  {
+    "number": 15,
+    "title": "Chương 15: Kim Mộc Lan nhặt một Thẩm Lãng về nhà",
+    "path": "phần 1/15.txt"
+  },
+  {
+    "number": 16,
+    "title": "Chương 16: Hôn nhân đại sự của nữ thần Mộc Lan",
+    "path": "phần 1/16.txt"
+  },
+  {
+    "number": 17,
+    "title": "Chương 17: Nữ thần là của Thẩm Lãng ta đây!",
+    "path": "phần 1/17.txt"
+  },
+  {
+    "number": 18,
+    "title": "Chương 18: Thẩm Lãng cầu hôn, Mộc Lan chọn rể",
+    "path": "phần 1/18.txt"
+  },
+  {
+    "number": 19,
+    "title": "Chương 19: Thẩm Lãng trổ hết tài năng, đoạt giải",
+    "path": "phần 1/19.txt"
+  },
+  {
+    "number": 20,
+    "title": "Chương 20: Mọi người khiếp sợ, kết cục đã định",
+    "path": "phần 1/20.txt"
+  },
+  {
+    "number": 21,
+    "title": "Chương 21: Thành Huyền Vũ sôi sục! Điền Thập Tam run rẩy",
+    "path": "phần 1/21.txt"
+  },
+  {
+    "number": 22,
+    "title": "Chương 22: Điền Hoành, Từ gia chủ cuống cuồng, Từ Thiên Thiên dự hôn lễ",
+    "path": "phần 1/22.txt"
+  },
+  {
+    "number": 23,
+    "title": "Chương 23: Thẩm Lãng bái đường thành thân",
+    "path": "phần 1/23.txt"
+  },
+  {
+    "number": 24,
+    "title": "Chương 24: Tha hồ Tát thỏa thích trong đám cưới",
+    "path": "phần 1/24.txt"
+  },
+  {
+    "number": 25,
+    "title": "Chương 25: Cùng tát vô mặt đại nhân vật, tất cả sững sờ",
+    "path": "phần 1/25.txt"
+  },
+  {
+    "number": 26,
+    "title": "Chương 26: Bốn phía khiếp sợ! Dâu thảo Mộc Lan",
+    "path": "phần 1/26.txt"
+  },
+  {
+    "number": 27,
+    "title": "Chương 27: Động phòng, cảnh giới cặn bã của Thẩm Lãng có bước phát triển mới",
+    "path": "phần 1/27.txt"
+  },
+  {
+    "number": 28,
+    "title": "Chương 28: Trả thù Điền Hoành, tiểu bạch kiểm mặt dày",
+    "path": "phần 1/28.txt"
+  },
+  {
+    "number": 29,
+    "title": "Chương 29: Dù có hối hận cỡ nào cũng chẳng còn kịp nữa, trời đánh",
+    "path": "phần 1/29.txt"
+  },
+  {
+    "number": 30,
+    "title": "Chương 30: Áo gấm về nhà, không bằng cầm thú",
+    "path": "phần 1/30.txt"
+  },
+  {
+    "number": 31,
+    "title": "Chương 31: Tức sùi bọt mép, Mộc Lan đẹp nhất",
+    "path": "phần 1/31.txt"
+  },
+  {
+    "number": 32,
+    "title": "Chương 32: Ô hô! Lại còn muốn ra oai nữa sao",
+    "path": "phần 1/32.txt"
+  },
+  {
+    "number": 33,
+    "title": "Chương 33: Đấu với cha vợ vui hết xảy, bất ngờ không kịp trở tay",
+    "path": "phần 1/33.txt"
+  },
+  {
+    "number": 34,
+    "title": "Chương 34: Màn biểu diễn phá kỷ lục huy hoàng, chói đến mù mắt",
+    "path": "phần 1/34.txt"
+  },
+  {
+    "number": 35,
+    "title": "Chương 35: Vào thành động đến Điền Hoành, thủ đoạn đơn giản thô bạo",
+    "path": "phần 1/35.txt"
+  },
+  {
+    "number": 36,
+    "title": "Chương 36: Thẩm Lãng đại sát tứ phương, ác mộng của sòng bạc",
+    "path": "phần 1/36.txt"
+  },
+  {
+    "number": 37,
+    "title": "Chương 37: Thẩm Lãng huyết tẩy sòng bạc, Điền Hoành kinh hãi!",
+    "path": "phần 1/37.txt"
+  },
+  {
+    "number": 38,
+    "title": "Chương 38: Thẩm Lãng vả mặt lia lịa, Điền Hoành muốn điên rồi",
+    "path": "phần 1/38.txt"
+  },
+  {
+    "number": 39,
+    "title": "Chương 39: Khiến ngươi cùng đường",
+    "path": "phần 1/39.txt"
+  },
+  {
+    "number": 40,
+    "title": "Chương 40: Trước mặt mọi người đánh gãy tay chân, sỉ nhục suốt đời",
+    "path": "phần 1/40.txt"
+  },
+  {
+    "number": 41,
+    "title": "Chương 41: Điền Hoành hộc máu, diễn xuất lên tầm cao mới",
+    "path": "phần 1/41.txt"
+  },
+  {
+    "number": 42,
+    "title": "Chương 42: Cùng tát vô mặt thành chủ, thắng lớn về nhà",
+    "path": "phần 1/42.txt"
+  },
+  {
+    "number": 43,
+    "title": "Chương 43: Hiền tế à, con thật là xuất sắc!",
+    "path": "phần 1/43.txt"
+  },
+  {
+    "number": 44,
+    "title": "Chương 44: Phu quân, không được! Nương tử, ta sai rồi!",
+    "path": "phần 1/44.txt"
+  },
+  {
+    "number": 45,
+    "title": "Chương 45: Kim thế tử gặp bi kịch nhân gian! Quá bất công",
+    "path": "phần 1/45.txt"
+  },
+  {
+    "number": 46,
+    "title": "Chương 46: Khoe tài ở cấp độ cao hơn! Cô gia rõ ràng trí tuệ tuyệt đỉnh",
+    "path": "phần 1/46.txt"
+  },
+  {
+    "number": 47,
+    "title": "Chương 47: Thẩm Lãng, ngươi giỏi phá phách đấy nhưng không đủ sát khí!",
+    "path": "phần 1/47.txt"
+  },
+  {
+    "number": 48,
+    "title": "Chương 48: Tất cả tránh ra, mỹ nam tử muốn tát vô mặt",
+    "path": "phần 1/48.txt"
+  },
+  {
+    "number": 49,
+    "title": "Chương 49: Thiên tài đè bẹp! Hứa Văn Chiêu hết hồn",
+    "path": "phần 1/49.txt"
+  },
+  {
+    "number": 50,
+    "title": "Chương 50: Vả mặt thật ác, nhục nhã vô cùng",
+    "path": "phần 1/50.txt"
+  },
+  {
+    "number": 51,
+    "title": "Chương 51: Xin lỗi nhé! Bổn mỹ nam muốn giết chết ngươi",
+    "path": "phần 1/51.txt"
+  },
+  {
+    "number": 52,
+    "title": "Chương 52: Đến đây nào! Cảm thụ một chút đòn sát thủ của thiên tài ra đi nhé!",
+    "path": "phần 1/52.txt"
+  },
+  {
+    "number": 53,
+    "title": "Chương 53: Thần! Tra ra manh mối, tự tìm đường chết",
+    "path": "phần 1/53.txt"
+  },
+  {
+    "number": 54,
+    "title": "Chương 54: Bá Tước khiếp sợ! Đừng nhảy, ngươi nhất định phải chết",
+    "path": "phần 1/54.txt"
+  },
+  {
+    "number": 55,
+    "title": "Chương 55: Thật sự là kỳ tài ngút trời! Tuyệt vọng đi!",
+    "path": "phần 1/55.txt"
+  },
+  {
+    "number": 56,
+    "title": "Chương 56: Thẩm Lãng giết người! Rể hiền là ân nhân phủ Bá Tước",
+    "path": "phần 1/56.txt"
+  },
+  {
+    "number": 57,
+    "title": "Chương 57: Hứa Văn Chiêu chết thảm! Vấn đề tác phong của nam nữ",
+    "path": "phần 1/57.txt"
+  },
+  {
+    "number": 58,
+    "title": "Chương 58: Tim Mộc Lan đập thình thịch! Lang quân ới ời",
+    "path": "phần 1/58.txt"
+  },
+  {
+    "number": 59,
+    "title": "Chương 59: Mỹ nhân ra đòn sát thủ với Thẩm Lãng! Một nụ hôn nhẹ nhàng",
+    "path": "phần 1/59.txt"
+  },
+  {
+    "number": 60,
+    "title": "Chương 60: Cảm thấy xấu hổ khi mở ra cánh cổng thế giới mới! Chiến thuật hạng nhất",
+    "path": "phần 1/60.txt"
+  },
+  {
+    "number": 61,
+    "title": "Chương 61: Chơi cho tới cùng không từ thủ đoạn! Sợ vãi đái",
+    "path": "phần 1/61.txt"
+  },
+  {
+    "number": 62,
+    "title": "Chương 62: Khủng bố như vậy! Thật sự thê thảm cực kỳ",
+    "path": "phần 1/62.txt"
+  },
+  {
+    "number": 63,
+    "title": "Chương 63: Tuyệt đối đáng sợ! Trò hay đến rồi!",
+    "path": "phần 1/63.txt"
+  },
+  {
+    "number": 64,
+    "title": "Chương 64: Thật là đáng sợ! Nghịch chuyển kinh người",
+    "path": "phần 1/64.txt"
+  },
+  {
+    "number": 65,
+    "title": "Chương 65: Điền Hoành gặp bi kịch! Phải lau mắt mà nhìn",
+    "path": "phần 1/65.txt"
+  },
+  {
+    "number": 66,
+    "title": "Chương 66: Điền Hoành, ta phải giết chết ngươi thôi!",
+    "path": "phần 1/66.txt"
+  },
+  {
+    "number": 67,
+    "title": "Chương 67: Nháy mắt hạ gục cứu Thập Tam! Rửa sạch cái cổ chờ chết đi",
+    "path": "phần 1/67.txt"
+  },
+  {
+    "number": 68,
+    "title": "Chương 68: Thập Tam quỳ sát thuần phục! Điền Hoành tuyệt vọng",
+    "path": "phần 1/68.txt"
+  },
+  {
+    "number": 69,
+    "title": "Chương 69: Công khai xét xử! Chết thảm oanh liệt",
+    "path": "phần 1/69.txt"
+  },
+  {
+    "number": 70,
+    "title": "Chương 70: Trai đẹp họ Thẩm này gian trá vô song! Chỉ có thể chết thảm hại hơn!",
+    "path": "phần 1/70.txt"
+  },
+  {
+    "number": 71,
+    "title": "Chương 71: Điền Hoành cực kỳ bi thảm! Mười tám tầng địa ngục",
+    "path": "phần 1/71.txt"
+  },
+  {
+    "number": 72,
+    "title": "Chương 72: Điền Hoành chết thảm! Đánh cướp Liễu thành chủ",
+    "path": "phần 1/72.txt"
+  },
+  {
+    "number": 73,
+    "title": "Chương 73: Thành chủ muốn hộc máu! Thẩm Lãng Mộc Lan yêu như thủy triều",
+    "path": "phần 1/73.txt"
+  },
+  {
+    "number": 74,
+    "title": "Chương 74: Sát chiêu của Thẩm Lãng! Từ Thiên Thiên phải gặp bi kịch",
+    "path": "phần 1/74.txt"
+  },
+  {
+    "number": 75,
+    "title": "Chương 75: Đây là danh tác có một không hai! Phải cho lửa bùng cháy hơn nữa",
+    "path": "phần 1/75.txt"
+  },
+  {
+    "number": 76,
+    "title": "Chương 76: Thẩm Lãng, con thật là một thiên tài!",
+    "path": "phần 1/76.txt"
+  },
+  {
+    "number": 77,
+    "title": "Chương 77: Nhất định vang danh! Dẫm đầu người ta mà lên",
+    "path": "phần 1/77.txt"
+  },
+  {
+    "number": 78,
+    "title": "Chương 78: Sách hay tuyệt thế! Thẩm công tử quả thật là bậc thầy!",
+    "path": "phần 1/78.txt"
+  },
+  {
+    "number": 79,
+    "title": "Chương 79: Ác mộng của Từ Thiên Thiên! Bom tấn văn học đưa ra thị trường!",
+    "path": "phần 1/79.txt"
+  },
+  {
+    "number": 80,
+    "title": "Chương 80: Sách Thẩm Lãng hoàn toàn gây sốt! Khiến toàn thành phải phát nổ!",
+    "path": "phần 1/80.txt"
+  },
+  {
+    "number": 81,
+    "title": "Chương 81: Phá kỷ lục hoàn toàn đè bẹp! Chúc Văn Hoa phải bùng nổ",
+    "path": "phần 1/81.txt"
+  },
+  {
+    "number": 82,
+    "title": "Chương 82: Đại nhân vật vào vòng phấn! Thẩm Lãng lại muốn chơi chết người",
+    "path": "phần 1/82.txt"
+  },
+  {
+    "number": 83,
+    "title": "Chương 83: Thẩm ân công có trí tuệ và mưu kế vô song! Một đòn giết hết",
+    "path": "phần 1/83.txt"
+  },
+  {
+    "number": 84,
+    "title": "Chương 84: Quá thảm! Đây là muốn đuổi tận giết tuyệt mà",
+    "path": "phần 1/84.txt"
+  },
+  {
+    "number": 85,
+    "title": "Chương 85: Thẩm đại thánh nhà ngươi quá lợi hại! Thu thần thông đi",
+    "path": "phần 1/85.txt"
+  },
+  {
+    "number": 86,
+    "title": "Chương 86: Thẩm Lãng vô địch! Chúc Văn Hoa bi thảm nhất trần gian!",
+    "path": "phần 1/86.txt"
+  },
+  {
+    "number": 87,
+    "title": "Chương 87: Bùng nổ thành Huyền Vũ! Hỏa thiêu Từ Thiên Thiên! Ha ha",
+    "path": "phần 1/87.txt"
+  },
+  {
+    "number": 88,
+    "title": "Chương 88: Từ Thiên Thiên đau muốn phun máu! Đánh vợ cũ",
+    "path": "phần 1/88.txt"
+  },
+  {
+    "number": 89,
+    "title": "Chương 89: Giáo chủ cắm đao! Thẩm Lãng giết người trong đêm",
+    "path": "phần 1/89.txt"
+  },
+  {
+    "number": 90,
+    "title": "Chương 90: Trí tuệ thật sự như yêu! Tài năng đến người ta phải run sợ",
+    "path": "phần 1/90.txt"
+  },
+  {
+    "number": 91,
+    "title": "Chương 91: Thẩm Lãng đẹp trai mù mắt người ta! Dấu chấm than tàn nhẫn",
+    "path": "phần 1/91.txt"
+  },
+  {
+    "number": 92,
+    "title": "Chương 92: Lãng gia quá ưu tú, mới bắt đầu đã giết người rồi",
+    "path": "phần 1/92.txt"
+  },
+  {
+    "number": 93,
+    "title": "Chương 93: Thẩm Lãng hạ knockout! Một màn đẫm máu",
+    "path": "phần 1/93.txt"
+  },
+  {
+    "number": 94,
+    "title": "Chương 94: Vua chèn ép Thẩm Lãng! Tung hoành vô địch",
+    "path": "phần 1/94.txt"
+  },
+  {
+    "number": 95,
+    "title": "Chương 95: Lại có đại nhân vật sắp chết tiếp theo! Tối nay nhất định tàn nhẫn",
+    "path": "phần 1/95.txt"
+  },
+  {
+    "number": 96,
+    "title": "Chương 96: Sát khí bức người! Lên đến tột đỉnh",
+    "path": "phần 1/96.txt"
+  },
+  {
+    "number": 97,
+    "title": "Chương 97: Sát chiêu đáng sợ của Thẩm Lãng! Có điều kẻ thảm nhất là Vương Liên",
+    "path": "phần 1/97.txt"
+  },
+  {
+    "number": 98,
+    "title": "Chương 98: Thẩm Ma Vương đè bẹp tất cả mọi người! Tuyệt sát cuối cùng đó!",
+    "path": "phần 1/98.txt"
+  },
+  {
+    "number": 99,
+    "title": "Chương 99: Sét đánh ngang tai! Gây ra tiếng oanh động trời xanh",
+    "path": "phần 1/99.txt"
+  },
+  {
+    "number": 100,
+    "title": "Chương 100: Thẩm Lãng tung đòn trí mạng! Tắm rửa chờ chết đi",
+    "path": "phần 1/100.txt"
+  },
+  {
+    "number": 101,
+    "title": "Chương 101: Phế đi Lý Văn Chính! Thắng toàn bộ!",
+    "path": "phần 1/101.txt"
+  },
+  {
+    "number": 102,
+    "title": "Chương 102: Vô địch cô đơn lạnh lẽo biết bao và Khai Tắc Lộ",
+    "path": "phần 1/102.txt"
+  },
+  {
+    "number": 103,
+    "title": "Chương 103: Lãng nhi là niềm tự hào của ta! Cách giết người tàn nhẫn nhất của Thẩm Lãng!",
+    "path": "phần 1/103.txt"
+  },
+  {
+    "number": 104,
+    "title": "Chương 104: Trương Xung bị kinh ngạc sững sờ! Quyết định ly kỳ!",
+    "path": "phần 1/104.txt"
+  },
+  {
+    "number": 105,
+    "title": "Chương 105: Quyết đấu trí tuệ đỉnh cao! Hồ ly tinh tới dụ dỗ Thẩm Lãng",
+    "path": "phần 1/105.txt"
+  },
+  {
+    "number": 106,
+    "title": "Chương 106: Ngàn dặm đưa 13! Lãng gia muốn vượt quá giới hạn?",
+    "path": "phần 1/106.txt"
+  },
+  {
+    "number": 107,
+    "title": "Chương 107: Thẩm tra nam trộm ngọc thu hương! Quốc quân hạ chỉ Thẩm Lãng",
+    "path": "phần 1/107.txt"
+  },
+  {
+    "number": 108,
+    "title": "Chương 108: Sắc phong Thẩm Lãng! Mộc Lan đột nhiên nói rõ tình ý",
+    "path": "phần 1/108.txt"
+  },
+  {
+    "number": 109,
+    "title": "Chương 109: Mộc Lan thân yêu tương thân tương ái! Tối nay nhất định chảy máu!",
+    "path": "phần 1/109.txt"
+  },
+  {
+    "number": 110,
+    "title": "Chương 110: Thẩm lang quân ngoan độc! Lăng trì xử tử!",
+    "path": "phần 1/110.txt"
+  },
+  {
+    "number": 111,
+    "title": "Chương 111: Trí tuệ đỉnh phong của Thẩm Lãng! Diệt cả nhà ngươi",
+    "path": "phần 1/111.txt"
+  },
+  {
+    "number": 112,
+    "title": "Chương 112: Đại chiêu để Thẩm Lãng nháy mắt hạ gục! Quá độc!",
+    "path": "phần 1/112.txt"
+  },
+  {
+    "number": 113,
+    "title": "Chương 113: Trong phân có độc đó! Lâm Chước cực kỳ bi thảm!",
+    "path": "phần 1/113.txt"
+  },
+  {
+    "number": 114,
+    "title": "Chương 114: Thẩm lãng nhà ngươi là ác ma! Lại giết cả một nhà",
+    "path": "phần 1/114.txt"
+  },
+  {
+    "number": 115,
+    "title": "Chương 115: Độc kế kinh hãi để diệt nhà họ Từ! Hung tàn quá mức",
+    "path": "phần 1/115.txt"
+  },
+  {
+    "number": 116,
+    "title": "Chương 116: Ngọn lửa hừng hực! Tiếng chuông hủy diệt nhà họ Từ",
+    "path": "phần 1/116.txt"
+  },
+  {
+    "number": 117,
+    "title": "Chương 117: Cơ nghiệp tan tành toàn bộ! Từ gia chủ phun máu ngã xuống! Ngươi thật độc ác",
+    "path": "phần 1/117.txt"
+  },
+  {
+    "number": 118,
+    "title": "Chương 118: Thịnh yến cùng thi thể! Từ Thiên Thiên bái kiến Thẩm Lãng!",
+    "path": "phần 1/118.txt"
+  },
+  {
+    "number": 119,
+    "title": "Chương 119: Từ Thiên Thiên dùng mọi cách lấy lòng! Virus lan ra",
+    "path": "phần 1/119.txt"
+  },
+  {
+    "number": 120,
+    "title": "Chương 120: Trương Tấn huỷ hôn? Không cứu được chờ chết đi!",
+    "path": "phần 1/120.txt"
+  },
+  {
+    "number": 121,
+    "title": "Chương 121: Một kiếm phong tình kia! Phủ Bá tước Tĩnh An nổi giận!",
+    "path": "phần 1/121.txt"
+  },
+  {
+    "number": 122,
+    "title": "Chương 122: Thiên tài tuyệt đỉnh! Đại khai sát giới! Lâm Chước chết thảm",
+    "path": "phần 1/122.txt"
+  },
+  {
+    "number": 123,
+    "title": "Chương 123: Thẩm đại sư phát công! Vận mệnh Từ Thiên Thiên!",
+    "path": "phần 1/123.txt"
+  },
+  {
+    "number": 124,
+    "title": "Chương 124: Hành hương! Lãng gia muốn nghịch thiên đây!",
+    "path": "phần 1/124.txt"
+  },
+  {
+    "number": 125,
+    "title": "Chương 125: Ngày tận thế của Từ Thiên Thiên! Lãng gia trở thành thiên tài bất ngờ",
+    "path": "phần 1/125.txt"
+  },
+  {
+    "number": 126,
+    "title": "Chương 126: Trương Tấn trở mặt! Ngày tàn của họ Từ! Bí tịch",
+    "path": "phần 1/126.txt"
+  },
+  {
+    "number": 127,
+    "title": "Chương 127: Trương Tấn giết vợ! Vua Hải Tặc",
+    "path": "phần 1/127.txt"
+  },
+  {
+    "number": 128,
+    "title": "Chương 128: Nữ quỷ Thiên Thiên! Trả giá toàn bộ! Bảo bối lớn",
+    "path": "phần 1/128.txt"
+  },
+  {
+    "number": 129,
+    "title": "Chương 129: Tình cảm vợ chồng thêm phần ấm áp! Tách ra! Nữ quỷ trong đêm",
+    "path": "phần 1/129.txt"
+  },
+  {
+    "number": 130,
+    "title": "Chương 130: Quyết chiến! Khoảnh khắc vận mệnh!",
+    "path": "phần 1/130.txt"
+  },
+  {
+    "number": 131,
+    "title": "Chương 131: Từ Thiên Thiên lột xác! Tiếng nổ dữ dội! Giết!",
+    "path": "phần 1/131.txt"
+  },
+  {
+    "number": 132,
+    "title": "Chương 132: Cẩu nam nữ Thẩm Lãng Thiên Thiên! Đã định kết cục chiến thắng, vô địch thật quạnh hiu",
+    "path": "phần 1/132.txt"
+  },
+  {
+    "number": 133,
+    "title": "Chương 133: Không xong! Thẩm tra nam khó giữ được trong sạch",
+    "path": "phần 1/133.txt"
+  },
+  {
+    "number": 134,
+    "title": "Chương 134: Thẩm tra nam bội tình bạc nghĩa! Cầu hôn!",
+    "path": "phần 1/134.txt"
+  },
+  {
+    "number": 135,
+    "title": "Chương 135: Tài hoa làm cả thế gian sửng sốt của Lãng gia, tất cả chấn động",
+    "path": "phần 1/135.txt"
+  },
+  {
+    "number": 136,
+    "title": "Chương 136: Đến một phát! Quyết đấu đỉnh phong! Đại quyết chiến",
+    "path": "phần 1/136.txt"
+  },
+  {
+    "number": 137,
+    "title": "Chương 137: Trận chiến đầu tiên! Mộc Lan hạ gục Đường Viêm nhanh chưa từng có!",
+    "path": "phần 1/137.txt"
+  },
+  {
+    "number": 138,
+    "title": "Chương 138: Kinh hãi muốn chết! Tên mập ở nhà cũng muốn nghịch thiên",
+    "path": "phần 1/138.txt"
+  },
+  {
+    "number": 139,
+    "title": "Chương 139: Đòn sát thủ bí mật! Lật đổ thế giới quan",
+    "path": "phần 1/139.txt"
+  },
+  {
+    "number": 140,
+    "title": "Chương 140: Bẻ gãy nghiền nát! Trận chiến thứ hai kết thúc!",
+    "path": "phần 1/140.txt"
+  },
+  {
+    "number": 141,
+    "title": "Chương 141: Quá mạnh! Kỳ tích chiến đấu thứ ba!",
+    "path": "phần 1/141.txt"
+  },
+  {
+    "number": 142,
+    "title": "Chương 142: Kết thúc trận chiến thứ ba! Chấn động vô song",
+    "path": "phần 1/142.txt"
+  },
+  {
+    "number": 143,
+    "title": "Chương 143: Tên béo ở lì trong nhà hạ gục Đường Doãn nhanh chưa từng có! Tát vô mặt thật mạnh!",
+    "path": "phần 1/143.txt"
+  },
+  {
+    "number": 144,
+    "title": "Chương 144: Đường Doãn sụp đổ! Trương Xung ngã bệnh! Lại sắp diệt môn",
+    "path": "phần 1/144.txt"
+  },
+  {
+    "number": 145,
+    "title": "Chương 145: Tranh chấp đảo Kim Sơn kết thúc! Đại sự muốn nổ ra",
+    "path": "phần 1/145.txt"
+  },
+  {
+    "number": 146,
+    "title": "Chương 146: Chói lóa mù mắt người ta! Một tiếng nổ động trời! Nước lũ ngập nơi nơi",
+    "path": "phần 1/146.txt"
+  },
+  {
+    "number": 147,
+    "title": "Chương 147: Gia tộc họ Chúc bị hủy diệt toàn bộ! Con đường vương giả của Lãng gia",
+    "path": "phần 1/147.txt"
+  },
+  {
+    "number": 148,
+    "title": "Chương 148: Chúc Lan Đình phun máu! Ta muốn đỉnh phong!",
+    "path": "phần 1/148.txt"
+  },
+  {
+    "number": 149,
+    "title": "Chương 149: Kế hoạch bá nghiệp hoành tráng! Thiên Thiên và Thẩm tra nam thông đồng dụ dỗ",
+    "path": "phần 1/149.txt"
+  },
+  {
+    "number": 150,
+    "title": "Chương 150: Cái chết của cố nhân! Giết vợ chứng đạo! Cuồng triều",
+    "path": "phần 1/150.txt"
+  },
+  {
+    "number": 151,
+    "title": "Chương 151: Lãng gia chinh phục Kiếm Vương! Nữ ma quỷ thay đổi lớn",
+    "path": "phần 1/151.txt"
+  },
+  {
+    "number": 152,
+    "title": "Chương 152: Chúc Lan Đình chết thảm! Thân thế đáng kinh ngạc của Đại Ngốc",
+    "path": "phần 1/152.txt"
+  },
+  {
+    "number": 153,
+    "title": "Chương 153: Cừu Yêu Nhi nghịch thiên! Từ hôn! Thiên Thiên hiến thân",
+    "path": "phần 1/153.txt"
+  },
+  {
+    "number": 154,
+    "title": "Chương 154: Cô gái trà xanh Thiên Thiên! Thẩm Lãng với cô gái từ hôn Tiết Lê",
+    "path": "phần 1/154.txt"
+  },
+  {
+    "number": 155,
+    "title": "Chương 155: Độc chiêu của Thẩm Lãng! Cô gái từ hôn thê thảm! Xuất binh",
+    "path": "phần 1/155.txt"
+  },
+  {
+    "number": 156,
+    "title": "Chương 156: Sự kiện lớn! Động phòng hoa chúc! Chứng kiến diệt vong",
+    "path": "phần 1/156.txt"
+  },
+  {
+    "number": 157,
+    "title": "Chương 157: Cách giết người độc nhất của Thẩm Lãng! Cực kỳ bi thảm",
+    "path": "phần 1/157.txt"
+  },
+  {
+    "number": 158,
+    "title": "Chương 158: Chết chùm cả nhà! Một minh hữu lớn đến nơi",
+    "path": "phần 1/158.txt"
+  },
+  {
+    "number": 159,
+    "title": "Chương 159: Cuộc gặp gỡ của số phận! Một triệu lượng vàng đó!",
+    "path": "phần 1/159.txt"
+  },
+  {
+    "number": 160,
+    "title": "Chương 160: Cơ hội chinh phục Cừu Yêu Nhi! Kỳ tích kinh người của Lãng gia",
+    "path": "phần 1/160.txt"
+  },
+  {
+    "number": 161,
+    "title": "Chương 161: Đại công cáo thành! Quá mạnh!",
+    "path": "phần 1/161.txt"
+  },
+  {
+    "number": 162,
+    "title": "Chương 162: Cừu Yêu Nhi bị chinh phục! Một màn chấn động!",
+    "path": "phần 1/162.txt"
+  },
+  {
+    "number": 163,
+    "title": "Chương 163: Chiến lược hợp tác! Vở kịch động trời mở màn",
+    "path": "phần 1/163.txt"
+  },
+  {
+    "number": 164,
+    "title": "Chương 164: Điên cuồng vả mặt! Núi vàng mưa vàng chôn bọn ngươi!",
+    "path": "phần 1/164.txt"
+  },
+  {
+    "number": 165,
+    "title": "Chương 165: Tát vô mặt khắp thiên hạ! Cả nước khiếp sợ! Tiếng chuông báo tử",
+    "path": "phần 1/165.txt"
+  },
+  {
+    "number": 166,
+    "title": "Chương 166: Tăng cường quân bị! Mộc Lan hoàn toàn thất thủ!",
+    "path": "phần 1/166.txt"
+  },
+  {
+    "number": 167,
+    "title": "Chương 167: Dưới đồ Đao! Bậc thầy giả gái lại hiện thế",
+    "path": "phần 1/167.txt"
+  },
+  {
+    "number": 168,
+    "title": "Chương 168: Vào triều! Lãng gia xem bệnh cho Cừu Yêu Nhi! Cứng rồi",
+    "path": "phần 1/168.txt"
+  },
+  {
+    "number": 169,
+    "title": "Chương 169: Thẩm Lãng biểu diễn kỳ tích! Cừu Yêu Nhi khâm phục",
+    "path": "phần 1/169.txt"
+  },
+  {
+    "number": 170,
+    "title": "Chương 170: Một kiếm hạ ba con chim! Như ma thuật! Thoải mái",
+    "path": "phần 1/170.txt"
+  },
+  {
+    "number": 171,
+    "title": "Chương 171: Tà hỏa bốc cháy! Đánh một trận động trời!",
+    "path": "phần 1/171.txt"
+  },
+  {
+    "number": 172,
+    "title": "Chương 172: Lãng gia bị làm nhục! Sóng lớn vỗ bờ",
+    "path": "phần 1/172.txt"
+  },
+  {
+    "number": 173,
+    "title": "Chương 173: Mộc Lan bị cắm sừng! Thẩm tra nam vô cùng thê thảm",
+    "path": "phần 1/173.txt"
+  },
+  {
+    "number": 174,
+    "title": "Chương 174: Cừu Yêu Nhi lựa chọn! Thiên Thiên tự sát",
+    "path": "phần 1/174.txt"
+  },
+  {
+    "number": 175,
+    "title": "Chương 175: Đỉnh phong! Nương tử, ta đã vượt quá giới hạn rồi!",
+    "path": "phần 1/175.txt"
+  },
+  {
+    "number": 176,
+    "title": "Chương 176: Mộc Lan muốn ăn luôn Lãng gia! Cừu Kiêu đi tìm cái chết",
+    "path": "phần 1/176.txt"
+  },
+  {
+    "number": 177,
+    "title": "Chương 177: Tên mập nghịch thiên! Cừu Kiêu run rẩy! Vỗ béo giết!",
+    "path": "phần 1/177.txt"
+  },
+  {
+    "number": 178,
+    "title": "Chương 178: Thẩm Lãng ác độc! Thiến Cừu Kiêu! Đáng sợ ghê",
+    "path": "phần 1/178.txt"
+  },
+  {
+    "number": 179,
+    "title": "Chương 179: Cừu Kiêu chết thảm khuất nhục! Vua Hải Tặc, xin ngài nén bi thương",
+    "path": "phần 1/179.txt"
+  },
+  {
+    "number": 180,
+    "title": "Chương 180: Cừu Thiên Nguy đau đớn đến phun máu! Đại cục đã định!",
+    "path": "phần 1/180.txt"
+  },
+  {
+    "number": 181,
+    "title": "Chương 181: Đại chiến bắt đầu! Nữ ma đầu mang thai?",
+    "path": "phần 1/181.txt"
+  },
+  {
+    "number": 182,
+    "title": "Chương 182: Cừu Yêu Nhi không tầm thường! Tiến đánh đảo Vọng Nhai",
+    "path": "phần 1/182.txt"
+  },
+  {
+    "number": 183,
+    "title": "Chương 183: Kịch chiến đảo Vọng Nhai! Giết giết giết! Cạm bẫy động trời",
+    "path": "phần 1/183.txt"
+  },
+  {
+    "number": 184,
+    "title": "Chương 184: Kinh thiên động địa! Ngày tận thế của Cừu Thiên Nguy!",
+    "path": "phần 1/184.txt"
+  },
+  {
+    "number": 185,
+    "title": "Chương 185: Cừu Thiên Nguy toàn quân huỷ diệt! Chết hết! Ngã xuống",
+    "path": "phần 1/185.txt"
+  },
+  {
+    "number": 186,
+    "title": "Chương 186: Cục diện thành Nộ Triều! Thẩm Lãng đừng giết Cừu Yêu Nhi",
+    "path": "phần 1/186.txt"
+  },
+  {
+    "number": 187,
+    "title": "Chương 187: Mười tám tầng địa ngục! Trấn áp Cừu Yêu Nhi",
+    "path": "phần 1/187.txt"
+  },
+  {
+    "number": 188,
+    "title": "Chương 188: Huyền Vũ phong vân! Cừu Yêu Nhi quyết định!",
+    "path": "phần 1/188.txt"
+  },
+  {
+    "number": 189,
+    "title": "Chương 189: Giết cầm thú! Quấn lấy Cừu Yêu Nhi! Hại Trương Tấn",
+    "path": "phần 1/189.txt"
+  },
+  {
+    "number": 190,
+    "title": "Chương 190: Huyết sát tận trời! Bạo Vũ Lê Hoa! Tô Kiếm Đình bại",
+    "path": "phần 1/190.txt"
+  },
+  {
+    "number": 191,
+    "title": "Chương 191: Quyết chiến thành Nộ Triều kết thúc! Trương Tấn thất bại thảm hại",
+    "path": "phần 1/191.txt"
+  },
+  {
+    "number": 192,
+    "title": "Chương 192: Trương Tấn chết! Nhà họ Trương chết yểu! Trời nổi gió",
+    "path": "phần 1/192.txt"
+  },
+  {
+    "number": 193,
+    "title": "Chương 193: Cừu Yêu Nhi đi xa! Nơi Từ Thiên Thiên thuộc về!",
+    "path": "phần 1/193.txt"
+  },
+  {
+    "number": 194,
+    "title": "Chương 194: Trương Xung Thẩm Lãng giải quyết! Công lao sự nghiệp bất hủ",
+    "path": "phần 1/194.txt"
+  },
+  {
+    "number": 195,
+    "title": "Chương 195: Quốc quân kinh hãi! Lôi đình thiên hạ!",
+    "path": "phần 1/195.txt"
+  },
+  {
+    "number": 196,
+    "title": "Chương 196: Mộc Lan ăn Lãng! Diệt tộc! Kết cục của Trương Xung!",
+    "path": "phần 1/196.txt"
+  },
+  {
+    "number": 197,
+    "title": "Chương 197: Lãng gia đại sát tứ phương! Tấn chức thành chủ Nộ Triều",
+    "path": "phần 1/197.txt"
+  },
+  {
+    "number": 198,
+    "title": "Chương 198: Việc vui của phủ Bá Tước! Thẩm Lãng tiến cung!",
+    "path": "phần 1/198.txt"
+  },
+  {
+    "number": 199,
+    "title": "Chương 199: Quốc quân cùng Thẩm Lãng! Trò chuyện với nhau thật vui",
+    "path": "phần 1/199.txt"
+  },
+  {
+    "number": 200,
+    "title": "Chương 200: Lãng gia làm cha! Kim Mộc Thông gây sốt!",
+    "path": "phần 1/200.txt"
+  },
+  {
+    "number": 201,
+    "title": "Chương 201: Chinh phục công chúa cọp cái! Lãng gia lợi hại!",
+    "path": "phần 2/201.txt"
+  },
+  {
+    "number": 202,
+    "title": "Chương 202: Công chúa cúng bái Lãng gia! Kim Mộc Thông thất thân",
+    "path": "phần 2/202.txt"
+  },
+  {
+    "number": 203,
+    "title": "Chương 203: Lãng gia lại muốn giết cả nhà! Ngũ vương tử chấn động",
+    "path": "phần 2/203.txt"
+  },
+  {
+    "number": 204,
+    "title": "Chương 204: Thẩm Lãng phản kích ác độc! Đi chọc thủng trời!",
+    "path": "phần 2/204.txt"
+  },
+  {
+    "number": 205,
+    "title": "Chương 205: Lãng gia xoay càn khôn! Đại sát tứ phương",
+    "path": "phần 2/205.txt"
+  },
+  {
+    "number": 206,
+    "title": "Chương 206: Thẩm Lãng ra tay hoành tráng! Cho nổ kinh đô!",
+    "path": "phần 2/206.txt"
+  },
+  {
+    "number": 207,
+    "title": "Chương 207: Sứ giả đế quốc! Giết cả nhà Dư Phóng Chu!",
+    "path": "phần 2/207.txt"
+  },
+  {
+    "number": 208,
+    "title": "Chương 208: Đủ loại quan lại chấn động! Tô Nan khiếp sợ! Thỉnh tội",
+    "path": "phần 2/208.txt"
+  },
+  {
+    "number": 209,
+    "title": "Chương 209: Thẩm Lãng tát vô họ Tô điên cuồng! Trí mạng đến từng chiêu!",
+    "path": "phần 2/209.txt"
+  },
+  {
+    "number": 210,
+    "title": "Chương 210: Quốc quân Thẩm Lãng liên thủ! Khai đao lấy máu họ Tô",
+    "path": "phần 2/210.txt"
+  },
+  {
+    "number": 211,
+    "title": "Chương 211: Lãng gia tài hoa thuyết phục quốc quân! Đại Ngốc đến",
+    "path": "phần 2/211.txt"
+  },
+  {
+    "number": 212,
+    "title": "Chương 212: Cách giết người tàn nhẫn nhất của Thẩm Lãng! Đại Ngốc quá ngầu",
+    "path": "phần 2/212.txt"
+  },
+  {
+    "number": 213,
+    "title": "Chương 213: Trời phạt! Vợ của Đại Ngốc!",
+    "path": "phần 2/213.txt"
+  },
+  {
+    "number": 214,
+    "title": "Chương 214: Thăng quan! Công chúa Ninh Diễm câu Thẩm Lãng vượt quá giới hạn! Vào nước Khương",
+    "path": "phần 2/214.txt"
+  },
+  {
+    "number": 215,
+    "title": "Chương 215: Đại Ngốc biết yêu! Lãng gia quyết đấu vua Khương!",
+    "path": "phần 2/215.txt"
+  },
+  {
+    "number": 216,
+    "title": "Chương 216: Lãng gia cao minh lại độc ác! Vợ vua Khương ngoại tình",
+    "path": "phần 2/216.txt"
+  },
+  {
+    "number": 217,
+    "title": "Chương 217: Lãng gia giết hoàng tử Khương quốc, thật là độc ác!",
+    "path": "phần 2/217.txt"
+  },
+  {
+    "number": 218,
+    "title": "Chương 218: Kẻ địch nổ chết! Vua Khương thảm! Lãng gia thoải mái",
+    "path": "phần 2/218.txt"
+  },
+  {
+    "number": 219,
+    "title": "Chương 219: Bạo phát! Vua Khương nhận tội! Muốn làm gì thì làm",
+    "path": "phần 2/219.txt"
+  },
+  {
+    "number": 220,
+    "title": "Chương 220: Kỹ thuật thần kỳ của Lãng gia! Vua Khương cúng bái! Bí mật gặp gỡ Thần nữ Tuyết Ẩn",
+    "path": "phần 2/220.txt"
+  },
+  {
+    "number": 221,
+    "title": "Chương 221: Cùng Thần nữ Tuyết Ẩn ở chung! Tuyệt thế mỹ diệu! Điên đảo",
+    "path": "phần 2/221.txt"
+  },
+  {
+    "number": 222,
+    "title": "Chương 222: Thẩm Lãng say mê Thần nữ! Thời khắc tối hậu! Bạo phát",
+    "path": "phần 2/222.txt"
+  },
+  {
+    "number": 223,
+    "title": "Chương 223: Chúa cứu thế Thẩm Lãng! Đại khai sát giới!",
+    "path": "phần 2/223.txt"
+  },
+  {
+    "number": 224,
+    "title": "Chương 224: Cứu sống Tuyết Ẩn! Thẩm Lãng tàn sát ngàn người! Thần tích",
+    "path": "phần 2/224.txt"
+  },
+  {
+    "number": 225,
+    "title": "Chương 225: Chiến thắng vĩ đại! Chiến thắng trở về bị thất thân! Quốc quân mừng rỡ",
+    "path": "phần 2/225.txt"
+  },
+  {
+    "number": 226,
+    "title": "Chương 226: Kinh đô chấn động! Thẩm Lãng nổi tiếng phừng phừng! Mộc Lan bắt gian ở trên giường",
+    "path": "phần 2/226.txt"
+  },
+  {
+    "number": 227,
+    "title": "Chương 227: Tiêu hồn! Thẩm Lãng vào triều! Quốc quân ra sức khen ngợi",
+    "path": "phần 2/227.txt"
+  },
+  {
+    "number": 228,
+    "title": "Chương 228: Lãng gia mài dao mổ soàn soạt! Máu nhuộm triều đình! Uy phong",
+    "path": "phần 2/228.txt"
+  },
+  {
+    "number": 229,
+    "title": "Chương 229: Đại công cáo thành! Phong Huyền Vũ Hầu! Thái tử Khương Ly",
+    "path": "phần 2/229.txt"
+  },
+  {
+    "number": 230,
+    "title": "Chương 230: Tuyết Ẩn sàm sỡ Thẩm Lãng! Trương Xung phải chết!",
+    "path": "phần 2/230.txt"
+  },
+  {
+    "number": 231,
+    "title": "Chương 231: Thẩm Lãng cứu Trương Xung! Kỳ tích! Người đàn ông của Từ Thiên Thiên",
+    "path": "phần 2/231.txt"
+  },
+  {
+    "number": 232,
+    "title": "Chương 232: Sự lựa chọn của Trương Xung! Lãng gia vượt quá giới hạn với công chúa cọp cái!",
+    "path": "phần 2/232.txt"
+  },
+  {
+    "number": 233,
+    "title": "Chương 233: Ninh Diễm ra sức chà đạp! Thẩm Lãng Tô Nan quyết chiến! Sấm sét gây sợ hãi",
+    "path": "phần 2/233.txt"
+  },
+  {
+    "number": 234,
+    "title": "Chương 234: Băng lạnh lửa cháy! Thẩm Lãng sẽ giết cả nhà!",
+    "path": "phần 2/234.txt"
+  },
+  {
+    "number": 235,
+    "title": "Chương 235: Thẩm Lãng nhà ngươi đủ độc ác! Một đòn trí mạng đoạn sinh tử",
+    "path": "phần 2/235.txt"
+  },
+  {
+    "number": 236,
+    "title": "Chương 236: Tuyệt chiêu phản sát của Thẩm Lãng! Thắng",
+    "path": "phần 2/236.txt"
+  },
+  {
+    "number": 237,
+    "title": "Chương 237: Quốc quân vui mừng! Lột da rút gân! Bắt Tô Kiếm Đình",
+    "path": "phần 2/237.txt"
+  },
+  {
+    "number": 238,
+    "title": "Chương 238: Lão tặc Tô Nan! Triều đình kịch biến!",
+    "path": "phần 2/238.txt"
+  },
+  {
+    "number": 239,
+    "title": "Chương 239: Vua Khương chết bất đắc kỳ tử! Kinh hãi muốn chết! Bi kịch",
+    "path": "phần 2/239.txt"
+  },
+  {
+    "number": 240,
+    "title": "Chương 240: Quốc quân hân hoan! Bắt Tô Nan!",
+    "path": "phần 2/240.txt"
+  },
+  {
+    "number": 241,
+    "title": "Chương 241: Phân ra! Bệ hạ xử tử thần thiếp đi!",
+    "path": "phần 2/241.txt"
+  },
+  {
+    "number": 242,
+    "title": "Chương 242: Ta chính là vương giả! Thẩm Lãng chặn giết Tô Nan!",
+    "path": "phần 2/242.txt"
+  },
+  {
+    "number": 243,
+    "title": "Chương 243: Tô Nan từ chức! Thẩm Lãng nhậm chức!",
+    "path": "phần 2/243.txt"
+  },
+  {
+    "number": 244,
+    "title": "Chương 244: Lãng gia vào thành Trấn Viễn! Giết!",
+    "path": "phần 2/244.txt"
+  },
+  {
+    "number": 245,
+    "title": "Chương 245: Lãng gia đại khai sát giới! Thiến hết sạch!",
+    "path": "phần 2/245.txt"
+  },
+  {
+    "number": 246,
+    "title": "Chương 246: Lãng gia đại tàn sát! Thiên biến!",
+    "path": "phần 2/246.txt"
+  },
+  {
+    "number": 247,
+    "title": "Chương 247: Phản sát nghịch thiên! Lãng gia thiên quân vạn mã!",
+    "path": "phần 2/247.txt"
+  },
+  {
+    "number": 248,
+    "title": "Chương 248: Lãng gia diệt sạch cả thành! Tô Nan kinh hãi!",
+    "path": "phần 2/248.txt"
+  },
+  {
+    "number": 249,
+    "title": "Chương 249: Lãng gia quét ngang tứ phương! Khổ Đầu Hoan thật sự giáng lâm!",
+    "path": "phần 2/249.txt"
+  },
+  {
+    "number": 250,
+    "title": "Chương 250: Đêm quyết định vận mệnh! Khổ Đầu Hoan sợ vãi tè cá mè!",
+    "path": "phần 2/250.txt"
+  },
+  {
+    "number": 251,
+    "title": "Chương 251: Thiên sát cô tinh! Dư nghiệt của Khương Ly! Đại quyết đấu!",
+    "path": "phần 2/251.txt"
+  },
+  {
+    "number": 252,
+    "title": "Chương 252: Nội gián! Thẩm Lãng phụ thiên hạ! Ngoan độc tuyệt đỉnh!",
+    "path": "phần 2/252.txt"
+  },
+  {
+    "number": 253,
+    "title": "Chương 253: Đã mất phu nhân lại thiệt quân! Họ Tô rỉ máu!",
+    "path": "phần 2/253.txt"
+  },
+  {
+    "number": 254,
+    "title": "Chương 254: Quốc quân bị Thẩm Lãng hù dọa! Tin dữ đến Tô Nan",
+    "path": "phần 2/254.txt"
+  },
+  {
+    "number": 255,
+    "title": "Chương 255: Thẩm Lãng điên rồi! Ngày tận thế quá bộ đến! Nữ vương mang thai",
+    "path": "phần 2/255.txt"
+  },
+  {
+    "number": 256,
+    "title": "Chương 256: Giang sơn giàu đẹp! Đại chiến vua Khương Arutai!",
+    "path": "phần 2/256.txt"
+  },
+  {
+    "number": 257,
+    "title": "Chương 257: Vua Khương muốn phun máu! Long trời lở đất! Thiên hạ biến",
+    "path": "phần 2/257.txt"
+  },
+  {
+    "number": 258,
+    "title": "Chương 258: Điên cuồng đánh cuộc! Giết cho đầu người lăn long lóc!",
+    "path": "phần 2/258.txt"
+  },
+  {
+    "number": 259,
+    "title": "Chương 259: Vua Khương Arutai toàn quân huỷ diệt! Kinh thiên động địa!",
+    "path": "phần 2/259.txt"
+  },
+  {
+    "number": 260,
+    "title": "Chương 260: Arutai chết thảm! Tô Kiếm Đình hồn vía lên mây! Đại hoạch toàn thắng",
+    "path": "phần 2/260.txt"
+  },
+  {
+    "number": 261,
+    "title": "Chương 261: Thiến Tô Kiếm Đình! Ngày tận thế của họ Tô đã đến!",
+    "path": "phần 2/261.txt"
+  },
+  {
+    "number": 262,
+    "title": "Chương 262: Vương giả! Họ Tô binh bại như núi đổ!",
+    "path": "phần 2/262.txt"
+  },
+  {
+    "number": 263,
+    "title": "Chương 263: Chủ lực họ Tô toàn quân huỷ diệt! Ngũ xa phanh thây!",
+    "path": "phần 2/263.txt"
+  },
+  {
+    "number": 264,
+    "title": "Chương 264: Tường đổ mọi người đẩy! Tô Nan hộc máu!",
+    "path": "phần 2/264.txt"
+  },
+  {
+    "number": 265,
+    "title": "Chương 265: Tô Nan gặp tuyệt cảnh! Phá cuộc! Kiến công lập nghiệp",
+    "path": "phần 2/265.txt"
+  },
+  {
+    "number": 266,
+    "title": "Chương 266: Quân Ngô huỷ diệt! Trận quyết đấu cuối cùng giữa Thẩm Lãng và Tô Nan",
+    "path": "phần 2/266.txt"
+  },
+  {
+    "number": 267,
+    "title": "Chương 267: Thất bại thảm hại! Kế thành! Tô Nan vào địa ngục! (đã update)",
+    "path": "phần 2/267.txt"
+  },
+  {
+    "number": 268,
+    "title": "Chương 268: Đại công! Họ Tô diệt tộc nơi này!",
+    "path": "phần 2/268.txt"
+  },
+  {
+    "number": 269,
+    "title": "Chương 269: Tô Nan chết thảm! Tin chiến thắng vĩ đại truyền đến quốc quân!",
+    "path": "phần 2/269.txt"
+  },
+  {
+    "number": 270,
+    "title": "Chương 270: Quốc quân hân hoan! Ngô vương muốn phun máu",
+    "path": "phần 2/270.txt"
+  },
+  {
+    "number": 271,
+    "title": "Chương 271: Đồ Đao của Lãng gia! Cả nước run rẩy!",
+    "path": "phần 2/271.txt"
+  },
+  {
+    "number": 272,
+    "title": "Chương 272: Quốc quân tuyển Lãng gia làm rể? Sắc phong Trấn Viễn Bá!",
+    "path": "phần 2/272.txt"
+  },
+  {
+    "number": 273,
+    "title": "Chương 273: Ơn vua mênh mông! Đại nạn của Trịnh Đà bộc phát!",
+    "path": "phần 2/273.txt"
+  },
+  {
+    "number": 274,
+    "title": "Chương 274: Đại hoạch toàn thắng! Trịnh Đà hủy diệt thảm nhất!",
+    "path": "phần 2/274.txt"
+  },
+  {
+    "number": 275,
+    "title": "Chương 275: Kết thúc! Thẩm Lãng gây sốc cho quân vương ba nước!",
+    "path": "phần 2/275.txt"
+  },
+  {
+    "number": 276,
+    "title": "Chương 276: Lãng gia cuồng nhiệt! Cắm sừng cho Thái tử?",
+    "path": "phần 2/276.txt"
+  },
+  {
+    "number": 277,
+    "title": "Chương 277: Lãng gia chiến thắng trở về! Uy chấn kinh đô!",
+    "path": "phần 2/277.txt"
+  },
+  {
+    "number": 278,
+    "title": "Chương 278: Nhân nghĩa vô song! Quốc quân hồi đô!",
+    "path": "phần 2/278.txt"
+  },
+  {
+    "number": 279,
+    "title": "Chương 279: Quốc quân ân sủng Thẩm Lãng vô song! Kén rể",
+    "path": "phần 2/279.txt"
+  },
+  {
+    "number": 280,
+    "title": "Chương 280: Quốc quân bị dọa hết hồn! Ngũ vương tử bắt đầu tranh ngôi",
+    "path": "phần 2/280.txt"
+  },
+  {
+    "number": 281,
+    "title": "Chương 281: Khoảnh khắc vĩ đại! Tai nạn của quốc quân! Băng huyết",
+    "path": "phần 2/281.txt"
+  },
+  {
+    "number": 282,
+    "title": "Chương 282: Thẩm Lãng cứu sống Biện phi! Thần hồ kỳ kỹ!",
+    "path": "phần 2/282.txt"
+  },
+  {
+    "number": 283,
+    "title": "Chương 283: Quốc quân cảm kích! Biện phi báo đáp ơn cứu mạng!",
+    "path": "phần 2/283.txt"
+  },
+  {
+    "number": 284,
+    "title": "Chương 284: Thành công phong tước mở phủ! Giết Khổ Đầu Hoan bằng thuốc độc!",
+    "path": "phần 2/284.txt"
+  },
+  {
+    "number": 285,
+    "title": "Chương 285: Lãng gia phát đạt! Quốc quân run rẩy",
+    "path": "phần 2/285.txt"
+  },
+  {
+    "number": 286,
+    "title": "Chương 286: Thiên tài tuyệt đỉnh đè bẹp tất cả! Cứu Khổ Đầu Hoan",
+    "path": "phần 2/286.txt"
+  },
+  {
+    "number": 287,
+    "title": "Chương 287: Bùng nổ! Khổ Đầu Hoan chết đi sống lại!",
+    "path": "phần 2/287.txt"
+  },
+  {
+    "number": 288,
+    "title": "Chương 288: Khổ Đầu Hoan thuần phục! Thống soái vô địch",
+    "path": "phần 2/288.txt"
+  },
+  {
+    "number": 289,
+    "title": "Chương 289: Không thành công thì thành nhân! Lại sáng tạo kỳ tích!",
+    "path": "phần 2/289.txt"
+  },
+  {
+    "number": 290,
+    "title": "Chương 290: Niết bàn lột xác! Kinh diễm tuyệt luân!",
+    "path": "phần 2/290.txt"
+  },
+  {
+    "number": 291,
+    "title": "Chương 291: Thúc ép! Trấn áp vạn người!",
+    "path": "phần 2/291.txt"
+  },
+  {
+    "number": 292,
+    "title": "Chương 292: Cuộc thi ân khoa! Lan Phong Tử đại thành",
+    "path": "phần 2/292.txt"
+  },
+  {
+    "number": 293,
+    "title": "Chương 293: Cuộc thi kết thúc! Thẩm công tử đúng là thần nhân mà",
+    "path": "phần 2/293.txt"
+  },
+  {
+    "number": 294,
+    "title": "Chương 294: Giám khảo bị sốc! Hạng đầu đã ổn!",
+    "path": "phần 2/294.txt"
+  },
+  {
+    "number": 295,
+    "title": "Chương 295: Quốc quân chấn động hân hoan! Thẩm Lãng là tri kỷ của quả nhân",
+    "path": "phần 2/295.txt"
+  },
+  {
+    "number": 296,
+    "title": "Chương 296: Cuộc thi võ thuật kết thúc! Kinh ngạc tứ phương!",
+    "path": "phần 2/296.txt"
+  },
+  {
+    "number": 297,
+    "title": "Chương 297: Ân khoa yết bảng! Kinh bạo muôn người!",
+    "path": "phần 2/297.txt"
+  },
+  {
+    "number": 298,
+    "title": "Chương 298: Tát vô mặt tàn bạo! Chấn động kinh đô! Chết thảm",
+    "path": "phần 2/298.txt"
+  },
+  {
+    "number": 299,
+    "title": "Chương 299: Đại công cáo thành! Chân tướng cuối cùng!",
+    "path": "phần 2/299.txt"
+  },
+  {
+    "number": 300,
+    "title": "Chương 300: Thẩm Lãng cùng công chúa Ninh Hàn! Thiên tài cuồng hoan!",
+    "path": "phần 2/300.txt"
+  },
+  {
+    "number": 301,
+    "title": "Chương 301: Thiếu nữ đẹp tuyệt sắc! Quốc quân ân sủng Thẩm Lãng vô biên",
+    "path": "phần 2/301.txt"
+  },
+  {
+    "number": 302,
+    "title": "Chương 302: Lãng gia lại muốn nghịch thiên! Thứ đáng sợ nhất từ trước đến nay",
+    "path": "phần 2/302.txt"
+  },
+  {
+    "number": 303,
+    "title": "Chương 303: Luận võ hạ gục nhanh chưa từng có! Cuồng ngược Xung Sư Sư (up lại)",
+    "path": "phần 2/303.txt"
+  },
+  {
+    "number": 304,
+    "title": "Chương 304: Kế hoạch đệ nhất thiên hạ của Mộc Lan! Trời sập!",
+    "path": "phần 2/304.txt"
+  },
+  {
+    "number": 305,
+    "title": "Chương 305: Quốc quân thiên vị! Cục cưng Mộc Lan ngạc nhiên!",
+    "path": "phần 2/305.txt"
+  },
+  {
+    "number": 306,
+    "title": "Chương 306: Cứu quốc quân! Tin tức về Cừu Yêu Nhi!",
+    "path": "phần 2/306.txt"
+  },
+  {
+    "number": 307,
+    "title": "Chương 307: Cừu Yêu Nhi nghịch thiên! Lãng gia cũng vô địch!",
+    "path": "phần 2/307.txt"
+  },
+  {
+    "number": 308,
+    "title": "Chương 308: Quốc quân điên cuồng! Siêu quân đội của Lãng gia!",
+    "path": "phần 2/308.txt"
+  },
+  {
+    "number": 309,
+    "title": "Chương 309: Quân đội thần kỳ của Thẩm Lãng! Chúa cứu thế!",
+    "path": "phần 2/309.txt"
+  },
+  {
+    "number": 310,
+    "title": "Chương 310: Làm bẩn Xung Sư Sư! Sửa đổi huyết mạch số không!",
+    "path": "phần 2/310.txt"
+  },
+  {
+    "number": 311,
+    "title": "Chương 311: Phượng hoàng đại niết bàn! Mộc Lan mang thai!",
+    "path": "phần 2/311.txt"
+  },
+  {
+    "number": 312,
+    "title": "Chương 312: Sao trời chói mắt! Quân đội vương bài của Thẩm Lãng quật khởi!",
+    "path": "phần 2/312.txt"
+  },
+  {
+    "number": 313,
+    "title": "Chương 313: Đại chiến lại nổ ra! Vương bài quân đại thành!",
+    "path": "phần 2/313.txt"
+  },
+  {
+    "number": 314,
+    "title": "Chương 314: Vở kịch lớn mở màn! Trận đầu chuyến săn biên giới!",
+    "path": "phần 2/314.txt"
+  },
+  {
+    "number": 315,
+    "title": "Chương 315: Cùng đi săn quyết chiến! Vương bài quân tàn sát nghiêng về một phía!",
+    "path": "phần 2/315.txt"
+  },
+  {
+    "number": 316,
+    "title": "Chương 316: Chuyến săn biên giới kết thúc! Đại hoạch toàn thắng!",
+    "path": "phần 2/316.txt"
+  },
+  {
+    "number": 317,
+    "title": "Chương 317: Ninh Nguyên Hiến lên đến tột đỉnh! Sở vương hộc máu!",
+    "path": "phần 2/317.txt"
+  },
+  {
+    "number": 318,
+    "title": "Chương 318: Khải hoàn về đô! Thiên hạ khiếp sợ!",
+    "path": "phần 2/318.txt"
+  },
+  {
+    "number": 319,
+    "title": "Chương 319: Ninh Chính quật khởi! Quốc quân ân sủng vô biên! Cầu hôn",
+    "path": "phần 2/319.txt"
+  },
+  {
+    "number": 320,
+    "title": "Chương 320: Lãng gia vô biên! Kim Mộc Thông biết yêu!",
+    "path": "phần 2/320.txt"
+  },
+  {
+    "number": 321,
+    "title": "Chương 321: Kết quả ra mắt của tên mập! Lãng gia lại nghịch thiên!",
+    "path": "phần 2/321.txt"
+  },
+  {
+    "number": 322,
+    "title": "Chương 322: Lãng gia lợi hại! Máu rồng tạo ra kỳ tích!",
+    "path": "phần 2/322.txt"
+  },
+  {
+    "number": 323,
+    "title": "Chương 323: Nữ vương sinh con! Lãng gia phát tài lớn!",
+    "path": "phần 2/323.txt"
+  },
+  {
+    "number": 324,
+    "title": "Chương 324: Đại công cáo thành! Núi vàng biển vàng!",
+    "path": "phần 2/324.txt"
+  },
+  {
+    "number": 325,
+    "title": "Chương 325: Quốc quân rung động hân hoan! Phần thưởng kinh người!",
+    "path": "phần 2/325.txt"
+  },
+  {
+    "number": 326,
+    "title": "Chương 326: Lãng gia lại sáng tạo tích! Quá kinh ngạc",
+    "path": "phần 2/326.txt"
+  },
+  {
+    "number": 327,
+    "title": "Chương 327: Lân vàng không phải vật trong ao! Mưa gió hóa thành rồng!",
+    "path": "phần 2/327.txt"
+  },
+  {
+    "number": 328,
+    "title": "Chương 328: Lãng gia đại khai sát giới kinh đô! Run rẩy đi!",
+    "path": "phần 2/328.txt"
+  },
+  {
+    "number": 329,
+    "title": "Chương 329: Tướng đế vương! Lãng gia một lần giận giết toàn tộc!",
+    "path": "phần 2/329.txt"
+  },
+  {
+    "number": 330,
+    "title": "Chương 330: Lăng trì xử tử! Quốc quân cảm kích!",
+    "path": "phần 2/330.txt"
+  },
+  {
+    "number": 331,
+    "title": "Chương 331: Sóng ra phía chân trời! Hội Ẩn Nguyên kinh triều!",
+    "path": "phần 2/331.txt"
+  },
+  {
+    "number": 332,
+    "title": "Chương 332: Hủy diệt! Tổng bộ của hội Ẩn Nguyên san thành bình địa!",
+    "path": "phần 2/332.txt"
+  },
+  {
+    "number": 333,
+    "title": "Chương 333: Hội Ẩn Nguyên hộc máu! Quốc quân run rẩy! Viêm Kinh chấn động",
+    "path": "phần 2/333.txt"
+  },
+  {
+    "number": 334,
+    "title": "Chương 334: Quân vương móc tim! Trần ai lạc định",
+    "path": "phần 2/334.txt"
+  },
+  {
+    "number": 335,
+    "title": "Chương 335: Khai hỏa với họ Chúc! Thái tử run rẩy! Đại sự của Lãng gia",
+    "path": "phần 2/335.txt"
+  },
+  {
+    "number": 336,
+    "title": "Chương 336: Chúc Hoằng Chủ từ quan! Thẩm Lãng trở về nhà!",
+    "path": "phần 2/336.txt"
+  },
+  {
+    "number": 337,
+    "title": "Chương 337: Cuộc chiến vận mệnh quốc gia! Ba ngàn chín trăm người đại niết bàn!",
+    "path": "phần 2/337.txt"
+  },
+  {
+    "number": 338,
+    "title": "Chương 338: Đội Niết Bàn thứ hai quật khởi! Mộc Lan sinh nở!",
+    "path": "phần 2/338.txt"
+  },
+  {
+    "number": 339,
+    "title": "Chương 339: Chiến tranh nước Nam Ẩu! Nhóc con nghịch thiên!",
+    "path": "phần 2/339.txt"
+  },
+  {
+    "number": 340,
+    "title": "Chương 340: Huyết mạch niết bàn duy nhất! Trời sập!",
+    "path": "phần 2/340.txt"
+  },
+  {
+    "number": 341,
+    "title": "Chương 341: Gạo sống cơm chín! Huyết mạch sôi trào!",
+    "path": "phần 2/341.txt"
+  },
+  {
+    "number": 342,
+    "title": "Chương 342: Máu Thẩm Lãng đáng sợ! Tẩy Tủy Tinh!",
+    "path": "phần 2/342.txt"
+  },
+  {
+    "number": 343,
+    "title": "Chương 343: Cuộc chiến kinh ngạc! Di tích thượng cổ!",
+    "path": "phần 2/343.txt"
+  },
+  {
+    "number": 344,
+    "title": "Chương 344: Làm mất mặt Ninh Hàn! Bảo vật thượng cổ tới tay!",
+    "path": "phần 2/344.txt"
+  },
+  {
+    "number": 345,
+    "title": "Chương 345: Gió nổi mây phun! Cục cưng Mộc Lan thức tỉnh!",
+    "path": "phần 2/345.txt"
+  },
+  {
+    "number": 346,
+    "title": "Chương 346: Mộc Lan niết bàn lột xác! Thăng cấp chiến lược!",
+    "path": "phần 2/346.txt"
+  },
+  {
+    "number": 347,
+    "title": "Chương 347: Siêu năng lực của Mộc Lan! Bùng nổ đại quyết chiến!",
+    "path": "phần 2/347.txt"
+  },
+  {
+    "number": 348,
+    "title": "Chương 348: Nỗi đau khổ của nữ vương! Tin dữ nơi sa trường",
+    "path": "phần 2/348.txt"
+  },
+  {
+    "number": 349,
+    "title": "Chương 349: Tình thế hỗn loạn khủng khiếp! Nhất định vạn kiếp bất phục!",
+    "path": "phần 2/349.txt"
+  },
+  {
+    "number": 350,
+    "title": "Chương 350: Quốc tặc! Thái tử xuôi nam! Ta phải phượng hoàng niết bàn!",
+    "path": "phần 2/350.txt"
+  },
+  {
+    "number": 351,
+    "title": "Chương 351: Thái tử quyết chiến vua Căng! Run rẩy sụp đổ!",
+    "path": "phần 2/351.txt"
+  },
+  {
+    "number": 352,
+    "title": "Chương 352: Vua Căng nghịch thiên! Đại luân hãm! Thái tử tuyệt vọng!",
+    "path": "phần 2/352.txt"
+  },
+  {
+    "number": 353,
+    "title": "Chương 353: Tuyệt cảnh đáng sỉ nhục! Thái tử hộc máu!",
+    "path": "phần 2/353.txt"
+  },
+  {
+    "number": 354,
+    "title": "Chương 354: Địa ngục! Thái tử bị bắt! Thảm rồi",
+    "path": "phần 2/354.txt"
+  },
+  {
+    "number": 355,
+    "title": "Chương 355: Chém đứt Thái tử! Đại chiến kết thúc toàn quân huỷ diệt!",
+    "path": "phần 2/355.txt"
+  },
+  {
+    "number": 356,
+    "title": "Chương 356: Tin thắng trận hoành tráng hóa dữ! Chúc Hoằng Chủ co giật ngã xuống!",
+    "path": "phần 2/356.txt"
+  },
+  {
+    "number": 357,
+    "title": "Chương 357: Thời khắc tăm tối! Thẩm Lãng đứng ra!",
+    "path": "phần 2/357.txt"
+  },
+  {
+    "number": 358,
+    "title": "Chương 358: Một khắc vĩ đại! Vương giả vinh diệu!",
+    "path": "phần 2/358.txt"
+  },
+  {
+    "number": 359,
+    "title": "Chương 359: Trời sập! Rồng của Lãng gia ngẩn đầu!",
+    "path": "phần 2/359.txt"
+  },
+  {
+    "number": 360,
+    "title": "Chương 360: Kịch chiến hoa lệ! Tàn sát một bên ngã rạp!",
+    "path": "phần 2/360.txt"
+  },
+  {
+    "number": 361,
+    "title": "Chương 361: Đại bại tuyệt vọng! Tô Nan quyết chiến Thẩm Lãng!",
+    "path": "phần 2/361.txt"
+  },
+  {
+    "number": 362,
+    "title": "Chương 362: Thiên đại thủ bút! Tô Nan bại một lần!",
+    "path": "phần 2/362.txt"
+  },
+  {
+    "number": 363,
+    "title": "Chương 363: Lập tức xông vào nơi hiểm yếu đánh bại kẻ thù! Tin dữ cho vua Căng!",
+    "path": "phần 2/363.txt"
+  },
+  {
+    "number": 364,
+    "title": "Chương 364: Màn thông gia mang tính lịch sử! Quyết chiến đô thành Nam Ẩu!",
+    "path": "phần 2/364.txt"
+  },
+  {
+    "number": 365,
+    "title": "Chương 365: Mộc Lan nghịch thiên! Thuật đỉnh phong của Lãng gia!",
+    "path": "phần 2/365.txt"
+  },
+  {
+    "number": 366,
+    "title": "Chương 366: Đô thành Sa Man thất thủ! Chấn động cả linh hồn!",
+    "path": "phần 2/366.txt"
+  },
+  {
+    "number": 367,
+    "title": "Chương 367: Kỳ tích của Lãng gia! Vua Căng chịu thua",
+    "path": "phần 2/367.txt"
+  },
+  {
+    "number": 368,
+    "title": "Chương 368: Vương giả vô địch! Thẩm Lãng và vua Căng!",
+    "path": "phần 2/368.txt"
+  },
+  {
+    "number": 369,
+    "title": "Chương 369: Hành động kinh thiên của Lãng gia! Tin chiến thắng truyền đến quốc quân",
+    "path": "phần 2/369.txt"
+  },
+  {
+    "number": 370,
+    "title": "Chương 370: Tin chiến thắng thiên hạ khiếp sợ! Viễn chinh kinh đô nước Sở!",
+    "path": "phần 2/370.txt"
+  },
+  {
+    "number": 371,
+    "title": "Chương 371: Lãng gia lên đỉnh thế giới! Kinh đô nước Sở run rẩy!",
+    "path": "phần 2/371.txt"
+  },
+  {
+    "number": 372,
+    "title": "Chương 372: Kinh đô nước Sở thất thủ! Đại hoạch toàn thắng!",
+    "path": "phần 2/372.txt"
+  },
+  {
+    "number": 373,
+    "title": "Chương 373: Chà đạp nước Sở! Sỉ nhục cực kỳ!",
+    "path": "phần 2/373.txt"
+  },
+  {
+    "number": 374,
+    "title": "Chương 374: Sở vương hộc máu! Hương tiêu ngọc vẫn! Ngoan tuyệt thiên hạ",
+    "path": "phần 2/374.txt"
+  },
+  {
+    "number": 375,
+    "title": "Chương 375: Cái chết của Sở vương! Ninh Kỳ run rẩy!",
+    "path": "phần 2/375.txt"
+  },
+  {
+    "number": 376,
+    "title": "Chương 376: Ninh Kỳ vẫy vùng trong địa ngục! Kết thúc đại chiến",
+    "path": "phần 2/376.txt"
+  },
+  {
+    "number": 377,
+    "title": "Chương 377: Thẩm Lãng ác độc! Ý chí đế vương!",
+    "path": "phần 2/377.txt"
+  },
+  {
+    "number": 378,
+    "title": "Chương 378: Lãng gia danh chấn thiên hạ! Bàn tay tạo nên kỳ tích!",
+    "path": "phần 2/378.txt"
+  },
+  {
+    "number": 379,
+    "title": "Chương 379: Phán quyết vận mệnh Ninh Kỳ! Thần thuật của Lãng gia!",
+    "path": "phần 2/379.txt"
+  },
+  {
+    "number": 380,
+    "title": "Chương 380: Chân tướng ly kỳ! Chết thảm! Tất cả đều kết thúc",
+    "path": "phần 2/380.txt"
+  },
+  {
+    "number": 381,
+    "title": "Chương 381: Lãng gia lại muốn nghịch thiên! Mưu kế vương giả!",
+    "path": "phần 2/381.txt"
+  },
+  {
+    "number": 382,
+    "title": "Chương 382: Đại chiến kết thúc hoàn mỹ! Đại hoạch toàn thắng!",
+    "path": "phần 2/382.txt"
+  },
+  {
+    "number": 383,
+    "title": "Chương 383: Tát vô mặt Ninh Kỳ điên cuồng! Quá sung sướng! Triều đình chảy máu",
+    "path": "phần 2/383.txt"
+  },
+  {
+    "number": 384,
+    "title": "Chương 384: Vạn dân kính ngưỡng! Ánh mặt trời của ta! Đỉnh phong chiến đấu",
+    "path": "phần 2/384.txt"
+  },
+  {
+    "number": 385,
+    "title": "Chương 385: Khải hoàn vĩ đại! Muôn người ủng hộ!",
+    "path": "phần 2/385.txt"
+  },
+  {
+    "number": 386,
+    "title": "Chương 386: Việt quốc nội chiến! Điên cuồng chèn ép Ninh Kỳ!",
+    "path": "phần 2/386.txt"
+  },
+  {
+    "number": 387,
+    "title": "Chương 387: Trời sập! Lãng gia vào kinh đô! Ninh Hàn trời đánh",
+    "path": "phần 2/387.txt"
+  },
+  {
+    "number": 388,
+    "title": "Chương 388: Dốc hết tâm huyết cứu quân vương! Hội tuyển vua!",
+    "path": "phần 2/388.txt"
+  },
+  {
+    "number": 389,
+    "title": "Chương 389: Kỳ tích của Lãng gia! Vở kịch lớn! Quốc quân tỉnh lại",
+    "path": "phần 2/389.txt"
+  },
+  {
+    "number": 390,
+    "title": "Chương này lỗi, chưa có dịch",
+    "path": "phần 2/390.txt"
+  },
+  {
+    "number": 391,
+    "title": "Chương 391: Cái chết của Ninh Khiết! Nội chiến nổ ra!",
+    "path": "phần 2/391.txt"
+  },
+  {
+    "number": 392,
+    "title": "Chương 392: Họ Xung thảm bại! Ngày tận thế đến!",
+    "path": "phần 2/392.txt"
+  },
+  {
+    "number": 393,
+    "title": "Chương 393: Toàn quân huỷ diệt! Xung Nghiêu tuyệt vọng!",
+    "path": "phần 2/393.txt"
+  },
+  {
+    "number": 394,
+    "title": "Chương 394: Kết thúc đại chiến! Họ Xung quỳ hàng!",
+    "path": "phần 2/394.txt"
+  },
+  {
+    "number": 395,
+    "title": "Chương 395: Công chúa Ninh Diễm sinh nở! Lãng gia lại muốn nghịch thiên!",
+    "path": "phần 2/395.txt"
+  },
+  {
+    "number": 396,
+    "title": "Chương 396: Trời muốn sập! Quyết chiến hạm đội họ Tiết!",
+    "path": "phần 2/396.txt"
+  },
+  {
+    "number": 397,
+    "title": "Chương 397: Liên quân họ Tiết bị hủy diệt tất cả! Kinh thiên động địa!",
+    "path": "phần 2/397.txt"
+  },
+  {
+    "number": 398,
+    "title": "Chương 398: Lăng trì Tiết Bàn! Tin dữ khủng khiếp cho Tiết Triệt!",
+    "path": "phần 2/398.txt"
+  },
+  {
+    "number": 399,
+    "title": "Chương 399: Tiết Triệt hộc máu! Điều mong muốn chính là hạ gục nhanh chưa từng có!",
+    "path": "phần 2/399.txt"
+  },
+  {
+    "number": 400,
+    "title": "Chương 400: Thành Nam Châu thất thủ! Trời diệt họ Tiết!",
+    "path": "phần 2/400.txt"
+  },
+  {
+    "number": 401,
+    "title": "Chương 401: Tàn sát cả nhà họ Tiết! Đòn tuyệt sát cuối cùng",
+    "path": "phần 3/401.txt"
+  },
+  {
+    "number": 402,
+    "title": "Chương 402: Cái chết của Tiết Triệt! Chấm dứt",
+    "path": "phần 3/402.txt"
+  },
+  {
+    "number": 403,
+    "title": "Chương 403: Cái chết của Tiết Tuyết! Ninh Kỳ kết quả! Định trần ai",
+    "path": "phần 3/403.txt"
+  },
+  {
+    "number": 404,
+    "title": "Chương 404: Long trời lở đất! Thân thế Thẩm Lãng! (quan trọng)",
+    "path": "phần 3/404.txt"
+  },
+  {
+    "number": 405,
+    "title": "Chương 405: Bảo vệ Khương bệ hạ! Bảo vệ hy vọng thiên hạ!",
+    "path": "phần 3/405.txt"
+  },
+  {
+    "number": 406,
+    "title": "Chương 406: Tân vương lên ngôi! Ta là chủ cả thiên hạ?",
+    "path": "phần 3/406.txt"
+  },
+  {
+    "number": 407,
+    "title": "Chương 407: Giao long xuất hải! Sa xuống điên cuồng!",
+    "path": "phần 3/407.txt"
+  },
+  {
+    "number": 408,
+    "title": "Chương 408: Lãng gia dằn mặt! Trong lúc nói cười tàn sát mười vạn!",
+    "path": "phần 3/408.txt"
+  },
+  {
+    "number": 409,
+    "title": "Chương 409: Thẩm Lãng bệ hạ vạn tuế! Đánh Cơ Tuyền Ninh Hàn thật đau!",
+    "path": "phần 3/409.txt"
+  },
+  {
+    "number": 410,
+    "title": "Chương 410: Thẩm Lãng bay lên! Thiên uy của rồng!",
+    "path": "phần 3/410.txt"
+  },
+  {
+    "number": 411,
+    "title": "Chương 411: Lãng gia đại phát tài! Cuộc sống thần tiên",
+    "path": "phần 3/411.txt"
+  },
+  {
+    "number": 412,
+    "title": "Chương 412: Đế quốc Witch! Lãng gia khuynh thành!",
+    "path": "phần 3/412.txt"
+  },
+  {
+    "number": 413,
+    "title": "Chương 413: Đám cưới lớn của Lãng gia! Một bước lên trời!",
+    "path": "phần 3/413.txt"
+  },
+  {
+    "number": 414,
+    "title": "Chương 414: Lãng gia thất thân! Ý chỉ của thần linh!",
+    "path": "phần 3/414.txt"
+  },
+  {
+    "number": 415,
+    "title": "Chương 415: Kỳ tích của Lãng gia! Nữ vương Medusa!",
+    "path": "phần 3/415.txt"
+  },
+  {
+    "number": 416,
+    "title": "Chương 416: Thiên cuộc! Nơi cung Nữ hoàng gặp lại người xưa!",
+    "path": "phần 3/416.txt"
+  },
+  {
+    "number": 417,
+    "title": "Chương 417: Trương Xuân Hoa! Đứa con của Thẩm Lãng! Chân tướng Witch",
+    "path": "phần 3/417.txt"
+  },
+  {
+    "number": 418,
+    "title": "Chương 418: Lại gặp Cừu Yêu Nhi! Medusa mộng ảo! Vận mệnh",
+    "path": "phần 3/418.txt"
+  },
+  {
+    "number": 419,
+    "title": "Chương 419: Nữ vương thức tỉnh! Kết thúc vô địch! Đã lâu không gặp",
+    "path": "phần 3/419.txt"
+  },
+  {
+    "number": 420,
+    "title": "Chương 420: Thẩm Lãng cùng nữ vương Medusa! Thổ lộ tình cảm",
+    "path": "phần 3/420.txt"
+  },
+  {
+    "number": 421,
+    "title": "Chương 421: Sứ mệnh của nữ vương Medusa! Lãng gia đại nghiệp!",
+    "path": "phần 3/421.txt"
+  },
+  {
+    "number": 422,
+    "title": "Chương 422: Lãng gia lợi hại đến tận trời! Thám hiểm Tam giác quỷ!",
+    "path": "phần 3/422.txt"
+  },
+  {
+    "number": 423,
+    "title": "Chương 423: Đại đế mới quật khởi! Vận mệnh của Mộc Lan!",
+    "path": "phần 3/423.txt"
+  },
+  {
+    "number": 424,
+    "title": "Chương 424: Hỏa pháo giáng thế! Lãng gia lại muốn nghịch thiên",
+    "path": "phần 3/424.txt"
+  },
+  {
+    "number": 425,
+    "title": "Chương 425: Nữ vương Amazon! Lãng gia biểu diễn kỳ tích!",
+    "path": "phần 3/425.txt"
+  },
+  {
+    "number": 426,
+    "title": "Chương 426: Đại nghiệp sinh sôi của nữ vương! Cách chinh phục đặc biệt",
+    "path": "phần 3/426.txt"
+  },
+  {
+    "number": 427,
+    "title": "Chương 427: Thần tích hủy diệt của Thẩm Lãng! Kinh thiên động địa!",
+    "path": "phần 3/427.txt"
+  },
+  {
+    "number": 428,
+    "title": "Chương 428: Cứu Amazon! Nữ vương sùng bái!",
+    "path": "phần 3/428.txt"
+  },
+  {
+    "number": 429,
+    "title": "Chương 429: Vinh quang vô hạn! Nữ vương câu dẫn!",
+    "path": "phần 3/429.txt"
+  },
+  {
+    "number": 430,
+    "title": "Chương 430: Amazon thuần phục! Cảm nhận hủy diệt đi!",
+    "path": "phần 3/430.txt"
+  },
+  {
+    "number": 431,
+    "title": "Chương 431: Núi lở đất mòn! Tàn sát cấp Địa Ngục!",
+    "path": "phần 3/431.txt"
+  },
+  {
+    "number": 432,
+    "title": "Chương 432: Quyết chiến thành Magnolia! Thẩm Lãng trở về! Triều dâng",
+    "path": "phần 3/432.txt"
+  },
+  {
+    "number": 433,
+    "title": "Chương 433: Bẻ gãy nghiền nát! Đại hoạch toàn thắng!",
+    "path": "phần 3/433.txt"
+  },
+  {
+    "number": 434,
+    "title": "Chương 434: Kết thúc đại chiến! Toàn quân huỷ diệt! Nhục nhã Dibos",
+    "path": "phần 3/434.txt"
+  },
+  {
+    "number": 435,
+    "title": "Chương 435: Dibos cực kỳ bi thương! Xuân Hoa hiến thân!",
+    "path": "phần 3/435.txt"
+  },
+  {
+    "number": 436,
+    "title": "Chương 436: Công chúa cuồng dã! Thế giới mới! Tiến đánh thành Golden Jade",
+    "path": "phần 3/436.txt"
+  },
+  {
+    "number": 437,
+    "title": "Chương 437: Quyết chiến thành Golden Jade! Tàn sát hoa lệ! Kỳ tích",
+    "path": "phần 3/437.txt"
+  },
+  {
+    "number": 438,
+    "title": "Chương 438: Rung động tuyệt luân! Công tước Dibos bị bắt!",
+    "path": "phần 3/438.txt"
+  },
+  {
+    "number": 439,
+    "title": "Chương 439: Chà đạp Công tước Dibos! Thứ máu nghịch thiên của Lãng gia!",
+    "path": "phần 3/439.txt"
+  },
+  {
+    "number": 440,
+    "title": "Chương 440: Dibos quỳ hàng hiến thân! Chị ruột đến",
+    "path": "phần 3/440.txt"
+  },
+  {
+    "number": 441,
+    "title": "Chương 441: Lãng gia vô địch! Vợ chồng một thể!",
+    "path": "phần 3/441.txt"
+  },
+  {
+    "number": 442,
+    "title": "Chương 442: Đại công cáo thành! Chị em gặp lại!",
+    "path": "phần 3/442.txt"
+  },
+  {
+    "number": 443,
+    "title": "Chương 443: Quân đoàn đảng Skeleton vô địch! Tình yêu của nữ vương!",
+    "path": "phần 3/443.txt"
+  },
+  {
+    "number": 444,
+    "title": "Chương 444: Lãng gia miểu sát! Kinh diễm tuyệt luân! Chân tướng trí mạng",
+    "path": "phần 3/444.txt"
+  },
+  {
+    "number": 445,
+    "title": "Chương 445: Mẹ Thẩm Lãng! Bày tỏ chân tình! Thế giới mới!",
+    "path": "phần 3/445.txt"
+  },
+  {
+    "number": 446,
+    "title": "Chương 446: Nữ hoàng Medusa thật sự! Đảng Skeleton vạn tuế!",
+    "path": "phần 3/446.txt"
+  },
+  {
+    "number": 447,
+    "title": "Chương 447: Đoạt chức thủ lĩnh băng đảng Skeleton! Ta chính là thần!",
+    "path": "phần 3/447.txt"
+  },
+  {
+    "number": 448,
+    "title": "Chương 448: Bắt đầu cho phiếu",
+    "path": "phần 3/448.txt"
+  },
+  {
+    "number": 449,
+    "title": "Chương 449: Một màn kinh người",
+    "path": "phần 3/449.txt"
+  },
+  {
+    "number": 450,
+    "title": "Chương 450: Chúng ta về nhà",
+    "path": "phần 3/450.txt"
+  },
+  {
+    "number": 451,
+    "title": "Chương 451: Công chúa Helen trở về",
+    "path": "phần 3/451.txt"
+  },
+  {
+    "number": 452,
+    "title": "Chương 452: Lý tưởng của Nữ Hoàng",
+    "path": "phần 3/452.txt"
+  },
+  {
+    "number": 453,
+    "title": "Chương 453: Helen nghịch thiên",
+    "path": "phần 3/453.txt"
+  },
+  {
+    "number": 454,
+    "title": "Chương 454: Thần tích",
+    "path": "phần 3/454.txt"
+  },
+  {
+    "number": 455,
+    "title": "Chương 455: Bi kịch của Douglas",
+    "path": "phần 3/455.txt"
+  },
+  {
+    "number": 456,
+    "title": "Chương 456: Vu oan giết người",
+    "path": "phần 3/456.txt"
+  },
+  {
+    "number": 457,
+    "title": "Chương 457: Tỷ đệ gặp nhau",
+    "path": "phần 3/457.txt"
+  },
+  {
+    "number": 458,
+    "title": "Chương 458: Quyết chiến!",
+    "path": "phần 3/458.txt"
+  },
+  {
+    "number": 459,
+    "title": "Chương 459: Chúa tể của vùng biển",
+    "path": "phần 3/459.txt"
+  },
+  {
+    "number": 460,
+    "title": "Chương 460: Nhiệt huyết sôi trào.",
+    "path": "phần 3/460.txt"
+  },
+  {
+    "number": 461,
+    "title": "Chương 461: Trận chiến quỷ dị",
+    "path": "phần 3/461.txt"
+  },
+  {
+    "number": 462,
+    "title": "Chương 462: Đảng Sketelon quật khởi",
+    "path": "phần 3/462.txt"
+  },
+  {
+    "number": 463,
+    "title": "Chương 463: Công chúa của đế quốc Lost",
+    "path": "phần 3/463.txt"
+  },
+  {
+    "number": 464,
+    "title": "Chương 464: A di! Người chịu khổ rồi",
+    "path": "phần 3/464.txt"
+  },
+  {
+    "number": 465,
+    "title": "Chương 465: Trận chiến kết thúc",
+    "path": "phần 3/465.txt"
+  },
+  {
+    "number": 466,
+    "title": "Chương 466: Đảng Sketelon quỳ xuống thuần phục",
+    "path": "phần 3/466.txt"
+  },
+  {
+    "number": 467,
+    "title": "Chương 467: Hóa giải lời nguyền",
+    "path": "phần 3/467.txt"
+  },
+  {
+    "number": 468,
+    "title": "Chương 468: Dibos mang thai",
+    "path": "phần 3/468.txt"
+  },
+  {
+    "number": 469,
+    "title": "Chương 469: Thành Golden Jade bị cô lập.",
+    "path": "phần 3/469.txt"
+  },
+  {
+    "number": 470,
+    "title": "Chương 470: Russell khởi binh",
+    "path": "phần 3/470.txt"
+  },
+  {
+    "number": 471,
+    "title": "Chương 471: Rượt đuổi",
+    "path": "phần 3/471.txt"
+  },
+  {
+    "number": 472,
+    "title": "Chương 472: Tàn sát",
+    "path": "phần 3/472.txt"
+  },
+  {
+    "number": 473,
+    "title": "Chương 473: Toàn quân bị diệt",
+    "path": "phần 3/473.txt"
+  },
+  {
+    "number": 474,
+    "title": "Chương 474: Tự thiến",
+    "path": "phần 3/474.txt"
+  },
+  {
+    "number": 475,
+    "title": "Chương 475: Lăng trì xử tử",
+    "path": "phần 3/475.txt"
+  },
+  {
+    "number": 476,
+    "title": "Chương 476",
+    "path": "phần 3/476.txt"
+  },
+  {
+    "number": 477,
+    "title": "Chương 477",
+    "path": "phần 3/477.txt"
+  },
+  {
+    "number": 478,
+    "title": "Chương 478",
+    "path": "phần 3/478.txt"
+  },
+  {
+    "number": 479,
+    "title": "Chương 479",
+    "path": "phần 3/479.txt"
+  },
+  {
+    "number": 480,
+    "title": "Chương 480",
+    "path": "phần 3/480.txt"
+  },
+  {
+    "number": 481,
+    "title": "Chương 481",
+    "path": "phần 3/481.txt"
+  },
+  {
+    "number": 482,
+    "title": "Chương 482",
+    "path": "phần 3/482.txt"
+  },
+  {
+    "number": 483,
+    "title": "Chương 483",
+    "path": "phần 3/483.txt"
+  },
+  {
+    "number": 484,
+    "title": "Chương 484",
+    "path": "phần 3/484.txt"
+  },
+  {
+    "number": 485,
+    "title": "Chương 485",
+    "path": "phần 3/485.txt"
+  },
+  {
+    "number": 486,
+    "title": "Chương 486",
+    "path": "phần 3/486.txt"
+  },
+  {
+    "number": 487,
+    "title": "Chương 487",
+    "path": "phần 3/487.txt"
+  },
+  {
+    "number": 488,
+    "title": "Chương 488",
+    "path": "phần 3/488.txt"
+  },
+  {
+    "number": 489,
+    "title": "Chương 489",
+    "path": "phần 3/489.txt"
+  },
+  {
+    "number": 490,
+    "title": "Chương 490",
+    "path": "phần 3/490.txt"
+  },
+  {
+    "number": 491,
+    "title": "Chương 491",
+    "path": "phần 3/491.txt"
+  },
+  {
+    "number": 492,
+    "title": "Chương 492",
+    "path": "phần 3/492.txt"
+  },
+  {
+    "number": 493,
+    "title": "Chương 493",
+    "path": "phần 3/493.txt"
+  },
+  {
+    "number": 494,
+    "title": "Chương 494",
+    "path": "phần 3/494.txt"
+  },
+  {
+    "number": 495,
+    "title": "Chương 495",
+    "path": "phần 3/495.txt"
+  },
+  {
+    "number": 496,
+    "title": "Chương 496",
+    "path": "phần 3/496.txt"
+  },
+  {
+    "number": 497,
+    "title": "Chương 497",
+    "path": "phần 3/497.txt"
+  },
+  {
+    "number": 498,
+    "title": "Chương 498",
+    "path": "phần 3/498.txt"
+  },
+  {
+    "number": 499,
+    "title": "Chương 499",
+    "path": "phần 3/499.txt"
+  },
+  {
+    "number": 500,
+    "title": "Chương 500",
+    "path": "phần 3/500.txt"
+  },
+  {
+    "number": 501,
+    "title": "Chương 501",
+    "path": "phần 3/501.txt"
+  },
+  {
+    "number": 502,
+    "title": "Chương 502",
+    "path": "phần 3/502.txt"
+  },
+  {
+    "number": 503,
+    "title": "Chương 503",
+    "path": "phần 3/503.txt"
+  },
+  {
+    "number": 504,
+    "title": "Chương 504",
+    "path": "phần 3/504.txt"
+  },
+  {
+    "number": 505,
+    "title": "Chương 505",
+    "path": "phần 3/505.txt"
+  },
+  {
+    "number": 506,
+    "title": "Chương 506",
+    "path": "phần 3/506.txt"
+  },
+  {
+    "number": 507,
+    "title": "Chương 507",
+    "path": "phần 3/507.txt"
+  },
+  {
+    "number": 508,
+    "title": "Chương 508",
+    "path": "phần 3/508.txt"
+  },
+  {
+    "number": 509,
+    "title": "Chương 509",
+    "path": "phần 3/509.txt"
+  },
+  {
+    "number": 510,
+    "title": "Chương 510",
+    "path": "phần 3/510.txt"
+  },
+  {
+    "number": 511,
+    "title": "Chương 511",
+    "path": "phần 3/511.txt"
+  },
+  {
+    "number": 512,
+    "title": "Chương 512",
+    "path": "phần 3/512.txt"
+  },
+  {
+    "number": 513,
+    "title": "Chương 513",
+    "path": "phần 3/513.txt"
+  },
+  {
+    "number": 514,
+    "title": "Chương 514",
+    "path": "phần 3/514.txt"
+  },
+  {
+    "number": 515,
+    "title": "Chương 515",
+    "path": "phần 3/515.txt"
+  },
+  {
+    "number": 516,
+    "title": "Chương 516",
+    "path": "phần 3/516.txt"
+  },
+  {
+    "number": 517,
+    "title": "Chương 517",
+    "path": "phần 3/517.txt"
+  },
+  {
+    "number": 518,
+    "title": "Chương 518",
+    "path": "phần 3/518.txt"
+  },
+  {
+    "number": 519,
+    "title": "Chương 519",
+    "path": "phần 3/519.txt"
+  },
+  {
+    "number": 520,
+    "title": "Chương 520",
+    "path": "phần 3/520.txt"
+  },
+  {
+    "number": 521,
+    "title": "Chương 521",
+    "path": "phần 3/521.txt"
+  },
+  {
+    "number": 522,
+    "title": "Chương 522",
+    "path": "phần 3/522.txt"
+  },
+  {
+    "number": 523,
+    "title": "Chương 523",
+    "path": "phần 3/523.txt"
+  },
+  {
+    "number": 524,
+    "title": "Chương 524",
+    "path": "phần 3/524.txt"
+  },
+  {
+    "number": 525,
+    "title": "Chương 525",
+    "path": "phần 3/525.txt"
+  },
+  {
+    "number": 526,
+    "title": "Chương 526",
+    "path": "phần 3/526.txt"
+  },
+  {
+    "number": 527,
+    "title": "Chương 527",
+    "path": "phần 3/527.txt"
+  },
+  {
+    "number": 528,
+    "title": "Chương 528",
+    "path": "phần 3/528.txt"
+  },
+  {
+    "number": 529,
+    "title": "Chương 529",
+    "path": "phần 3/529.txt"
+  },
+  {
+    "number": 530,
+    "title": "Chương 530",
+    "path": "phần 3/530.txt"
+  },
+  {
+    "number": 531,
+    "title": "Chương 531",
+    "path": "phần 3/531.txt"
+  },
+  {
+    "number": 532,
+    "title": "Chương 532",
+    "path": "phần 3/532.txt"
+  },
+  {
+    "number": 533,
+    "title": "Chương 533",
+    "path": "phần 3/533.txt"
+  },
+  {
+    "number": 534,
+    "title": "Chương 534",
+    "path": "phần 3/534.txt"
+  },
+  {
+    "number": 535,
+    "title": "Chương 535",
+    "path": "phần 3/535.txt"
+  },
+  {
+    "number": 536,
+    "title": "Chương 536",
+    "path": "phần 3/536.txt"
+  },
+  {
+    "number": 537,
+    "title": "Chương 537",
+    "path": "phần 3/537.txt"
+  },
+  {
+    "number": 538,
+    "title": "Chương 538",
+    "path": "phần 3/538.txt"
+  },
+  {
+    "number": 539,
+    "title": "Chương 539",
+    "path": "phần 3/539.txt"
+  },
+  {
+    "number": 540,
+    "title": "Chương 540",
+    "path": "phần 3/540.txt"
+  },
+  {
+    "number": 541,
+    "title": "Chương 541",
+    "path": "phần 3/541.txt"
+  },
+  {
+    "number": 542,
+    "title": "Chương 542",
+    "path": "phần 3/542.txt"
+  },
+  {
+    "number": 543,
+    "title": "Chương 543",
+    "path": "phần 3/543.txt"
+  },
+  {
+    "number": 544,
+    "title": "Chương 544",
+    "path": "phần 3/544.txt"
+  },
+  {
+    "number": 545,
+    "title": "Chương 545",
+    "path": "phần 3/545.txt"
+  },
+  {
+    "number": 546,
+    "title": "Chương 546",
+    "path": "phần 3/546.txt"
+  },
+  {
+    "number": 547,
+    "title": "Chương 547",
+    "path": "phần 3/547.txt"
+  },
+  {
+    "number": 548,
+    "title": "Chương 548",
+    "path": "phần 3/548.txt"
+  },
+  {
+    "number": 549,
+    "title": "Chương 549",
+    "path": "phần 3/549.txt"
+  },
+  {
+    "number": 550,
+    "title": "Chương 550",
+    "path": "phần 3/550.txt"
+  },
+  {
+    "number": 551,
+    "title": "Chương 551",
+    "path": "phần 3/551.txt"
+  },
+  {
+    "number": 552,
+    "title": "Chương 552",
+    "path": "phần 3/552.txt"
+  },
+  {
+    "number": 553,
+    "title": "Chương 553",
+    "path": "phần 3/553.txt"
+  },
+  {
+    "number": 554,
+    "title": "Chương 554",
+    "path": "phần 3/554.txt"
+  },
+  {
+    "number": 555,
+    "title": "Chương 555",
+    "path": "phần 3/555.txt"
+  },
+  {
+    "number": 556,
+    "title": "Chương 556",
+    "path": "phần 3/556.txt"
+  },
+  {
+    "number": 557,
+    "title": "Chương 557",
+    "path": "phần 3/557.txt"
+  },
+  {
+    "number": 558,
+    "title": "Chương 558",
+    "path": "phần 3/558.txt"
+  },
+  {
+    "number": 559,
+    "title": "Chương 559",
+    "path": "phần 3/559.txt"
+  },
+  {
+    "number": 560,
+    "title": "Chương 560",
+    "path": "phần 3/560.txt"
+  },
+  {
+    "number": 561,
+    "title": "Chương 561",
+    "path": "phần 3/561.txt"
+  },
+  {
+    "number": 562,
+    "title": "Chương 562",
+    "path": "phần 3/562.txt"
+  },
+  {
+    "number": 563,
+    "title": "Chương 563",
+    "path": "phần 3/563.txt"
+  },
+  {
+    "number": 564,
+    "title": "Chương 564",
+    "path": "phần 3/564.txt"
+  },
+  {
+    "number": 565,
+    "title": "Chương 565",
+    "path": "phần 3/565.txt"
+  },
+  {
+    "number": 566,
+    "title": "Chương 566",
+    "path": "phần 3/566.txt"
+  },
+  {
+    "number": 567,
+    "title": "Chương 567",
+    "path": "phần 3/567.txt"
+  },
+  {
+    "number": 568,
+    "title": "Chương 568",
+    "path": "phần 3/568.txt"
+  },
+  {
+    "number": 569,
+    "title": "Chương 569",
+    "path": "phần 3/569.txt"
+  },
+  {
+    "number": 570,
+    "title": "Chương 570",
+    "path": "phần 3/570.txt"
+  },
+  {
+    "number": 571,
+    "title": "Chương 571",
+    "path": "phần 3/571.txt"
+  },
+  {
+    "number": 572,
+    "title": "Chương 572",
+    "path": "phần 3/572.txt"
+  },
+  {
+    "number": 573,
+    "title": "Chương 573",
+    "path": "phần 3/573.txt"
+  },
+  {
+    "number": 574,
+    "title": "Chương 574",
+    "path": "phần 3/574.txt"
+  },
+  {
+    "number": 575,
+    "title": "Chương 575",
+    "path": "phần 3/575.txt"
+  },
+  {
+    "number": 576,
+    "title": "Chương 576",
+    "path": "phần 3/576.txt"
+  },
+  {
+    "number": 577,
+    "title": "Chương 577",
+    "path": "phần 3/577.txt"
+  },
+  {
+    "number": 578,
+    "title": "Chương 578",
+    "path": "phần 3/578.txt"
+  },
+  {
+    "number": 579,
+    "title": "Chương 579",
+    "path": "phần 3/579.txt"
+  },
+  {
+    "number": 580,
+    "title": "Chương 580",
+    "path": "phần 3/580.txt"
+  },
+  {
+    "number": 581,
+    "title": "Chương 581",
+    "path": "phần 3/581.txt"
+  },
+  {
+    "number": 582,
+    "title": "Chương 582",
+    "path": "phần 3/582.txt"
+  },
+  {
+    "number": 583,
+    "title": "Chương 583",
+    "path": "phần 3/583.txt"
+  },
+  {
+    "number": 584,
+    "title": "Chương 584",
+    "path": "phần 3/584.txt"
+  },
+  {
+    "number": 585,
+    "title": "Chương 585",
+    "path": "phần 3/585.txt"
+  },
+  {
+    "number": 586,
+    "title": "Chương 586",
+    "path": "phần 3/586.txt"
+  },
+  {
+    "number": 587,
+    "title": "Chương 587",
+    "path": "phần 3/587.txt"
+  },
+  {
+    "number": 588,
+    "title": "Chương 588",
+    "path": "phần 3/588.txt"
+  },
+  {
+    "number": 589,
+    "title": "Chương 589",
+    "path": "phần 3/589.txt"
+  },
+  {
+    "number": 590,
+    "title": "Chương 590",
+    "path": "phần 3/590.txt"
+  },
+  {
+    "number": 591,
+    "title": "Chương 591",
+    "path": "phần 3/591.txt"
+  },
+  {
+    "number": 592,
+    "title": "Chương 592",
+    "path": "phần 3/592.txt"
+  },
+  {
+    "number": 593,
+    "title": "Chương 593",
+    "path": "phần 3/593.txt"
+  },
+  {
+    "number": 594,
+    "title": "Chương 594",
+    "path": "phần 3/594.txt"
+  },
+  {
+    "number": 595,
+    "title": "Chương 595",
+    "path": "phần 3/595.txt"
+  },
+  {
+    "number": 596,
+    "title": "Chương 596",
+    "path": "phần 3/596.txt"
+  },
+  {
+    "number": 597,
+    "title": "Chương 597",
+    "path": "phần 3/597.txt"
+  },
+  {
+    "number": 598,
+    "title": "Chương 598",
+    "path": "phần 3/598.txt"
+  },
+  {
+    "number": 599,
+    "title": "Chương 599",
+    "path": "phần 3/599.txt"
+  },
+  {
+    "number": 600,
+    "title": "Chương 600",
+    "path": "phần 3/600.txt"
+  },
+  {
+    "number": 601,
+    "title": "Chương 601",
+    "path": "phần 4/601.txt"
+  },
+  {
+    "number": 602,
+    "title": "Chương 602",
+    "path": "phần 4/602.txt"
+  },
+  {
+    "number": 603,
+    "title": "Chương 603",
+    "path": "phần 4/603.txt"
+  },
+  {
+    "number": 604,
+    "title": "Chương 604",
+    "path": "phần 4/604.txt"
+  },
+  {
+    "number": 605,
+    "title": "Chương 605",
+    "path": "phần 4/605.txt"
+  },
+  {
+    "number": 606,
+    "title": "Chương 606",
+    "path": "phần 4/606.txt"
+  },
+  {
+    "number": 607,
+    "title": "Chương 607",
+    "path": "phần 4/607.txt"
+  },
+  {
+    "number": 608,
+    "title": "Chương 608",
+    "path": "phần 4/608.txt"
+  },
+  {
+    "number": 609,
+    "title": "Chương 609",
+    "path": "phần 4/609.txt"
+  },
+  {
+    "number": 610,
+    "title": "Chương 610",
+    "path": "phần 4/610.txt"
+  },
+  {
+    "number": 611,
+    "title": "Chương 611",
+    "path": "phần 4/611.txt"
+  },
+  {
+    "number": 612,
+    "title": "Chương 612",
+    "path": "phần 4/612.txt"
+  },
+  {
+    "number": 613,
+    "title": "Chương 613",
+    "path": "phần 4/613.txt"
+  },
+  {
+    "number": 614,
+    "title": "Chương 614",
+    "path": "phần 4/614.txt"
+  },
+  {
+    "number": 615,
+    "title": "Chương 615",
+    "path": "phần 4/615.txt"
+  },
+  {
+    "number": 616,
+    "title": "Chương 616",
+    "path": "phần 4/616.txt"
+  },
+  {
+    "number": 617,
+    "title": "Chương 617",
+    "path": "phần 4/617.txt"
+  },
+  {
+    "number": 618,
+    "title": "Chương 618",
+    "path": "phần 4/618.txt"
+  },
+  {
+    "number": 619,
+    "title": "Chương 619",
+    "path": "phần 4/619.txt"
+  },
+  {
+    "number": 620,
+    "title": "Chương 620",
+    "path": "phần 4/620.txt"
+  },
+  {
+    "number": 621,
+    "title": "Chương 621",
+    "path": "phần 4/621.txt"
+  },
+  {
+    "number": 622,
+    "title": "Chương 622",
+    "path": "phần 4/622.txt"
+  },
+  {
+    "number": 623,
+    "title": "Chương 623",
+    "path": "phần 4/623.txt"
+  },
+  {
+    "number": 624,
+    "title": "Chương 624",
+    "path": "phần 4/624.txt"
+  },
+  {
+    "number": 625,
+    "title": "Chương 625",
+    "path": "phần 4/625.txt"
+  },
+  {
+    "number": 626,
+    "title": "Chương 626",
+    "path": "phần 4/626.txt"
+  },
+  {
+    "number": 627,
+    "title": "Chương 627",
+    "path": "phần 4/627.txt"
+  },
+  {
+    "number": 628,
+    "title": "Chương 628",
+    "path": "phần 4/628.txt"
+  },
+  {
+    "number": 629,
+    "title": "Chương 629",
+    "path": "phần 4/629.txt"
+  },
+  {
+    "number": 630,
+    "title": "Chương 630",
+    "path": "phần 4/630.txt"
+  },
+  {
+    "number": 631,
+    "title": "Chương 631",
+    "path": "phần 4/631.txt"
+  },
+  {
+    "number": 632,
+    "title": "Chương 632",
+    "path": "phần 4/632.txt"
+  },
+  {
+    "number": 633,
+    "title": "Chương 633",
+    "path": "phần 4/633.txt"
+  },
+  {
+    "number": 634,
+    "title": "Chương 634",
+    "path": "phần 4/634.txt"
+  },
+  {
+    "number": 635,
+    "title": "Chương 635",
+    "path": "phần 4/635.txt"
+  },
+  {
+    "number": 636,
+    "title": "Chương 636",
+    "path": "phần 4/636.txt"
+  },
+  {
+    "number": 637,
+    "title": "Chương 637",
+    "path": "phần 4/637.txt"
+  },
+  {
+    "number": 638,
+    "title": "Chương 638",
+    "path": "phần 4/638.txt"
+  },
+  {
+    "number": 639,
+    "title": "Chương 639",
+    "path": "phần 4/639.txt"
+  },
+  {
+    "number": 640,
+    "title": "Chương 640",
+    "path": "phần 4/640.txt"
+  },
+  {
+    "number": 641,
+    "title": "Chương 641",
+    "path": "phần 4/641.txt"
+  },
+  {
+    "number": 642,
+    "title": "Chương 642",
+    "path": "phần 4/642.txt"
+  },
+  {
+    "number": 643,
+    "title": "Chương 643",
+    "path": "phần 4/643.txt"
+  },
+  {
+    "number": 644,
+    "title": "Chương 644",
+    "path": "phần 4/644.txt"
+  },
+  {
+    "number": 645,
+    "title": "Chương 645",
+    "path": "phần 4/645.txt"
+  },
+  {
+    "number": 646,
+    "title": "Chương 646",
+    "path": "phần 4/646.txt"
+  },
+  {
+    "number": 647,
+    "title": "Chương 647",
+    "path": "phần 4/647.txt"
+  },
+  {
+    "number": 648,
+    "title": "Chương 648",
+    "path": "phần 4/648.txt"
+  },
+  {
+    "number": 649,
+    "title": "Chương 649",
+    "path": "phần 4/649.txt"
+  },
+  {
+    "number": 650,
+    "title": "Chương 650",
+    "path": "phần 4/650.txt"
+  },
+  {
+    "number": 651,
+    "title": "Chương 651",
+    "path": "phần 4/651.txt"
+  },
+  {
+    "number": 652,
+    "title": "Chương 652",
+    "path": "phần 4/652.txt"
+  },
+  {
+    "number": 653,
+    "title": "Chương 653",
+    "path": "phần 4/653.txt"
+  },
+  {
+    "number": 654,
+    "title": "Chương 654",
+    "path": "phần 4/654.txt"
+  },
+  {
+    "number": 655,
+    "title": "Chương 655",
+    "path": "phần 4/655.txt"
+  },
+  {
+    "number": 656,
+    "title": "Chương 656",
+    "path": "phần 4/656.txt"
+  },
+  {
+    "number": 657,
+    "title": "Chương 657",
+    "path": "phần 4/657.txt"
+  },
+  {
+    "number": 658,
+    "title": "Chương 658",
+    "path": "phần 4/658.txt"
+  },
+  {
+    "number": 659,
+    "title": "Chương 659",
+    "path": "phần 4/659.txt"
+  },
+  {
+    "number": 660,
+    "title": "Chương 660",
+    "path": "phần 4/660.txt"
+  },
+  {
+    "number": 661,
+    "title": "Chương 661",
+    "path": "phần 4/661.txt"
+  },
+  {
+    "number": 662,
+    "title": "Chương 662",
+    "path": "phần 4/662.txt"
+  },
+  {
+    "number": 663,
+    "title": "Chương 663",
+    "path": "phần 4/663.txt"
+  },
+  {
+    "number": 664,
+    "title": "Chương 664",
+    "path": "phần 4/664.txt"
+  },
+  {
+    "number": 665,
+    "title": "Chương 665",
+    "path": "phần 4/665.txt"
+  },
+  {
+    "number": 666,
+    "title": "Chương 666",
+    "path": "phần 4/666.txt"
+  },
+  {
+    "number": 667,
+    "title": "Chương 667",
+    "path": "phần 4/667.txt"
+  },
+  {
+    "number": 668,
+    "title": "Chương 668",
+    "path": "phần 4/668.txt"
+  },
+  {
+    "number": 669,
+    "title": "Chương 669",
+    "path": "phần 4/669.txt"
+  },
+  {
+    "number": 670,
+    "title": "Chương 670",
+    "path": "phần 4/670.txt"
+  },
+  {
+    "number": 671,
+    "title": "Chương 671",
+    "path": "phần 4/671.txt"
+  },
+  {
+    "number": 672,
+    "title": "Chương 672",
+    "path": "phần 4/672.txt"
+  },
+  {
+    "number": 673,
+    "title": "Chương 673",
+    "path": "phần 4/673.txt"
+  },
+  {
+    "number": 674,
+    "title": "Chương 674",
+    "path": "phần 4/674.txt"
+  },
+  {
+    "number": 675,
+    "title": "Chương 675",
+    "path": "phần 4/675.txt"
+  },
+  {
+    "number": 676,
+    "title": "Chương 676",
+    "path": "phần 4/676.txt"
+  },
+  {
+    "number": 677,
+    "title": "Chương 677",
+    "path": "phần 4/677.txt"
+  },
+  {
+    "number": 678,
+    "title": "Chương 678",
+    "path": "phần 4/678.txt"
+  },
+  {
+    "number": 679,
+    "title": "Chương 679",
+    "path": "phần 4/679.txt"
+  },
+  {
+    "number": 680,
+    "title": "Chương 680",
+    "path": "phần 4/680.txt"
+  },
+  {
+    "number": 681,
+    "title": "Chương 681",
+    "path": "phần 4/681.txt"
+  },
+  {
+    "number": 682,
+    "title": "Chương 682",
+    "path": "phần 4/682.txt"
+  },
+  {
+    "number": 683,
+    "title": "Chương 683",
+    "path": "phần 4/683.txt"
+  },
+  {
+    "number": 684,
+    "title": "Chương 684",
+    "path": "phần 4/684.txt"
+  },
+  {
+    "number": 685,
+    "title": "Chương 685",
+    "path": "phần 4/685.txt"
+  },
+  {
+    "number": 686,
+    "title": "Chương 686",
+    "path": "phần 4/686.txt"
+  },
+  {
+    "number": 687,
+    "title": "Chương 687",
+    "path": "phần 4/687.txt"
+  },
+  {
+    "number": 688,
+    "title": "Chương 688",
+    "path": "phần 4/688.txt"
+  },
+  {
+    "number": 689,
+    "title": "Chương 689",
+    "path": "phần 4/689.txt"
+  },
+  {
+    "number": 690,
+    "title": "Chương 690",
+    "path": "phần 4/690.txt"
+  },
+  {
+    "number": 691,
+    "title": "Chương 691",
+    "path": "phần 4/691.txt"
+  },
+  {
+    "number": 692,
+    "title": "Chương 692",
+    "path": "phần 4/692.txt"
+  },
+  {
+    "number": 693,
+    "title": "Chương 693",
+    "path": "phần 4/693.txt"
+  },
+  {
+    "number": 694,
+    "title": "Chương 694",
+    "path": "phần 4/694.txt"
+  },
+  {
+    "number": 695,
+    "title": "Chương 695",
+    "path": "phần 4/695.txt"
+  },
+  {
+    "number": 696,
+    "title": "Chương 696",
+    "path": "phần 4/696.txt"
+  },
+  {
+    "number": 697,
+    "title": "Chương 697",
+    "path": "phần 4/697.txt"
+  },
+  {
+    "number": 698,
+    "title": "Chương 698",
+    "path": "phần 4/698.txt"
+  },
+  {
+    "number": 699,
+    "title": "Chương 699",
+    "path": "phần 4/699.txt"
+  },
+  {
+    "number": 700,
+    "title": "Chương 700",
+    "path": "phần 4/700.txt"
+  },
+  {
+    "number": 701,
+    "title": "Chương 701",
+    "path": "phần 4/701.txt"
+  },
+  {
+    "number": 702,
+    "title": "Chương 702",
+    "path": "phần 4/702.txt"
+  },
+  {
+    "number": 703,
+    "title": "Chương 703",
+    "path": "phần 4/703.txt"
+  },
+  {
+    "number": 704,
+    "title": "Chương 704",
+    "path": "phần 4/704.txt"
+  },
+  {
+    "number": 705,
+    "title": "Chương 705",
+    "path": "phần 4/705.txt"
+  },
+  {
+    "number": 706,
+    "title": "Chương 706",
+    "path": "phần 4/706.txt"
+  },
+  {
+    "number": 707,
+    "title": "Chương 707",
+    "path": "phần 4/707.txt"
+  },
+  {
+    "number": 708,
+    "title": "Chương 708",
+    "path": "phần 4/708.txt"
+  },
+  {
+    "number": 709,
+    "title": "Chương 709",
+    "path": "phần 4/709.txt"
+  },
+  {
+    "number": 710,
+    "title": "Chương 710",
+    "path": "phần 4/710.txt"
+  },
+  {
+    "number": 711,
+    "title": "Chương 711",
+    "path": "phần 4/711.txt"
+  },
+  {
+    "number": 712,
+    "title": "Chương 712",
+    "path": "phần 4/712.txt"
+  },
+  {
+    "number": 713,
+    "title": "Chương 713",
+    "path": "phần 4/713.txt"
+  },
+  {
+    "number": 714,
+    "title": "Chương 714",
+    "path": "phần 4/714.txt"
+  },
+  {
+    "number": 715,
+    "title": "Chương 715",
+    "path": "phần 4/715.txt"
+  },
+  {
+    "number": 716,
+    "title": "Chương 716",
+    "path": "phần 4/716.txt"
+  },
+  {
+    "number": 717,
+    "title": "Chương 717",
+    "path": "phần 4/717.txt"
+  },
+  {
+    "number": 718,
+    "title": "Chương 718",
+    "path": "phần 4/718.txt"
+  },
+  {
+    "number": 719,
+    "title": "Chương 719",
+    "path": "phần 4/719.txt"
+  },
+  {
+    "number": 720,
+    "title": "Chương 720",
+    "path": "phần 4/720.txt"
+  },
+  {
+    "number": 721,
+    "title": "Chương 721",
+    "path": "phần 4/721.txt"
+  },
+  {
+    "number": 722,
+    "title": "Chương 722",
+    "path": "phần 4/722.txt"
+  },
+  {
+    "number": 723,
+    "title": "Chương 723",
+    "path": "phần 4/723.txt"
+  },
+  {
+    "number": 724,
+    "title": "Chương 724",
+    "path": "phần 4/724.txt"
+  },
+  {
+    "number": 725,
+    "title": "Chương 725",
+    "path": "phần 4/725.txt"
+  },
+  {
+    "number": 726,
+    "title": "Chương 726",
+    "path": "phần 4/726.txt"
+  },
+  {
+    "number": 727,
+    "title": "Chương 727",
+    "path": "phần 4/727.txt"
+  },
+  {
+    "number": 728,
+    "title": "Chương 728",
+    "path": "phần 4/728.txt"
+  },
+  {
+    "number": 729,
+    "title": "Chương 729",
+    "path": "phần 4/729.txt"
+  },
+  {
+    "number": 730,
+    "title": "Chương 730",
+    "path": "phần 4/730.txt"
+  },
+  {
+    "number": 731,
+    "title": "Chương 731",
+    "path": "phần 4/731.txt"
+  },
+  {
+    "number": 732,
+    "title": "Chương 732",
+    "path": "phần 4/732.txt"
+  },
+  {
+    "number": 733,
+    "title": "Chương 733",
+    "path": "phần 4/733.txt"
+  },
+  {
+    "number": 734,
+    "title": "Chương 734",
+    "path": "phần 4/734.txt"
+  },
+  {
+    "number": 735,
+    "title": "Chương 735",
+    "path": "phần 4/735.txt"
+  },
+  {
+    "number": 736,
+    "title": "Chương 736",
+    "path": "phần 4/736.txt"
+  },
+  {
+    "number": 737,
+    "title": "Chương 737",
+    "path": "phần 4/737.txt"
+  },
+  {
+    "number": 738,
+    "title": "Chương 738",
+    "path": "phần 4/738.txt"
+  },
+  {
+    "number": 739,
+    "title": "Chương 739",
+    "path": "phần 4/739.txt"
+  },
+  {
+    "number": 740,
+    "title": "Chương 740",
+    "path": "phần 4/740.txt"
+  },
+  {
+    "number": 741,
+    "title": "Chương 741",
+    "path": "phần 4/741.txt"
+  },
+  {
+    "number": 742,
+    "title": "Chương 742",
+    "path": "phần 4/742.txt"
+  },
+  {
+    "number": 743,
+    "title": "Chương 743",
+    "path": "phần 4/743.txt"
+  },
+  {
+    "number": 744,
+    "title": "Chương 744",
+    "path": "phần 4/744.txt"
+  },
+  {
+    "number": 745,
+    "title": "Chương 745",
+    "path": "phần 4/745.txt"
+  },
+  {
+    "number": 746,
+    "title": "Chương 746",
+    "path": "phần 4/746.txt"
+  },
+  {
+    "number": 747,
+    "title": "Chương 747",
+    "path": "phần 4/747.txt"
+  },
+  {
+    "number": 748,
+    "title": "Chương 748",
+    "path": "phần 4/748.txt"
+  },
+  {
+    "number": 749,
+    "title": "Chương 749",
+    "path": "phần 4/749.txt"
+  },
+  {
+    "number": 750,
+    "title": "Chương 750",
+    "path": "phần 4/750.txt"
+  },
+  {
+    "number": 751,
+    "title": "Chương 751",
+    "path": "phần 4/751.txt"
+  },
+  {
+    "number": 752,
+    "title": "Chương 752",
+    "path": "phần 4/752.txt"
+  },
+  {
+    "number": 753,
+    "title": "Chương 753",
+    "path": "phần 4/753.txt"
+  },
+  {
+    "number": 754,
+    "title": "Chương 754",
+    "path": "phần 4/754.txt"
+  },
+  {
+    "number": 755,
+    "title": "Chương 755",
+    "path": "phần 4/755.txt"
+  },
+  {
+    "number": 756,
+    "title": "Chương 756",
+    "path": "phần 4/756.txt"
+  },
+  {
+    "number": 757,
+    "title": "Chương 757",
+    "path": "phần 4/757.txt"
+  },
+  {
+    "number": 758,
+    "title": "Chương 758",
+    "path": "phần 4/758.txt"
+  },
+  {
+    "number": 759,
+    "title": "Chương 759",
+    "path": "phần 4/759.txt"
+  },
+  {
+    "number": 760,
+    "title": "Chương 760",
+    "path": "phần 4/760.txt"
+  },
+  {
+    "number": 761,
+    "title": "Chương 761",
+    "path": "phần 4/761.txt"
+  },
+  {
+    "number": 762,
+    "title": "Chương 762",
+    "path": "phần 4/762.txt"
+  },
+  {
+    "number": 763,
+    "title": "Chương 763",
+    "path": "phần 4/763.txt"
+  },
+  {
+    "number": 764,
+    "title": "Chương 764",
+    "path": "phần 4/764.txt"
+  },
+  {
+    "number": 765,
+    "title": "Chương 765",
+    "path": "phần 4/765.txt"
+  },
+  {
+    "number": 766,
+    "title": "Chương 766",
+    "path": "phần 4/766.txt"
+  },
+  {
+    "number": 767,
+    "title": "Chương 767",
+    "path": "phần 4/767.txt"
+  },
+  {
+    "number": 768,
+    "title": "Chương 768",
+    "path": "phần 4/768.txt"
+  },
+  {
+    "number": 769,
+    "title": "Chương 769",
+    "path": "phần 4/769.txt"
+  },
+  {
+    "number": 770,
+    "title": "Chương 770",
+    "path": "phần 4/770.txt"
+  },
+  {
+    "number": 771,
+    "title": "Chương 771",
+    "path": "phần 4/771.txt"
+  },
+  {
+    "number": 772,
+    "title": "Chương 772",
+    "path": "phần 4/772.txt"
+  },
+  {
+    "number": 773,
+    "title": "Chương 773",
+    "path": "phần 4/773.txt"
+  },
+  {
+    "number": 774,
+    "title": "Chương 774",
+    "path": "phần 4/774.txt"
+  },
+  {
+    "number": 775,
+    "title": "Chương 775",
+    "path": "phần 4/775.txt"
+  },
+  {
+    "number": 776,
+    "title": "Chương 776",
+    "path": "phần 4/776.txt"
+  },
+  {
+    "number": 777,
+    "title": "Chương 777",
+    "path": "phần 4/777.txt"
+  },
+  {
+    "number": 778,
+    "title": "Chương 778",
+    "path": "phần 4/778.txt"
+  },
+  {
+    "number": 779,
+    "title": "Chương 779",
+    "path": "phần 4/779.txt"
+  },
+  {
+    "number": 780,
+    "title": "Chương 780",
+    "path": "phần 4/780.txt"
+  },
+  {
+    "number": 781,
+    "title": "Chương 781",
+    "path": "phần 4/781.txt"
+  },
+  {
+    "number": 782,
+    "title": "Chương 782",
+    "path": "phần 4/782.txt"
+  },
+  {
+    "number": 783,
+    "title": "Chương 783",
+    "path": "phần 4/783.txt"
+  },
+  {
+    "number": 784,
+    "title": "Chương 784",
+    "path": "phần 4/784.txt"
+  },
+  {
+    "number": 785,
+    "title": "Chương 785",
+    "path": "phần 4/785.txt"
+  },
+  {
+    "number": 786,
+    "title": "Chương 786",
+    "path": "phần 4/786.txt"
+  },
+  {
+    "number": 787,
+    "title": "Chương 787",
+    "path": "phần 4/787.txt"
+  },
+  {
+    "number": 788,
+    "title": "Chương 788",
+    "path": "phần 4/788.txt"
+  },
+  {
+    "number": 789,
+    "title": "Chương 789",
+    "path": "phần 4/789.txt"
+  },
+  {
+    "number": 790,
+    "title": "Chương 790",
+    "path": "phần 4/790.txt"
+  },
+  {
+    "number": 791,
+    "title": "Chương 791",
+    "path": "phần 4/791.txt"
+  },
+  {
+    "number": 792,
+    "title": "Chương 792",
+    "path": "phần 4/792.txt"
+  },
+  {
+    "number": 793,
+    "title": "Chương 793",
+    "path": "phần 4/793.txt"
+  },
+  {
+    "number": 794,
+    "title": "Chương 794",
+    "path": "phần 4/794.txt"
+  },
+  {
+    "number": 795,
+    "title": "Chương 795",
+    "path": "phần 4/795.txt"
+  },
+  {
+    "number": 796,
+    "title": "Chương 796",
+    "path": "phần 4/796.txt"
+  },
+  {
+    "number": 797,
+    "title": "Chương 797",
+    "path": "phần 4/797.txt"
+  },
+  {
+    "number": 798,
+    "title": "Chương 798",
+    "path": "phần 4/798.txt"
+  },
+  {
+    "number": 799,
+    "title": "Chương 799",
+    "path": "phần 4/799.txt"
+  },
+  {
+    "number": 800,
+    "title": "Chương 800",
+    "path": "phần 4/800.txt"
+  },
+  {
+    "number": 801,
+    "title": "Chương 801",
+    "path": "phần 5/801.txt"
+  },
+  {
+    "number": 802,
+    "title": "Chương 802",
+    "path": "phần 5/802.txt"
+  },
+  {
+    "number": 803,
+    "title": "Chương 803",
+    "path": "phần 5/803.txt"
+  },
+  {
+    "number": 804,
+    "title": "Chương 804",
+    "path": "phần 5/804.txt"
+  },
+  {
+    "number": 805,
+    "title": "Chương 805",
+    "path": "phần 5/805.txt"
+  },
+  {
+    "number": 806,
+    "title": "Chương 806",
+    "path": "phần 5/806.txt"
+  },
+  {
+    "number": 807,
+    "title": "Chương 807",
+    "path": "phần 5/807.txt"
+  },
+  {
+    "number": 808,
+    "title": "Chương 808",
+    "path": "phần 5/808.txt"
+  },
+  {
+    "number": 809,
+    "title": "Chương 809",
+    "path": "phần 5/809.txt"
+  },
+  {
+    "number": 810,
+    "title": "Chương 810",
+    "path": "phần 5/810.txt"
+  },
+  {
+    "number": 811,
+    "title": "Chương 811",
+    "path": "phần 5/811.txt"
+  },
+  {
+    "number": 812,
+    "title": "Chương 812",
+    "path": "phần 5/812.txt"
+  },
+  {
+    "number": 813,
+    "title": "Chương 813",
+    "path": "phần 5/813.txt"
+  },
+  {
+    "number": 814,
+    "title": "Chương 814",
+    "path": "phần 5/814.txt"
+  },
+  {
+    "number": 815,
+    "title": "Chương 815",
+    "path": "phần 5/815.txt"
+  },
+  {
+    "number": 816,
+    "title": "Chương 816",
+    "path": "phần 5/816.txt"
+  },
+  {
+    "number": 817,
+    "title": "Chương 817",
+    "path": "phần 5/817.txt"
+  },
+  {
+    "number": 818,
+    "title": "Chương 818",
+    "path": "phần 5/818.txt"
+  },
+  {
+    "number": 819,
+    "title": "Chương 819",
+    "path": "phần 5/819.txt"
+  },
+  {
+    "number": 820,
+    "title": "Chương 820",
+    "path": "phần 5/820.txt"
+  },
+  {
+    "number": 821,
+    "title": "Chương 821",
+    "path": "phần 5/821.txt"
+  },
+  {
+    "number": 822,
+    "title": "Chương 822",
+    "path": "phần 5/822.txt"
+  },
+  {
+    "number": 823,
+    "title": "Chương 823",
+    "path": "phần 5/823.txt"
+  },
+  {
+    "number": 824,
+    "title": "Chương 824",
+    "path": "phần 5/824.txt"
+  },
+  {
+    "number": 825,
+    "title": "Chương 825",
+    "path": "phần 5/825.txt"
+  },
+  {
+    "number": 826,
+    "title": "Chương 826",
+    "path": "phần 5/826.txt"
+  },
+  {
+    "number": 827,
+    "title": "Chương 827",
+    "path": "phần 5/827.txt"
+  },
+  {
+    "number": 828,
+    "title": "Chương 828",
+    "path": "phần 5/828.txt"
+  },
+  {
+    "number": 829,
+    "title": "Chương 829",
+    "path": "phần 5/829.txt"
+  },
+  {
+    "number": 830,
+    "title": "Chương 830",
+    "path": "phần 5/830.txt"
+  },
+  {
+    "number": 831,
+    "title": "Chương 831",
+    "path": "phần 5/831.txt"
+  },
+  {
+    "number": 832,
+    "title": "Chương 832",
+    "path": "phần 5/832.txt"
+  },
+  {
+    "number": 833,
+    "title": "Chương 833",
+    "path": "phần 5/833.txt"
+  },
+  {
+    "number": 834,
+    "title": "Chương 834",
+    "path": "phần 5/834.txt"
+  },
+  {
+    "number": 835,
+    "title": "Chương 835",
+    "path": "phần 5/835.txt"
+  },
+  {
+    "number": 836,
+    "title": "Chương 836",
+    "path": "phần 5/836.txt"
+  },
+  {
+    "number": 837,
+    "title": "Chương 837",
+    "path": "phần 5/837.txt"
+  },
+  {
+    "number": 838,
+    "title": "Chương 838",
+    "path": "phần 5/838.txt"
+  },
+  {
+    "number": 839,
+    "title": "Chương 839",
+    "path": "phần 5/839.txt"
+  },
+  {
+    "number": 840,
+    "title": "Chương 840",
+    "path": "phần 5/840.txt"
+  },
+  {
+    "number": 841,
+    "title": "Chương 841",
+    "path": "phần 5/841.txt"
+  },
+  {
+    "number": 842,
+    "title": "Chương 842",
+    "path": "phần 5/842.txt"
+  },
+  {
+    "number": 843,
+    "title": "Chương 843",
+    "path": "phần 5/843.txt"
+  },
+  {
+    "number": 844,
+    "title": "Chương 844",
+    "path": "phần 5/844.txt"
+  },
+  {
+    "number": 845,
+    "title": "Chương 845",
+    "path": "phần 5/845.txt"
+  },
+  {
+    "number": 846,
+    "title": "Chương 846",
+    "path": "phần 5/846.txt"
+  },
+  {
+    "number": 847,
+    "title": "Chương 847",
+    "path": "phần 5/847.txt"
+  },
+  {
+    "number": 848,
+    "title": "Chương 848",
+    "path": "phần 5/848.txt"
+  },
+  {
+    "number": 849,
+    "title": "Chương 849",
+    "path": "phần 5/849.txt"
+  },
+  {
+    "number": 850,
+    "title": "Chương 850",
+    "path": "phần 5/850.txt"
+  },
+  {
+    "number": 851,
+    "title": "Chương 851",
+    "path": "phần 5/851.txt"
+  },
+  {
+    "number": 852,
+    "title": "Chương 852",
+    "path": "phần 5/852.txt"
+  },
+  {
+    "number": 853,
+    "title": "Chương 853",
+    "path": "phần 5/853.txt"
+  },
+  {
+    "number": 854,
+    "title": "Chương 854",
+    "path": "phần 5/854.txt"
+  },
+  {
+    "number": 855,
+    "title": "Chương 855",
+    "path": "phần 5/855.txt"
+  },
+  {
+    "number": 856,
+    "title": "Chương 856",
+    "path": "phần 5/856.txt"
+  },
+  {
+    "number": 857,
+    "title": "Chương 857",
+    "path": "phần 5/857.txt"
+  },
+  {
+    "number": 858,
+    "title": "Chương 858",
+    "path": "phần 5/858.txt"
+  },
+  {
+    "number": 859,
+    "title": "Chương 859",
+    "path": "phần 5/859.txt"
+  },
+  {
+    "number": 860,
+    "title": "Chương 860",
+    "path": "phần 5/860.txt"
+  },
+  {
+    "number": 861,
+    "title": "Chương 861",
+    "path": "phần 5/861.txt"
+  },
+  {
+    "number": 862,
+    "title": "Chương 862",
+    "path": "phần 5/862.txt"
+  },
+  {
+    "number": 863,
+    "title": "Chương 863",
+    "path": "phần 5/863.txt"
+  },
+  {
+    "number": 864,
+    "title": "Chương 864",
+    "path": "phần 5/864.txt"
+  },
+  {
+    "number": 865,
+    "title": "Chương 865",
+    "path": "phần 5/865.txt"
+  },
+  {
+    "number": 866,
+    "title": "Chương 866",
+    "path": "phần 5/866.txt"
+  },
+  {
+    "number": 867,
+    "title": "Chương 867",
+    "path": "phần 5/867.txt"
+  },
+  {
+    "number": 868,
+    "title": "Chương 868",
+    "path": "phần 5/868.txt"
+  },
+  {
+    "number": 869,
+    "title": "Chương 869",
+    "path": "phần 5/869.txt"
+  },
+  {
+    "number": 870,
+    "title": "Chương 870",
+    "path": "phần 5/870.txt"
+  },
+  {
+    "number": 871,
+    "title": "Chương 871",
+    "path": "phần 5/871.txt"
+  },
+  {
+    "number": 872,
+    "title": "Chương 872",
+    "path": "phần 5/872.txt"
+  },
+  {
+    "number": 873,
+    "title": "Chương 873",
+    "path": "phần 5/873.txt"
+  },
+  {
+    "number": 874,
+    "title": "Chương 874",
+    "path": "phần 5/874.txt"
+  },
+  {
+    "number": 875,
+    "title": "Chương 875",
+    "path": "phần 5/875.txt"
+  },
+  {
+    "number": 876,
+    "title": "Chương 876",
+    "path": "phần 5/876.txt"
+  },
+  {
+    "number": 877,
+    "title": "Chương 877",
+    "path": "phần 5/877.txt"
+  },
+  {
+    "number": 878,
+    "title": "Chương 878",
+    "path": "phần 5/878.txt"
+  },
+  {
+    "number": 879,
+    "title": "Chương 879",
+    "path": "phần 5/879.txt"
+  },
+  {
+    "number": 880,
+    "title": "Chương 880",
+    "path": "phần 5/880.txt"
+  },
+  {
+    "number": 881,
+    "title": "Chương 881",
+    "path": "phần 5/881.txt"
+  },
+  {
+    "number": 882,
+    "title": "Chương 882",
+    "path": "phần 5/882.txt"
+  },
+  {
+    "number": 883,
+    "title": "Chương 883",
+    "path": "phần 5/883.txt"
+  },
+  {
+    "number": 884,
+    "title": "Chương 884",
+    "path": "phần 5/884.txt"
+  },
+  {
+    "number": 885,
+    "title": "Chương 885",
+    "path": "phần 5/885.txt"
+  },
+  {
+    "number": 886,
+    "title": "Chương 886",
+    "path": "phần 5/886.txt"
+  },
+  {
+    "number": 887,
+    "title": "Chương 887",
+    "path": "phần 5/887.txt"
+  },
+  {
+    "number": 888,
+    "title": "Chương 888",
+    "path": "phần 5/888.txt"
+  },
+  {
+    "number": 889,
+    "title": "Chương 889",
+    "path": "phần 5/889.txt"
+  },
+  {
+    "number": 890,
+    "title": "Chương 890",
+    "path": "phần 5/890.txt"
+  },
+  {
+    "number": 891,
+    "title": "Chương 891",
+    "path": "phần 5/891.txt"
+  },
+  {
+    "number": 892,
+    "title": "Chương 892",
+    "path": "phần 5/892.txt"
+  },
+  {
+    "number": 893,
+    "title": "Chương 893",
+    "path": "phần 5/893.txt"
+  },
+  {
+    "number": 894,
+    "title": "Chương 894",
+    "path": "phần 5/894.txt"
+  },
+  {
+    "number": 895,
+    "title": "Chương 895",
+    "path": "phần 5/895.txt"
+  },
+  {
+    "number": 896,
+    "title": "Chương 896",
+    "path": "phần 5/896.txt"
+  },
+  {
+    "number": 897,
+    "title": "Chương 897",
+    "path": "phần 5/897.txt"
+  },
+  {
+    "number": 898,
+    "title": "Chương 898",
+    "path": "phần 5/898.txt"
+  },
+  {
+    "number": 899,
+    "title": "Chương 899",
+    "path": "phần 5/899.txt"
+  },
+  {
+    "number": 900,
+    "title": "Chương 900",
+    "path": "phần 5/900.txt"
+  },
+  {
+    "number": 901,
+    "title": "Chương 901",
+    "path": "phần 5/901.txt"
+  },
+  {
+    "number": 902,
+    "title": "Chương 902",
+    "path": "phần 5/902.txt"
+  },
+  {
+    "number": 903,
+    "title": "Chương 903",
+    "path": "phần 5/903.txt"
+  },
+  {
+    "number": 904,
+    "title": "Chương 904",
+    "path": "phần 5/904.txt"
+  },
+  {
+    "number": 905,
+    "title": "Chương 905",
+    "path": "phần 5/905.txt"
+  },
+  {
+    "number": 906,
+    "title": "Chương 906",
+    "path": "phần 5/906.txt"
+  },
+  {
+    "number": 907,
+    "title": "Chương 907",
+    "path": "phần 5/907.txt"
+  },
+  {
+    "number": 908,
+    "title": "Chương 908",
+    "path": "phần 5/908.txt"
+  },
+  {
+    "number": 909,
+    "title": "Chương 909",
+    "path": "phần 5/909.txt"
+  },
+  {
+    "number": 910,
+    "title": "Chương 910",
+    "path": "phần 5/910.txt"
+  },
+  {
+    "number": 911,
+    "title": "Chương 911",
+    "path": "phần 5/911.txt"
+  },
+  {
+    "number": 912,
+    "title": "Chương 912",
+    "path": "phần 5/912.txt"
+  },
+  {
+    "number": 913,
+    "title": "Chương 913",
+    "path": "phần 5/913.txt"
+  },
+  {
+    "number": 914,
+    "title": "Chương 914",
+    "path": "phần 5/914.txt"
+  },
+  {
+    "number": 915,
+    "title": "Chương 915",
+    "path": "phần 5/915.txt"
+  },
+  {
+    "number": 916,
+    "title": "Chương 916",
+    "path": "phần 5/916.txt"
+  },
+  {
+    "number": 917,
+    "title": "Chương 917",
+    "path": "phần 5/917.txt"
+  },
+  {
+    "number": 918,
+    "title": "Chương 918",
+    "path": "phần 5/918.txt"
+  },
+  {
+    "number": 919,
+    "title": "Chương 919",
+    "path": "phần 5/919.txt"
+  },
+  {
+    "number": 920,
+    "title": "Chương 920",
+    "path": "phần 5/920.txt"
+  },
+  {
+    "number": 921,
+    "title": "Chương 921",
+    "path": "phần 5/921.txt"
+  },
+  {
+    "number": 922,
+    "title": "Chương 922",
+    "path": "phần 5/922.txt"
+  },
+  {
+    "number": 923,
+    "title": "Chương 923",
+    "path": "phần 5/923.txt"
+  },
+  {
+    "number": 924,
+    "title": "Chương 924",
+    "path": "phần 5/924.txt"
+  },
+  {
+    "number": 925,
+    "title": "Chương 925",
+    "path": "phần 5/925.txt"
+  },
+  {
+    "number": 926,
+    "title": "Chương 926",
+    "path": "phần 5/926.txt"
+  },
+  {
+    "number": 927,
+    "title": "Chương 927",
+    "path": "phần 5/927.txt"
+  },
+  {
+    "number": 928,
+    "title": "Chương 928",
+    "path": "phần 5/928.txt"
+  },
+  {
+    "number": 929,
+    "title": "Chương 929",
+    "path": "phần 5/929.txt"
+  },
+  {
+    "number": 930,
+    "title": "Chương 930",
+    "path": "phần 5/930.txt"
+  },
+  {
+    "number": 931,
+    "title": "Chương 931",
+    "path": "phần 5/931.txt"
+  },
+  {
+    "number": 932,
+    "title": "Chương 932",
+    "path": "phần 5/932.txt"
+  },
+  {
+    "number": 933,
+    "title": "Chương 933",
+    "path": "phần 5/933.txt"
+  },
+  {
+    "number": 934,
+    "title": "Chương 934",
+    "path": "phần 5/934.txt"
+  },
+  {
+    "number": 935,
+    "title": "Chương 935",
+    "path": "phần 5/935.txt"
+  },
+  {
+    "number": 936,
+    "title": "Chương 936",
+    "path": "phần 5/936.txt"
+  },
+  {
+    "number": 937,
+    "title": "Chương 937",
+    "path": "phần 5/937.txt"
+  },
+  {
+    "number": 938,
+    "title": "Chương 938",
+    "path": "phần 5/938.txt"
+  },
+  {
+    "number": 939,
+    "title": "Chương 939",
+    "path": "phần 5/939.txt"
+  },
+  {
+    "number": 940,
+    "title": "Chương 940",
+    "path": "phần 5/940.txt"
+  },
+  {
+    "number": 941,
+    "title": "Chương 941",
+    "path": "phần 5/941.txt"
+  },
+  {
+    "number": 942,
+    "title": "Chương 942",
+    "path": "phần 5/942.txt"
+  },
+  {
+    "number": 943,
+    "title": "Chương 943",
+    "path": "phần 5/943.txt"
+  },
+  {
+    "number": 944,
+    "title": "Chương 944",
+    "path": "phần 5/944.txt"
+  },
+  {
+    "number": 945,
+    "title": "Chương 945",
+    "path": "phần 5/945.txt"
+  },
+  {
+    "number": 946,
+    "title": "Chương 946",
+    "path": "phần 5/946.txt"
+  },
+  {
+    "number": 947,
+    "title": "Chương 947",
+    "path": "phần 5/947.txt"
+  },
+  {
+    "number": 948,
+    "title": "Chương 948",
+    "path": "phần 5/948.txt"
+  },
+  {
+    "number": 949,
+    "title": "Chương 949",
+    "path": "phần 5/949.txt"
+  },
+  {
+    "number": 950,
+    "title": "Chương 950",
+    "path": "phần 5/950.txt"
+  },
+  {
+    "number": 951,
+    "title": "Chương 951",
+    "path": "phần 5/951.txt"
+  },
+  {
+    "number": 952,
+    "title": "Chương 952",
+    "path": "phần 5/952.txt"
+  },
+  {
+    "number": 953,
+    "title": "Chương 953",
+    "path": "phần 5/953.txt"
+  },
+  {
+    "number": 954,
+    "title": "Chương 954",
+    "path": "phần 5/954.txt"
+  },
+  {
+    "number": 955,
+    "title": "Chương 955",
+    "path": "phần 5/955.txt"
+  },
+  {
+    "number": 956,
+    "title": "Chương 956",
+    "path": "phần 5/956.txt"
+  },
+  {
+    "number": 957,
+    "title": "Chương 957",
+    "path": "phần 5/957.txt"
+  },
+  {
+    "number": 958,
+    "title": "Chương 958",
+    "path": "phần 5/958.txt"
+  },
+  {
+    "number": 959,
+    "title": "Chương 959",
+    "path": "phần 5/959.txt"
+  },
+  {
+    "number": 960,
+    "title": "Chương 960",
+    "path": "phần 5/960.txt"
+  },
+  {
+    "number": 961,
+    "title": "Chương 961",
+    "path": "phần 5/961.txt"
+  },
+  {
+    "number": 962,
+    "title": "Chương 962",
+    "path": "phần 5/962.txt"
+  },
+  {
+    "number": 963,
+    "title": "Chương 963",
+    "path": "phần 5/963.txt"
+  },
+  {
+    "number": 964,
+    "title": "Chương 964",
+    "path": "phần 5/964.txt"
+  },
+  {
+    "number": 965,
+    "title": "Chương 965",
+    "path": "phần 5/965.txt"
+  },
+  {
+    "number": 966,
+    "title": "Chương 966",
+    "path": "phần 5/966.txt"
+  },
+  {
+    "number": 967,
+    "title": "Chương 967",
+    "path": "phần 5/967.txt"
+  },
+  {
+    "number": 968,
+    "title": "Chương 968",
+    "path": "phần 5/968.txt"
+  },
+  {
+    "number": 969,
+    "title": "Chương 969",
+    "path": "phần 5/969.txt"
+  },
+  {
+    "number": 970,
+    "title": "Chương 970",
+    "path": "phần 5/970.txt"
+  },
+  {
+    "number": 971,
+    "title": "Chương 971",
+    "path": "phần 5/971.txt"
+  },
+  {
+    "number": 972,
+    "title": "Chương 972",
+    "path": "phần 5/972.txt"
+  },
+  {
+    "number": 973,
+    "title": "Chương 973",
+    "path": "phần 5/973.txt"
+  },
+  {
+    "number": 974,
+    "title": "Chương 974",
+    "path": "phần 5/974.txt"
+  },
+  {
+    "number": 975,
+    "title": "Chương 975",
+    "path": "phần 5/975.txt"
+  },
+  {
+    "number": 976,
+    "title": "Chương 976",
+    "path": "phần 5/976.txt"
+  },
+  {
+    "number": 977,
+    "title": "Chương 977",
+    "path": "phần 5/977.txt"
+  },
+  {
+    "number": 978,
+    "title": "Chương 978",
+    "path": "phần 5/978.txt"
+  },
+  {
+    "number": 979,
+    "title": "Chương 979",
+    "path": "phần 5/979.txt"
+  },
+  {
+    "number": 980,
+    "title": "Chương 980",
+    "path": "phần 5/980.txt"
+  },
+  {
+    "number": 981,
+    "title": "Chương 981",
+    "path": "phần 5/981.txt"
+  },
+  {
+    "number": 982,
+    "title": "Chương 982",
+    "path": "phần 5/982.txt"
+  },
+  {
+    "number": 983,
+    "title": "Chương 983",
+    "path": "phần 5/983.txt"
+  },
+  {
+    "number": 984,
+    "title": "Chương 984",
+    "path": "phần 5/984.txt"
+  },
+  {
+    "number": 985,
+    "title": "Chương 985",
+    "path": "phần 5/985.txt"
+  },
+  {
+    "number": 986,
+    "title": "Chương 986",
+    "path": "phần 5/986.txt"
+  },
+  {
+    "number": 987,
+    "title": "Chương 987",
+    "path": "phần 5/987.txt"
+  },
+  {
+    "number": 988,
+    "title": "Chương 988",
+    "path": "phần 5/988.txt"
+  },
+  {
+    "number": 989,
+    "title": "Chương 989",
+    "path": "phần 5/989.txt"
+  },
+  {
+    "number": 990,
+    "title": "Chương 990",
+    "path": "phần 5/990.txt"
+  },
+  {
+    "number": 991,
+    "title": "Chương 991",
+    "path": "phần 5/991.txt"
+  },
+  {
+    "number": 992,
+    "title": "Chương 992",
+    "path": "phần 5/992.txt"
+  },
+  {
+    "number": 993,
+    "title": "Chương 993",
+    "path": "phần 5/993.txt"
+  },
+  {
+    "number": 994,
+    "title": "Chương 994",
+    "path": "phần 5/994.txt"
+  },
+  {
+    "number": 995,
+    "title": "Chương 995",
+    "path": "phần 5/995.txt"
+  },
+  {
+    "number": 996,
+    "title": "Chương 996",
+    "path": "phần 5/996.txt"
+  },
+  {
+    "number": 997,
+    "title": "Chương 997",
+    "path": "phần 5/997.txt"
+  },
+  {
+    "number": 998,
+    "title": "Chương 998",
+    "path": "phần 5/998.txt"
+  },
+  {
+    "number": 999,
+    "title": "Chương 999",
+    "path": "phần 5/999.txt"
+  },
+  {
+    "number": 1000,
+    "title": "Chương 1000",
+    "path": "phần 5/1000.txt"
+  },
+  {
+    "number": 1001,
+    "title": "Chương 1001",
+    "path": "phần 6/1001.txt"
+  },
+  {
+    "number": 1002,
+    "title": "Chương 1002",
+    "path": "phần 6/1002.txt"
+  },
+  {
+    "number": 1003,
+    "title": "Chương 1003",
+    "path": "phần 6/1003.txt"
+  },
+  {
+    "number": 1004,
+    "title": "Chương 1004",
+    "path": "phần 6/1004.txt"
+  },
+  {
+    "number": 1005,
+    "title": "Chương 1005",
+    "path": "phần 6/1005.txt"
+  },
+  {
+    "number": 1006,
+    "title": "Chương 1006",
+    "path": "phần 6/1006.txt"
+  },
+  {
+    "number": 1007,
+    "title": "Chương 1007",
+    "path": "phần 6/1007.txt"
+  },
+  {
+    "number": 1008,
+    "title": "Chương 1008",
+    "path": "phần 6/1008.txt"
+  },
+  {
+    "number": 1009,
+    "title": "Chương 1009",
+    "path": "phần 6/1009.txt"
+  },
+  {
+    "number": 1010,
+    "title": "Chương 1010",
+    "path": "phần 6/1010.txt"
+  },
+  {
+    "number": 1011,
+    "title": "Chương 1011",
+    "path": "phần 6/1011.txt"
+  },
+  {
+    "number": 1012,
+    "title": "Chương 1012",
+    "path": "phần 6/1012.txt"
+  },
+  {
+    "number": 1013,
+    "title": "Chương 1013",
+    "path": "phần 6/1013.txt"
+  },
+  {
+    "number": 1014,
+    "title": "Chương 1014",
+    "path": "phần 6/1014.txt"
+  },
+  {
+    "number": 1015,
+    "title": "Chương 1015",
+    "path": "phần 6/1015.txt"
+  },
+  {
+    "number": 1016,
+    "title": "Chương 1016",
+    "path": "phần 6/1016.txt"
+  },
+  {
+    "number": 1017,
+    "title": "Chương 1017",
+    "path": "phần 6/1017.txt"
+  },
+  {
+    "number": 1018,
+    "title": "Chương 1018",
+    "path": "phần 6/1018.txt"
+  },
+  {
+    "number": 1019,
+    "title": "Chương 1019",
+    "path": "phần 6/1019.txt"
+  },
+  {
+    "number": 1020,
+    "title": "Chương 1020",
+    "path": "phần 6/1020.txt"
+  },
+  {
+    "number": 1021,
+    "title": "Chương 1021",
+    "path": "phần 6/1021.txt"
+  },
+  {
+    "number": 1022,
+    "title": "Chương 1022",
+    "path": "phần 6/1022.txt"
+  },
+  {
+    "number": 1023,
+    "title": "Chương 1023",
+    "path": "phần 6/1023.txt"
+  },
+  {
+    "number": 1024,
+    "title": "Chương 1024",
+    "path": "phần 6/1024.txt"
+  },
+  {
+    "number": 1025,
+    "title": "Chương 1025",
+    "path": "phần 6/1025.txt"
+  },
+  {
+    "number": 1026,
+    "title": "Chương 1026",
+    "path": "phần 6/1026.txt"
+  },
+  {
+    "number": 1027,
+    "title": "Chương 1027",
+    "path": "phần 6/1027.txt"
+  },
+  {
+    "number": 1028,
+    "title": "Chương 1028",
+    "path": "phần 6/1028.txt"
+  },
+  {
+    "number": 1029,
+    "title": "Chương 1029",
+    "path": "phần 6/1029.txt"
+  },
+  {
+    "number": 1030,
+    "title": "Chương 1030",
+    "path": "phần 6/1030.txt"
+  },
+  {
+    "number": 1031,
+    "title": "Chương 1031",
+    "path": "phần 6/1031.txt"
+  },
+  {
+    "number": 1032,
+    "title": "Chương 1032",
+    "path": "phần 6/1032.txt"
+  },
+  {
+    "number": 1033,
+    "title": "Chương 1033",
+    "path": "phần 6/1033.txt"
+  },
+  {
+    "number": 1034,
+    "title": "Chương 1034",
+    "path": "phần 6/1034.txt"
+  },
+  {
+    "number": 1035,
+    "title": "Chương 1035",
+    "path": "phần 6/1035.txt"
+  },
+  {
+    "number": 1036,
+    "title": "Chương 1036",
+    "path": "phần 6/1036.txt"
+  },
+  {
+    "number": 1037,
+    "title": "Chương 1037",
+    "path": "phần 6/1037.txt"
+  },
+  {
+    "number": 1038,
+    "title": "Chương 1038",
+    "path": "phần 6/1038.txt"
+  },
+  {
+    "number": 1039,
+    "title": "Chương 1039",
+    "path": "phần 6/1039.txt"
+  },
+  {
+    "number": 1040,
+    "title": "Chương 1040",
+    "path": "phần 6/1040.txt"
+  },
+  {
+    "number": 1041,
+    "title": "Chương 1041",
+    "path": "phần 6/1041.txt"
+  },
+  {
+    "number": 1042,
+    "title": "Chương 1042",
+    "path": "phần 6/1042.txt"
+  },
+  {
+    "number": 1043,
+    "title": "Chương 1043",
+    "path": "phần 6/1043.txt"
+  },
+  {
+    "number": 1044,
+    "title": "Chương 1044",
+    "path": "phần 6/1044.txt"
+  },
+  {
+    "number": 1045,
+    "title": "Chương 1045",
+    "path": "phần 6/1045.txt"
+  },
+  {
+    "number": 1046,
+    "title": "Chương 1046",
+    "path": "phần 6/1046.txt"
+  },
+  {
+    "number": 1047,
+    "title": "Chương 1047",
+    "path": "phần 6/1047.txt"
+  },
+  {
+    "number": 1048,
+    "title": "Chương 1048",
+    "path": "phần 6/1048.txt"
+  },
+  {
+    "number": 1049,
+    "title": "Chương 1049",
+    "path": "phần 6/1049.txt"
+  },
+  {
+    "number": 1050,
+    "title": "Chương 1050",
+    "path": "phần 6/1050.txt"
+  },
+  {
+    "number": 1051,
+    "title": "Chương 1051",
+    "path": "phần 6/1051.txt"
+  },
+  {
+    "number": 1052,
+    "title": "Chương 1052",
+    "path": "phần 6/1052.txt"
+  },
+  {
+    "number": 1053,
+    "title": "Chương 1053",
+    "path": "phần 6/1053.txt"
+  },
+  {
+    "number": 1054,
+    "title": "Chương 1054",
+    "path": "phần 6/1054.txt"
+  },
+  {
+    "number": 1055,
+    "title": "Chương 1055",
+    "path": "phần 6/1055.txt"
+  },
+  {
+    "number": 1056,
+    "title": "Chương 1056",
+    "path": "phần 6/1056.txt"
+  },
+  {
+    "number": 1057,
+    "title": "Chương 1057",
+    "path": "phần 6/1057.txt"
+  },
+  {
+    "number": 1058,
+    "title": "Chương 1058",
+    "path": "phần 6/1058.txt"
+  },
+  {
+    "number": 1059,
+    "title": "Chương 1059",
+    "path": "phần 6/1059.txt"
+  },
+  {
+    "number": 1060,
+    "title": "Chương 1060",
+    "path": "phần 6/1060.txt"
+  },
+  {
+    "number": 1061,
+    "title": "Chương 1061",
+    "path": "phần 6/1061.txt"
+  },
+  {
+    "number": 1062,
+    "title": "Chương 1062",
+    "path": "phần 6/1062.txt"
+  },
+  {
+    "number": 1063,
+    "title": "Chương 1063",
+    "path": "phần 6/1063.txt"
+  },
+  {
+    "number": 1064,
+    "title": "Chương 1064",
+    "path": "phần 6/1064.txt"
+  },
+  {
+    "number": 1065,
+    "title": "Chương 1065",
+    "path": "phần 6/1065.txt"
+  },
+  {
+    "number": 1066,
+    "title": "Chương 1066",
+    "path": "phần 6/1066.txt"
+  },
+  {
+    "number": 1067,
+    "title": "Chương 1067",
+    "path": "phần 6/1067.txt"
+  },
+  {
+    "number": 1068,
+    "title": "Chương 1068",
+    "path": "phần 6/1068.txt"
+  },
+  {
+    "number": 1069,
+    "title": "Chương 1069",
+    "path": "phần 6/1069.txt"
+  },
+  {
+    "number": 1070,
+    "title": "Chương 1070",
+    "path": "phần 6/1070.txt"
+  },
+  {
+    "number": 1071,
+    "title": "Chương 1071",
+    "path": "phần 6/1071.txt"
+  },
+  {
+    "number": 1072,
+    "title": "Chương 1072",
+    "path": "phần 6/1072.txt"
+  },
+  {
+    "number": 1073,
+    "title": "Chương 1073",
+    "path": "phần 6/1073.txt"
+  },
+  {
+    "number": 1074,
+    "title": "Chương 1074",
+    "path": "phần 6/1074.txt"
+  },
+  {
+    "number": 1075,
+    "title": "Chương 1075",
+    "path": "phần 6/1075.txt"
+  },
+  {
+    "number": 1076,
+    "title": "Chương 1076",
+    "path": "phần 6/1076.txt"
+  },
+  {
+    "number": 1077,
+    "title": "Chương 1077",
+    "path": "phần 6/1077.txt"
+  },
+  {
+    "number": 1078,
+    "title": "Chương 1078",
+    "path": "phần 6/1078.txt"
+  },
+  {
+    "number": 1079,
+    "title": "Chương 1079",
+    "path": "phần 6/1079.txt"
+  },
+  {
+    "number": 1080,
+    "title": "Chương 1080",
+    "path": "phần 6/1080.txt"
+  },
+  {
+    "number": 1081,
+    "title": "Chương 1081",
+    "path": "phần 6/1081.txt"
+  },
+  {
+    "number": 1082,
+    "title": "Chương 1082",
+    "path": "phần 6/1082.txt"
+  },
+  {
+    "number": 1083,
+    "title": "Chương 1083",
+    "path": "phần 6/1083.txt"
+  },
+  {
+    "number": 1084,
+    "title": "Chương 1084",
+    "path": "phần 6/1084.txt"
+  },
+  {
+    "number": 1085,
+    "title": "Chương 1085",
+    "path": "phần 6/1085.txt"
+  },
+  {
+    "number": 1086,
+    "title": "Chương 1086",
+    "path": "phần 6/1086.txt"
+  },
+  {
+    "number": 1087,
+    "title": "Chương 1087",
+    "path": "phần 6/1087.txt"
+  },
+  {
+    "number": 1088,
+    "title": "Chương 1088",
+    "path": "phần 6/1088.txt"
+  },
+  {
+    "number": 1089,
+    "title": "Chương 1089",
+    "path": "phần 6/1089.txt"
+  },
+  {
+    "number": 1090,
+    "title": "Chương 1090",
+    "path": "phần 6/1090.txt"
+  },
+  {
+    "number": 1091,
+    "title": "Chương 1091",
+    "path": "phần 6/1091.txt"
+  },
+  {
+    "number": 1092,
+    "title": "Chương 1092",
+    "path": "phần 6/1092.txt"
+  },
+  {
+    "number": 1093,
+    "title": "Chương 1093",
+    "path": "phần 6/1093.txt"
+  },
+  {
+    "number": 1094,
+    "title": "Chương 1094",
+    "path": "phần 6/1094.txt"
+  },
+  {
+    "number": 1095,
+    "title": "Chương 1095",
+    "path": "phần 6/1095.txt"
+  },
+  {
+    "number": 1096,
+    "title": "Chương 1096",
+    "path": "phần 6/1096.txt"
+  },
+  {
+    "number": 1097,
+    "title": "Chương 1097",
+    "path": "phần 6/1097.txt"
+  },
+  {
+    "number": 1098,
+    "title": "Chương 1098",
+    "path": "phần 6/1098.txt"
+  },
+  {
+    "number": 1099,
+    "title": "Chương 1099",
+    "path": "phần 6/1099.txt"
+  },
+  {
+    "number": 1100,
+    "title": "Chương 1100",
+    "path": "phần 6/1100.txt"
+  },
+  {
+    "number": 1101,
+    "title": "Chương 1101",
+    "path": "phần 6/1101.txt"
+  },
+  {
+    "number": 1102,
+    "title": "Chương 1102",
+    "path": "phần 6/1102.txt"
+  },
+  {
+    "number": 1103,
+    "title": "Chương 1103",
+    "path": "phần 6/1103.txt"
+  },
+  {
+    "number": 1104,
+    "title": "Chương 1104",
+    "path": "phần 6/1104.txt"
+  },
+  {
+    "number": 1105,
+    "title": "Chương 1105",
+    "path": "phần 6/1105.txt"
+  },
+  {
+    "number": 1106,
+    "title": "Chương 1106",
+    "path": "phần 6/1106.txt"
+  },
+  {
+    "number": 1107,
+    "title": "Chương 1107",
+    "path": "phần 6/1107.txt"
+  },
+  {
+    "number": 1108,
+    "title": "Chương 1108",
+    "path": "phần 6/1108.txt"
+  },
+  {
+    "number": 1109,
+    "title": "Chương 1109",
+    "path": "phần 6/1109.txt"
+  },
+  {
+    "number": 1110,
+    "title": "Chương 1110",
+    "path": "phần 6/1110.txt"
+  },
+  {
+    "number": 1111,
+    "title": "Chương 1111",
+    "path": "phần 6/1111.txt"
+  },
+  {
+    "number": 1112,
+    "title": "Chương 1112",
+    "path": "phần 6/1112.txt"
+  },
+  {
+    "number": 1113,
+    "title": "Chương 1113",
+    "path": "phần 6/1113.txt"
+  },
+  {
+    "number": 1114,
+    "title": "Chương 1114",
+    "path": "phần 6/1114.txt"
+  },
+  {
+    "number": 1115,
+    "title": "Chương 1115",
+    "path": "phần 6/1115.txt"
+  },
+  {
+    "number": 1116,
+    "title": "Chương 1116",
+    "path": "phần 6/1116.txt"
+  },
+  {
+    "number": 1117,
+    "title": "Chương 1117",
+    "path": "phần 6/1117.txt"
+  },
+  {
+    "number": 1118,
+    "title": "Chương 1118",
+    "path": "phần 6/1118.txt"
+  },
+  {
+    "number": 1119,
+    "title": "Chương 1119",
+    "path": "phần 6/1119.txt"
+  },
+  {
+    "number": 1120,
+    "title": "Chương 1120",
+    "path": "phần 6/1120.txt"
+  },
+  {
+    "number": 1121,
+    "title": "Chương 1121",
+    "path": "phần 6/1121.txt"
+  },
+  {
+    "number": 1122,
+    "title": "Chương 1122",
+    "path": "phần 6/1122.txt"
+  },
+  {
+    "number": 1123,
+    "title": "Chương 1123",
+    "path": "phần 6/1123.txt"
+  },
+  {
+    "number": 1124,
+    "title": "Chương 1124",
+    "path": "phần 6/1124.txt"
+  },
+  {
+    "number": 1125,
+    "title": "Chương 1125",
+    "path": "phần 6/1125.txt"
+  },
+  {
+    "number": 1126,
+    "title": "Chương 1126",
+    "path": "phần 6/1126.txt"
+  },
+  {
+    "number": 1127,
+    "title": "Chương 1127",
+    "path": "phần 6/1127.txt"
+  },
+  {
+    "number": 1128,
+    "title": "Chương 1128",
+    "path": "phần 6/1128.txt"
+  },
+  {
+    "number": 1129,
+    "title": "Chương 1129",
+    "path": "phần 6/1129.txt"
+  },
+  {
+    "number": 1130,
+    "title": "Chương 1130",
+    "path": "phần 6/1130.txt"
+  },
+  {
+    "number": 1131,
+    "title": "Chương 1131",
+    "path": "phần 6/1131.txt"
+  },
+  {
+    "number": 1132,
+    "title": "Chương 1132",
+    "path": "phần 6/1132.txt"
+  },
+  {
+    "number": 1133,
+    "title": "Chương 1133",
+    "path": "phần 6/1133.txt"
+  },
+  {
+    "number": 1134,
+    "title": "Chương 1134",
+    "path": "phần 6/1134.txt"
+  },
+  {
+    "number": 1135,
+    "title": "Chương 1135",
+    "path": "phần 6/1135.txt"
+  },
+  {
+    "number": 1136,
+    "title": "Chương 1136",
+    "path": "phần 6/1136.txt"
+  },
+  {
+    "number": 1137,
+    "title": "Chương 1137",
+    "path": "phần 6/1137.txt"
+  },
+  {
+    "number": 1138,
+    "title": "Chương 1138",
+    "path": "phần 6/1138.txt"
+  },
+  {
+    "number": 1139,
+    "title": "Chương 1139",
+    "path": "phần 6/1139.txt"
+  },
+  {
+    "number": 1140,
+    "title": "Chương 1140",
+    "path": "phần 6/1140.txt"
+  },
+  {
+    "number": 1141,
+    "title": "Chương 1141",
+    "path": "phần 6/1141.txt"
+  },
+  {
+    "number": 1142,
+    "title": "Chương 1142",
+    "path": "phần 6/1142.txt"
+  },
+  {
+    "number": 1143,
+    "title": "Chương 1143",
+    "path": "phần 6/1143.txt"
+  },
+  {
+    "number": 1144,
+    "title": "Chương 1144",
+    "path": "phần 6/1144.txt"
+  },
+  {
+    "number": 1145,
+    "title": "Chương 1145",
+    "path": "phần 6/1145.txt"
+  },
+  {
+    "number": 1146,
+    "title": "Chương 1146",
+    "path": "phần 6/1146.txt"
+  },
+  {
+    "number": 1147,
+    "title": "Chương 1147",
+    "path": "phần 6/1147.txt"
+  },
+  {
+    "number": 1148,
+    "title": "Chương 1148",
+    "path": "phần 6/1148.txt"
+  },
+  {
+    "number": 1149,
+    "title": "Chương 1149",
+    "path": "phần 6/1149.txt"
+  },
+  {
+    "number": 1150,
+    "title": "Chương 1150",
+    "path": "phần 6/1150.txt"
+  },
+  {
+    "number": 1151,
+    "title": "Chương 1151",
+    "path": "phần 6/1151.txt"
+  },
+  {
+    "number": 1152,
+    "title": "Chương 1152",
+    "path": "phần 6/1152.txt"
+  },
+  {
+    "number": 1153,
+    "title": "Chương 1153",
+    "path": "phần 6/1153.txt"
+  },
+  {
+    "number": 1154,
+    "title": "Chương 1154",
+    "path": "phần 6/1154.txt"
+  },
+  {
+    "number": 1155,
+    "title": "Chương 1155",
+    "path": "phần 6/1155.txt"
+  },
+  {
+    "number": 1156,
+    "title": "Chương 1156",
+    "path": "phần 6/1156.txt"
+  },
+  {
+    "number": 1157,
+    "title": "Chương 1157",
+    "path": "phần 6/1157.txt"
+  },
+  {
+    "number": 1158,
+    "title": "Chương 1158",
+    "path": "phần 6/1158.txt"
+  },
+  {
+    "number": 1159,
+    "title": "Chương 1159",
+    "path": "phần 6/1159.txt"
+  },
+  {
+    "number": 1160,
+    "title": "Chương 1160",
+    "path": "phần 6/1160.txt"
+  },
+  {
+    "number": 1161,
+    "title": "Chương 1161",
+    "path": "phần 6/1161.txt"
+  },
+  {
+    "number": 1162,
+    "title": "Chương 1162",
+    "path": "phần 6/1162.txt"
+  },
+  {
+    "number": 1163,
+    "title": "Chương 1163",
+    "path": "phần 6/1163.txt"
+  },
+  {
+    "number": 1164,
+    "title": "Chương 1164",
+    "path": "phần 6/1164.txt"
+  },
+  {
+    "number": 1165,
+    "title": "Chương 1165",
+    "path": "phần 6/1165.txt"
+  },
+  {
+    "number": 1166,
+    "title": "Chương 1166",
+    "path": "phần 6/1166.txt"
+  },
+  {
+    "number": 1167,
+    "title": "Chương 1167",
+    "path": "phần 6/1167.txt"
+  },
+  {
+    "number": 1168,
+    "title": "Chương 1168",
+    "path": "phần 6/1168.txt"
+  },
+  {
+    "number": 1169,
+    "title": "Chương 1169",
+    "path": "phần 6/1169.txt"
+  },
+  {
+    "number": 1170,
+    "title": "Chương 1170",
+    "path": "phần 6/1170.txt"
+  },
+  {
+    "number": 1171,
+    "title": "Chương 1171",
+    "path": "phần 6/1171.txt"
+  },
+  {
+    "number": 1172,
+    "title": "Chương 1172",
+    "path": "phần 6/1172.txt"
+  },
+  {
+    "number": 1173,
+    "title": "Chương 1173",
+    "path": "phần 6/1173.txt"
+  },
+  {
+    "number": 1174,
+    "title": "Chương 1174",
+    "path": "phần 6/1174.txt"
+  },
+  {
+    "number": 1175,
+    "title": "Chương 1175",
+    "path": "phần 6/1175.txt"
+  },
+  {
+    "number": 1176,
+    "title": "Chương 1176",
+    "path": "phần 6/1176.txt"
+  },
+  {
+    "number": 1177,
+    "title": "Chương 1177",
+    "path": "phần 6/1177.txt"
+  },
+  {
+    "number": 1178,
+    "title": "Chương 1178",
+    "path": "phần 6/1178.txt"
+  },
+  {
+    "number": 1179,
+    "title": "Chương 1179",
+    "path": "phần 6/1179.txt"
+  },
+  {
+    "number": 1180,
+    "title": "Chương 1180",
+    "path": "phần 6/1180.txt"
+  },
+  {
+    "number": 1181,
+    "title": "Chương 1181",
+    "path": "phần 6/1181.txt"
+  },
+  {
+    "number": 1182,
+    "title": "Chương 1182",
+    "path": "phần 6/1182.txt"
+  },
+  {
+    "number": 1183,
+    "title": "Chương 1183",
+    "path": "phần 6/1183.txt"
+  },
+  {
+    "number": 1184,
+    "title": "Chương 1184",
+    "path": "phần 6/1184.txt"
+  },
+  {
+    "number": 1185,
+    "title": "Chương 1185",
+    "path": "phần 6/1185.txt"
+  },
+  {
+    "number": 1186,
+    "title": "Chương 1186",
+    "path": "phần 6/1186.txt"
+  },
+  {
+    "number": 1187,
+    "title": "Chương 1187",
+    "path": "phần 6/1187.txt"
+  },
+  {
+    "number": 1188,
+    "title": "Chương 1188",
+    "path": "phần 6/1188.txt"
+  },
+  {
+    "number": 1189,
+    "title": "Chương 1189",
+    "path": "phần 6/1189.txt"
+  },
+  {
+    "number": 1190,
+    "title": "Chương 1190",
+    "path": "phần 6/1190.txt"
+  },
+  {
+    "number": 1191,
+    "title": "Chương 1191",
+    "path": "phần 6/1191.txt"
+  },
+  {
+    "number": 1192,
+    "title": "Chương 1192",
+    "path": "phần 6/1192.txt"
+  },
+  {
+    "number": 1193,
+    "title": "Chương 1193",
+    "path": "phần 6/1193.txt"
+  },
+  {
+    "number": 1194,
+    "title": "Chương 1194",
+    "path": "phần 6/1194.txt"
+  },
+  {
+    "number": 1195,
+    "title": "Chương 1195",
+    "path": "phần 6/1195.txt"
+  },
+  {
+    "number": 1196,
+    "title": "Chương 1196",
+    "path": "phần 6/1196.txt"
+  },
+  {
+    "number": 1197,
+    "title": "Chương 1197",
+    "path": "phần 6/1197.txt"
+  },
+  {
+    "number": 1198,
+    "title": "Chương 1198",
+    "path": "phần 6/1198.txt"
+  },
+  {
+    "number": 1199,
+    "title": "Chương 1199",
+    "path": "phần 6/1199.txt"
+  },
+  {
+    "number": 1200,
+    "title": "Chương 1200",
+    "path": "phần 6/1200.txt"
+  }
+]

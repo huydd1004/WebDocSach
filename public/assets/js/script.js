@@ -10,26 +10,19 @@ const THEMES = [
 let booksData = [];
 let currentBook = '';
 let currentChapter = 1;
-let totalChapters = 1;
+let chapterIndex = [];
 
 let loadedChapter = 0;
 let readingPositionTimer = null;
 
-async function apiFetch(url, opts = {}) {
-  const headers = { 'Content-Type': 'application/json', ...(opts.headers || {}) };
-  const res = await fetch(url, { ...opts, headers });
-  const data = await res.json();
-  if (!res.ok) throw { status: res.status, ...data };
-  return data;
-}
-
 async function fetchBooksData() {
-  try {
-    return await apiFetch('/api/books');
-  } catch (error) {
-    const res = await fetch('data/books.json');
-    return res.json();
+  const response = await fetch('data/books.json');
+
+  if (!response.ok) {
+    throw new Error('Không thể tải danh sách truyện');
   }
+
+  return response.json();
 }
 
 function formatBookIdAsTitle(bookId) {
@@ -400,13 +393,51 @@ function chapterToPart(chap) {
   return Math.floor((chap - 1) / CHAPTERS_PER_PART) + 1;
 }
 
-function partRange(part) {
-  const start = (part - 1) * CHAPTERS_PER_PART + 1;
-  const end = Math.min(part * CHAPTERS_PER_PART, totalChapters);
-  return { start, end };
+function normalizeChapterIndex(data) {
+  if (Array.isArray(data)) {
+    return data
+      .map(chapter => ({
+        number: Number(chapter?.number),
+        title: String(chapter?.title || '').trim(),
+        path: String(chapter?.path || '').trim()
+      }))
+      .filter(chapter => Number.isInteger(chapter.number) && chapter.number > 0)
+      .sort((first, second) => first.number - second.number);
+  }
+
+  return [];
+}
+
+function getChaptersForPart(part) {
+  return chapterIndex.filter(chapter => chapterToPart(chapter.number) === part);
+}
+
+function getAvailableParts() {
+  return [...new Set(chapterIndex.map(chapter => chapterToPart(chapter.number)))];
+}
+
+function getCurrentChapterPosition() {
+  return chapterIndex.findIndex(chapter => chapter.number === currentChapter);
+}
+
+function selectExistingChapter() {
+  if (!chapterIndex.length || getCurrentChapterPosition() >= 0) return;
+
+  const nextChapter = chapterIndex.find(chapter => chapter.number > currentChapter);
+  currentChapter = (nextChapter || chapterIndex.at(-1)).number;
+
+  const nextUrl = new URL(window.location.href);
+  nextUrl.searchParams.set('chap', String(currentChapter));
+  window.history.replaceState(null, '', nextUrl);
 }
 
 function getChapterPath(chap) {
+  const chapter = chapterIndex.find(item => item.number === chap);
+
+  if (chapter?.path) {
+    return `data/${currentBook}/${chapter.path}`;
+  }
+
   const part = chapterToPart(chap);
   return `data/${currentBook}/phần ${part}/${chap}.txt`;
 }
@@ -485,68 +516,49 @@ function loadSelects() {
 
   [partTop, selectTop, selectBottom].forEach(el => { el.innerHTML = ''; });
 
-  const totalParts = Math.max(1, Math.ceil(totalChapters / CHAPTERS_PER_PART));
   const currentPart = chapterToPart(currentChapter);
+  const availableParts = getAvailableParts();
 
-  for (let part = 1; part <= totalParts; part += 1) {
+  availableParts.forEach(part => {
     const opt = document.createElement('option');
     opt.value = part;
     opt.innerText = `Phần ${part}`;
     if (part === currentPart) opt.selected = true;
     partTop.appendChild(opt);
-  }
+  });
 
-  // Lấy tiêu đề chương cho dropdown
-  const range = partRange(currentPart);
-  const chapterTitlePromises = [];
-  for (let chap = range.start; chap <= range.end; chap += 1) {
-    const chapterPath = getChapterPath(chap);
-    chapterTitlePromises.push(
-      fetch(encodeURI(chapterPath))
-        .then(res => res.ok ? res.text() : '')
-        .then(text => {
-          let title = `Chương ${chap}`;
-          if (text) {
-            const firstLine = text.split('\n').find(line => line.trim());
-            if (firstLine) {
-              // Loại bỏ dấu ** nếu có
-              title = firstLine.replace(/^\*+|\*+$/g, '').trim();
-            }
-          }
-          return { chap, title };
-        })
-        .catch(() => ({ chap, title: `Chương ${chap}` }))
-    );
-  }
+  getChaptersForPart(currentPart).forEach(chapter => {
+    const title = chapter.title || `Chương ${chapter.number}`;
 
-  Promise.all(chapterTitlePromises).then(chapterTitles => {
-    chapterTitles.forEach(({ chap, title }) => {
-      const topOption = document.createElement('option');
-      topOption.value = chap;
-      topOption.innerText = title;
-      if (chap === currentChapter) topOption.selected = true;
-      selectTop.appendChild(topOption);
+    const topOption = document.createElement('option');
+    topOption.value = chapter.number;
+    topOption.innerText = title;
+    if (chapter.number === currentChapter) topOption.selected = true;
+    selectTop.appendChild(topOption);
 
-      const bottomOption = document.createElement('option');
-      bottomOption.value = chap;
-      bottomOption.innerText = title;
-      if (chap === currentChapter) bottomOption.selected = true;
-      selectBottom.appendChild(bottomOption);
-    });
+    const bottomOption = document.createElement('option');
+    bottomOption.value = chapter.number;
+    bottomOption.innerText = title;
+    if (chapter.number === currentChapter) bottomOption.selected = true;
+    selectBottom.appendChild(bottomOption);
   });
 }
 
 function nextChapter() {
-  if (currentChapter < totalChapters) {
-    currentChapter += 1;
+  const position = getCurrentChapterPosition();
+
+  if (position >= 0 && position < chapterIndex.length - 1) {
+    currentChapter = chapterIndex[position + 1].number;
     saveProgress(currentBook, currentChapter);
     updateURL();
   }
 }
 
 function prevChapter() {
-  if (currentChapter > 1) {
-    currentChapter -= 1;
+  const position = getCurrentChapterPosition();
+
+  if (position > 0) {
+    currentChapter = chapterIndex[position - 1].number;
     saveProgress(currentBook, currentChapter);
     updateURL();
   }
@@ -756,8 +768,10 @@ function changePart() {
   if (!partSel) return;
 
   const selectedPart = parseInt(partSel.value, 10);
-  const { start } = partRange(selectedPart);
-  currentChapter = start;
+  const firstChapter = getChaptersForPart(selectedPart)[0];
+  if (!firstChapter) return;
+
+  currentChapter = firstChapter.number;
   updateURL();
 }
 
@@ -827,18 +841,23 @@ if (document.getElementById('content')) {
   currentChapter = parseInt(url.get('chap'), 10) || 1;
   updateReaderBookTitle(currentBook);
 
-  fetch(encodeURI(`data/${currentBook}/index.json`))
+  fetch(encodeURI(`data/${currentBook}/chapters.json`))
     .then(res => {
       if (!res.ok) throw res;
       return res.json();
     })
     .then(data => {
-      totalChapters = data.total || currentChapter;
+      chapterIndex = normalizeChapterIndex(data);
+      selectExistingChapter();
       loadChapter();
       loadSelects();
     })
     .catch(() => {
-      totalChapters = currentChapter;
+      chapterIndex = [{
+        number: currentChapter,
+        title: `Chương ${currentChapter}`,
+        path: ''
+      }];
       loadChapter();
       loadSelects();
     });

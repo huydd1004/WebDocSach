@@ -5,7 +5,8 @@
   "description": "Thư viện truyện online - Backend API + Frontend",
   "main": "src/server.js",
   "scripts": {
-    "start": "node src/server.js"
+    "start": "node src/server.js",
+    "build:chapters": "node scripts/build-chapter-indexes.js"
   },
   "dependencies": {
     "express": "^4.21.0"

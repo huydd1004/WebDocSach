@@ -29,6 +29,9 @@ jobs:
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
 
+      - name: Build chapter indexes
+        run: node scripts/build-chapter-indexes.js
+
       - name: Upload public folder
         uses: actions/upload-pages-artifact@v4
         with:
