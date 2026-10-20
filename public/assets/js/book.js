@@ -1,5 +1,6 @@
 const READING_PROGRESS_KEY = 'readingProgress';
 const REMEMBER_PROGRESS_KEY = 'rememberReadingPosition';
+const FAVORITE_BOOKS_KEY = 'favoriteBooks';
 const CHAPTERS_PER_PAGE = 100;
 
 let selectedBookId = '';
@@ -215,6 +216,66 @@ function showError(message) {
     status.classList.add('is-error');
 }
 
+function getFavoriteBookIds() {
+    try {
+        const favorites = JSON.parse(
+            localStorage.getItem(FAVORITE_BOOKS_KEY) || '[]'
+        );
+
+        return Array.isArray(favorites) ? favorites : [];
+    } catch (error) {
+        return [];
+    }
+}
+
+function saveFavoriteBookIds(bookIds) {
+    try {
+        localStorage.setItem(
+            FAVORITE_BOOKS_KEY,
+            JSON.stringify(bookIds)
+        );
+    } catch (error) {
+        // Trình duyệt không cho phép lưu dữ liệu.
+    }
+}
+
+function updateFavoriteButton(button, bookId) {
+    const favorites = getFavoriteBookIds();
+    const isFavorite = favorites.includes(bookId);
+
+    button.classList.toggle('is-favorite', isFavorite);
+    button.setAttribute(
+        'aria-pressed',
+        isFavorite ? 'true' : 'false'
+    );
+
+    button.textContent = isFavorite
+        ? '♥ Đã yêu thích'
+        : '♡ Thêm vào yêu thích';
+}
+
+function setupFavoriteButton(bookId) {
+    const button = document.getElementById('favoriteButton');
+
+    if (!button) {
+        return;
+    }
+
+    updateFavoriteButton(button, bookId);
+
+    button.addEventListener('click', () => {
+        const favorites = getFavoriteBookIds();
+        const isFavorite = favorites.includes(bookId);
+
+        const nextFavorites = isFavorite
+            ? favorites.filter(id => id !== bookId)
+            : [...favorites, bookId];
+
+        saveFavoriteBookIds(nextFavorites);
+        updateFavoriteButton(button, bookId);
+    });
+}
+
 function renderBookDetail(book, chapters) {
     const status = document.getElementById('detailStatus');
     const detail = document.getElementById('bookDetail');
@@ -261,6 +322,8 @@ function renderBookDetail(book, chapters) {
     }
 
     document.title = `${book.title} | Thư Viện Truyện`;
+
+    setupFavoriteButton(book.id);
 
     initializeChapterList(book.id, chapters);
 

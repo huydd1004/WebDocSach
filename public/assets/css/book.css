@@ -218,6 +218,21 @@
   color: #0f766e !important;
 }
 
+.detail-button-favorite {
+  border: 1px solid #f0b5c1;
+  background: #fff5f7;
+  color: #be123c;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.detail-button-favorite.is-favorite {
+  border-color: #be123c;
+  background: #be123c;
+  color: #ffffff;
+  box-shadow: 0 10px 24px rgb(190 18 60 / 20%);
+}
+
 .book-detail-page :focus-visible {
   outline: 3px solid #0f766e;
   outline-offset: 4px;

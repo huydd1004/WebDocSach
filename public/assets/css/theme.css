@@ -228,6 +228,22 @@
 
 :root[data-theme="dark"]
   .book-detail-page
+  .detail-button-favorite {
+  border-color: #713245;
+  background: rgb(190 18 60 / 12%);
+  color: #fda4af;
+}
+
+:root[data-theme="dark"]
+  .book-detail-page
+  .detail-button-favorite.is-favorite {
+  border-color: #e11d48;
+  background: #be123c;
+  color: #ffffff;
+}
+
+:root[data-theme="dark"]
+  .book-detail-page
   .chapter-page-button {
   border-color: #2a364a;
   background: #151e2d;
