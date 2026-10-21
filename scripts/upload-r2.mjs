@@ -5,7 +5,8 @@ import {
 
 import {
   readFile,
-  readdir
+  readdir,
+  stat
 } from 'node:fs/promises';
 
 import path from 'node:path';
@@ -224,7 +225,7 @@ const [
 if (!sourceArgument || !prefixArgument) {
   console.error(
     'Cách dùng: node scripts/upload-r2.mjs ' +
-    '<thư-mục-nguồn> <đường-dẫn-R2> [--dry-run]'
+    '<tệp-hoặc-thư-mục-nguồn> <đường-dẫn-R2> [--dry-run]'
   );
 
   process.exit(1);
@@ -259,22 +260,48 @@ if (missingVariables.length > 0) {
   process.exit(1);
 }
 
-const sourceDirectory = path.resolve(
-  projectRoot,
-  sourceArgument
-);
+const sourcePath = path.resolve(projectRoot,sourceArgument);
 
 const objectPrefix = prefixArgument
   .replace(/^\/+/, '')
   .replace(/\/+$/, '');
 
-const files = await collectFiles(
-  sourceDirectory,
-  sourceDirectory,
-  objectPrefix
-);
+let sourceInformation;
 
-console.log(`Nguồn: ${sourceDirectory}`);
+try {
+  sourceInformation = await stat(sourcePath);
+  } catch (error) {
+    console.error(
+      `Không tìm thấy nguồn: ${sourcePath}`
+    );
+
+    process.exit(1);
+  }
+
+let files;
+
+if (sourceInformation.isDirectory()) {
+    files = await collectFiles(
+      sourcePath,
+      sourcePath,
+      objectPrefix
+    );
+  } else if (sourceInformation.isFile()) {
+    files = [
+      {
+        absolutePath: sourcePath,
+        key: objectPrefix
+      }
+    ];
+  } else {
+    console.error(
+      'Nguồn phải là một tệp hoặc thư mục.'
+    );
+
+    process.exit(1);
+  }
+
+console.log(`Nguồn: ${sourcePath}`);
 console.log(`Đích R2: ${objectPrefix}`);
 console.log(`Số file: ${files.length}`);
 
