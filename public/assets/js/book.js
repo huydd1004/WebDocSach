@@ -3,7 +3,7 @@ const REMEMBER_PROGRESS_KEY = 'rememberReadingPosition';
 const FAVORITE_BOOKS_KEY = 'favoriteBooks';
 const CHAPTERS_PER_PAGE = 50;
 
-const {createBookDataUrl} = window.WebDocSachData;
+const {createDataUrl, createBookDataUrl} = window.WebDocSachData;
 
 let selectedBookId = '';
 let availableChapters = [];
@@ -15,7 +15,7 @@ function getBookIdFromUrl() {
 }
 
 async function fetchBookList() {
-    const response = await fetch('data/books.json');
+    const response = await fetch(createDataUrl('books.json'));
 
     if (!response.ok) {
         throw new Error('Không thể tải danh sách truyện');

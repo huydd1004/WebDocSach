@@ -2,7 +2,7 @@ const PROGRESS_KEY = 'readingProgress';
 const REMEMBER_PROGRESS_KEY = 'rememberReadingPosition';
 const CHAPTERS_PER_PART = 200;
 
-const {createBookDataUrl} = window.WebDocSachData;
+const {createDataUrl, createBookDataUrl} = window.WebDocSachData;
 
 const THEMES = [
   { bg: '#0f172a', text: '#e2e8f0' },
@@ -19,7 +19,7 @@ let loadedChapter = 0;
 let readingPositionTimer = null;
 
 async function fetchBooksData() {
-  const response = await fetch('data/books.json');
+  const response = await fetch(createDataUrl('books.json'));
 
   if (!response.ok) {
     throw new Error('Không thể tải danh sách truyện');
