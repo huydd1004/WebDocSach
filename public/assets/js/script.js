@@ -1,5 +1,6 @@
 const PROGRESS_KEY = 'readingProgress';
 const REMEMBER_PROGRESS_KEY = 'rememberReadingPosition';
+const FAVORITE_BOOKS_KEY = 'favoriteBooks';
 const CHAPTERS_PER_PART = 200;
 
 const {createDataUrl, createBookDataUrl} = window.WebDocSachData;
@@ -11,6 +12,7 @@ const THEMES = [
 ];
 
 let booksData = [];
+let activeLibraryView = 'all';
 let currentBook = '';
 let currentChapter = 1;
 let chapterIndex = [];
@@ -231,6 +233,16 @@ function getBookGenres(book) {
   return [];
 }
 
+function getFavoriteBookIds() {
+  try {
+    const favourites = JSON.parse(localStorage.getItem(FAVORITE_BOOKS_KEY) || '[]');
+
+    return Array.isArray(favourites) ? favourites : [];
+  } catch (error) {
+    return [];
+  }
+}
+
 function renderFeaturedBook(book) {
   const section = document.getElementById('featuredBook');
 
@@ -288,6 +300,16 @@ function updateBookResultStatus(list) {
   const emptyState = document.getElementById('emptyBookState');
   const clearButton = document.getElementById('clearBookFilters');
   const bookList = document.getElementById('book-list');
+  const hasSearch = Boolean(
+    document.getElementById('bookSearch')?.value.trim()
+  );
+  const hasSelectedGenre = Boolean(
+    document.querySelector(
+      '#genreFilters input[type="checkbox"]:checked'
+    )
+  );
+  const hasSelectedLibraryView =
+    activeLibraryView !== 'all';
 
   if (resultCount) {
     resultCount.textContent = `Hiển thị ${list.length} trong ${booksData.length} truyện`;
@@ -295,18 +317,31 @@ function updateBookResultStatus(list) {
 
   if (emptyState) {
     emptyState.hidden = list.length !== 0;
+
+    if (hasSearch || hasSelectedGenre) {
+      emptyState.textContent =
+        'Không tìm thấy truyện phù hợp. Hãy thử tên hoặc thể loại khác.';
+    } else if (activeLibraryView === 'reading') {
+      emptyState.textContent =
+        'Bạn chưa đọc truyện nào. Hãy mở một chương để bắt đầu.';
+    } else if (activeLibraryView === 'favorite') {
+      emptyState.textContent =
+        'Bạn chưa thêm truyện nào vào danh sách yêu thích.';
+    } else {
+      emptyState.textContent =
+        'Hiện chưa có truyện trong thư viện.';
+    }
   }
 
   if (bookList) {
     bookList.hidden = list.length === 0;
   }
 
-  const hasSearch = Boolean(document.getElementById('bookSearch')?.value.trim());
-
-  const hasSelectedGenre = Boolean(document.querySelector('#genreFilters input[type="checkbox"]:checked'));
-
   if (clearButton) {
-    clearButton.hidden = !hasSearch && !hasSelectedGenre;
+    clearButton.hidden =
+      !hasSearch &&
+      !hasSelectedGenre &&
+      !hasSelectedLibraryView;
   }
 }
 
@@ -400,25 +435,77 @@ function buildGenreFilters() {
   });
 }
 
+function setLibraryView(view) {
+  const allowedViews = ['all', 'reading', 'favorite'];
+
+  activeLibraryView = allowedViews.includes(view) ? view : 'all';
+
+  document.querySelectorAll('#libraryViewTabs [data-library-view]').forEach(button => {
+    const isActive = button.dataset.libraryView === activeLibraryView;
+
+    button.classList.toggle('is-active', isActive);
+
+    button.setAttribute('aria-pressed', String(isActive));
+  });
+
+  applyBookFilters();
+}
+
+function setupLibraryViewTabs() {
+  const container = document.getElementById('libraryViewTabs');
+
+  if (!container) {
+    return;
+  }
+
+  container.addEventListener('click', event => {
+    const button = event.target.closest('[data-library-view]');
+
+    if (!button || !container.contains(button)) {
+      return;
+    }
+
+    setLibraryView(button.dataset.libraryView);
+  });
+}
+
 function applyBookFilters() {
   const query = normalizeSearchText(document.getElementById('bookSearch')?.value);
 
   const selectedGenres = Array.from(document.querySelectorAll('#genreFilters input[type="checkbox"]:checked')).map(input => normalizeSearchText(input.value));
+  const favoriteBookIds = new Set(
+    getFavoriteBookIds()
+  );
+  const progressMap = shouldRememberProgress()
+    ? loadProgressMap()
+    : {};
 
   const filteredBooks = booksData.filter(book => {
     const searchableInformation = normalizeSearchText(`${book.title || ''} ${book.author || ''}`);
 
     const matchesSearch = !query || searchableInformation.includes(query);
 
-    if (!selectedGenres.length) {
-      return matchesSearch;
-    }
-
     const bookGenres = getBookGenres(book).map(genre => normalizeSearchText(genre));
 
-    const matchesGenre = selectedGenres.some(selectedGenre => bookGenres.includes(selectedGenre));
+    const matchesGenre =
+      selectedGenres.length === 0 ||
+      selectedGenres.some(
+        selectedGenre =>
+          bookGenres.includes(selectedGenre)
+      );
 
-    return matchesSearch && matchesGenre;
+    const matchesLibraryView =
+      activeLibraryView === 'reading'
+        ? Boolean(progressMap[book.id]?.chapter)
+        : activeLibraryView === 'favorite'
+          ? favoriteBookIds.has(book.id)
+          : true;
+
+    return (
+      matchesSearch &&
+      matchesGenre &&
+      matchesLibraryView
+    );
   });
 
   renderBookList(filteredBooks);
@@ -435,7 +522,7 @@ function clearBookFilters() {
     input.checked = false;
   });
 
-  applyBookFilters();
+  setLibraryView('all');
 }
 
 async function loadBooks() {
@@ -449,6 +536,7 @@ async function loadBooks() {
 
   renderFeaturedBook(featuredBook);
   buildGenreFilters();
+  setupLibraryViewTabs();
   applyBookFilters();
 
   document.getElementById('bookSearch')?.addEventListener('input', applyBookFilters);
@@ -916,6 +1004,15 @@ if (document.getElementById('book-list')) {
     renderBookList([]);
   });
 }
+
+window.addEventListener('pageshow', () => {
+  if (
+    document.getElementById('book-list') &&
+    booksData.length > 0
+  ) {
+    applyBookFilters();
+  }
+});
 
 if (document.getElementById('content')) {
   const url = new URLSearchParams(window.location.search);

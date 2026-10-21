@@ -331,6 +331,22 @@
   color: #5eead4;
 }
 
+:root[data-theme="dark"] .home-page .library-view-tabs {
+    border-color: #2a364a;
+    background: #111827;
+}
+
+:root[data-theme="dark"] .home-page .library-view-tab:hover {
+    background: #1e293b;
+    color: #f8fafc;
+}
+
+:root[data-theme="dark"] .home-page .library-view-tab.is-active {
+    background: #14b8a6;
+    color: #042f2e;
+    box-shadow: 0 4px 14px rgb(20 184 166 / 24%);
+}
+
 @media (max-width: 640px) {
   .header-actions,
   .detail-header-actions {
