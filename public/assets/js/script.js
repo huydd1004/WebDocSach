@@ -1329,3 +1329,21 @@ window.addEventListener('load', () => {
     }
   });
 })();
+
+// Tính năng Sao lưu và khôi phục dữ liệu
+(function setupBackupRestore() {
+  const dialog = document.getElementById('backupDialog');
+  const openBtn = document.getElementById('backupModalTrigger');
+  const closeBtn = document.getElementById('closeBackupDialog');
+  const exportBtn = document.getElementById('exportBackupBtn');
+  const importBtb = document.getElementById('importBackupBtn');
+  const fileInput = document.getElementById('backupFileInput');
+  const statusEl = document.getElementById('backupStatus');
+
+  if (!dialog || !openBtn) return;
+
+  const BACKUP_KEYS = [
+    'readingProgress',
+    'favoriteBooks',
+  ]
+})

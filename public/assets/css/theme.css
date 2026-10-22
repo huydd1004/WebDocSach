@@ -154,6 +154,71 @@
   border-color: #202b3d;
 }
 
+/* Giao diện tối cho truyện nổi bật */
+:root[data-theme="dark"] .featured-book {
+  border-color: #263247;
+  background: #0d1924;
+  color: #f8fafc;
+  box-shadow: 0 28px 70px rgb(0 0 0 / 35%);
+}
+
+:root[data-theme="dark"] .featured-book::before {
+  background-image:
+    linear-gradient(
+      90deg,
+      rgb(5 15 24 / 96%) 0%,
+      rgb(5 15 24 / 86%) 48%,
+      rgb(5 15 24 / 45%) 100%
+    ),
+    var(--featured-cover-image);
+}
+
+:root[data-theme="dark"] .featured-label {
+  color: #5eead4;
+}
+
+:root[data-theme="dark"] .featured-book h1 {
+  color: #ffffff;
+}
+
+:root[data-theme="dark"] .featured-author {
+  color: #cbd5e1;
+}
+
+:root[data-theme="dark"] .featured-author span {
+  color: #94a3b8;
+}
+
+:root[data-theme="dark"] .featured-author strong {
+  color: #f8fafc;
+}
+
+:root[data-theme="dark"] .featured-genre {
+  border-color: rgb(148 163 184 / 28%);
+  background: rgb(255 255 255 / 6%);
+  color: #cbd5e1;
+}
+
+:root[data-theme="dark"] .featured-description {
+  color: #b6c2d2;
+}
+
+:root[data-theme="dark"] .featured-detail-button {
+  border-color: rgb(255 255 255 / 18%);
+  background: rgb(255 255 255 / 8%);
+  color: #f8fafc !important;
+}
+
+:root[data-theme="dark"] .featured-detail-button:hover {
+  background: rgb(255 255 255 / 14%);
+}
+
+:root[data-theme="dark"] .featured-cover-frame {
+  border-color: rgb(255 255 255 / 13%);
+  background: rgb(255 255 255 / 7%);
+  box-shadow: 0 30px 55px rgb(0 0 0 / 36%);
+}
+
 /* Giao diện tối của trang chi tiết */
 :root[data-theme="dark"] .book-detail-page {
   background:
@@ -375,4 +440,50 @@
       border-color 180ms ease,
       box-shadow 180ms ease;
   }
+}
+
+/* Giao diện tối cho Hộp thoại sao lưu */
+:root[data-theme="dark"] .backup-toggle-btn {
+  border-color: #263247;
+  background: #111827;
+  color: #e8eef6;
+  box-shadow: 0 4px 12px rgb(0 0 0 / 25%);
+}
+
+:root[data-theme="dark"] .backup-toggle-btn:hover {
+  border-color: #3b4d6b;
+  background: #1a2334;
+}
+
+:root[data-theme="dark"] .backup-dialog {
+  border-color: #263247;
+  background: #111827;
+  color: #e8eef6;
+  box-shadow: 0 24px 60px rgb(0 0 0 / 50%);
+}
+
+:root[data-theme="dark"] .backup-dialog::backdrop {
+  background: rgb(0 0 0 / 65%);
+}
+
+:root[data-theme="dark"] .backup-dialog-header {
+  border-color: #202b3d;
+}
+
+:root[data-theme="dark"] .backup-close-btn:hover {
+  background: rgb(255 255 255 / 8%);
+}
+
+:root[data-theme="dark"] .backup-block code {
+  background: rgb(255 255 255 / 10%);
+  color: #5eead4;
+}
+
+:root[data-theme="dark"] .backup-btn-secondary {
+    border-color: #263247;
+    background: #1a2334;
+    color: #e8eef6;
+}
+:root[data-theme="dark"] .backup-btn-secondary:hover {
+    background: #243047;
 }
