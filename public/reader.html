@@ -6,36 +6,39 @@
   <title>Đọc truyện</title>
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
+
 <body class="reader-page">
+  <div id="readingProgressBar" class="reading-progress-bar" aria-hidden="true"></div>
 
-<div id="readerTopChrome" class="reader-top-chrome">
-  <div class="top-bar">
-    <button class="home-logo-btn home-brand-btn" onclick="goHome()" aria-label="Trang chủ" title="Trang chủ">
-      <img class="home-logo" src="assets/images/Logo.png" alt="Trang chủ">
-      <span class="home-brand-text">Thư viện truyện</span>
-    </button>
-    <div id="readerBookTitle" class="reader-book-title" title=""></div>
-    <div class="top-bar-balance" aria-hidden="true"></div>
+  <div id="readerTopChrome" class="reader-top-chrome">
+    <div class="top-bar">
+      <button class="home-logo-btn home-brand-btn" onclick="goHome()" aria-label="Trang chủ" title="Trang chủ">
+        <img class="home-logo" src="assets/images/Logo.png" alt="Trang chủ">
+        <span class="home-brand-text">Thư viện truyện</span>
+      </button>
+      <div id="readerBookTitle" class="reader-book-title" title=""></div>
+      <a id="bookDetailLink" class="reader-detail-link" href="#" title="Thông tin truyện" aria-label="Xem thông tin truyện">ℹ</a>
+    </div>
+
+    <div class="nav top-nav">
+      <button class="top-nav-chapter-btn top-nav-prev" type="button" onclick="prevChapter()" aria-label="Chương trước">
+        <span class="top-nav-chapter-icon" aria-hidden="true">&larr;</span>
+        <span>Trước</span>
+      </button>
+
+      <select id="partSelect" onchange="changePart()"></select>
+      <select id="chapterSelect" onchange="changeChapter()"></select>
+
+      <button class="top-nav-chapter-btn top-nav-next" type="button" onclick="nextChapter()" aria-label="Chương sau">
+        <span>Sau</span>
+        <span class="top-nav-chapter-icon" aria-hidden="true">&rarr;</span>
+      </button>
+
+      <button type="button" onclick="toggleSettings()" aria-label="Mở cài đặt">&#9881;</button>
+    </div>
   </div>
 
-  <div class="nav top-nav">
-    <button class="top-nav-chapter-btn top-nav-prev" type="button" onclick="prevChapter()" aria-label="Chương trước">
-      <span class="top-nav-chapter-icon" aria-hidden="true">&larr;</span>
-      <span>Trước</span>
-    </button>
-
-    <select id="partSelect" onchange="changePart()"></select>
-    <select id="chapterSelect" onchange="changeChapter()"></select>
-
-    <button class="top-nav-chapter-btn top-nav-next" type="button" onclick="nextChapter()" aria-label="Chương sau">
-      <span>Sau</span>
-      <span class="top-nav-chapter-icon" aria-hidden="true">&rarr;</span>
-    </button>
-
-    <button type="button" onclick="toggleSettings()" aria-label="Mở cài đặt">&#9881;</button>
-  </div>
-</div>
-
+<div id="chapterMeta" class="chapter-meta" hidden></div>
 <div id="content" class="content"></div>
 
 <div class="nav bottom bottom-bar" aria-label="Điều hướng chương">

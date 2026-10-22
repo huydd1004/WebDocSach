@@ -608,6 +608,27 @@ function getChapterPath(chap) {
   );
 }
 
+function countWords(text) {
+  return String(text || '').trim().split(/\s+/).filter(Boolean).length;
+}
+
+function showChapterMeta(text) {
+  const metaEl = document.getElementById('chapterMeta');
+  if (!metaEl) return;
+
+  const words = countWords(text);
+  const minutes = Math.max(1, Math.round(words / 200));
+
+  metaEl.innerHTML = '';
+  const inner = document.createElement('div');
+  inner.className = 'chapter-meta-inner';
+  inner.innerHTML = `<span>📖 ~${words.toLocaleString('vi-VN')} từ</span>` +
+                    `<span class="chapter-meta-dot"></span>` +
+                    `<span>⏱ ~${minutes} phút đọc</span>`;
+  metaEl.appendChild(inner);
+  metaEl.hidden = false;
+}
+
 function renderChapterContent(contentEl, text) {
   const normalized = String(text || '').replace(/\r\n/g, '\n');
   const lines = normalized.split('\n');
@@ -616,20 +637,18 @@ function renderChapterContent(contentEl, text) {
   contentEl.innerHTML = '';
 
   if (titleIndex === -1) {
-    contentEl.innerText =
-      `Chương ${currentChapter} đang được cập nhật nội dung.`;
-
+    contentEl.innerText = `Chương ${currentChapter} đang được cập nhật nội dung.`;
+    showChapterMeta('');
     return;
   }
 
   const title = lines[titleIndex].trim();
   const body = lines.slice(titleIndex + 1).join('\n').trim();
-  const hasChapterTitle =
-    title.length <= 160 &&
-    (body.length > 0 || /^ch/i.test(title) || title.includes(':'));
+  const hasChapterTitle = title.length <= 160 && (body.length > 0 || /^ch/i.test(title) || title.includes(':'));
 
   if (!hasChapterTitle) {
     contentEl.innerText = normalized;
+    showChapterMeta(normalized);
     return;
   }
 
@@ -642,11 +661,37 @@ function renderChapterContent(contentEl, text) {
   bodyEl.className = 'chapter-body';
   bodyEl.textContent = body;
   contentEl.appendChild(bodyEl);
+
+  showChapterMeta(body);
+}
+
+function showChapterLoading(contentEl) {
+  contentEl.innerHTML =
+    '<div class="chapter-loading">' +
+      '<div class="chapter-loading-dots">' +
+        '<span></span><span></span><span></span>' +
+      '</div>' +
+      '<span>Đang tải chương...</span>' +
+    '</div>';
 }
 
 function loadChapter() {
   const contentEl = document.getElementById('content');
   if (!contentEl) return;
+
+  const metaEl = document.getElementById('chapterMeta');
+  if (metaEl) metaEl.hidden = true;
+
+  // Hiệu ứng fade-out
+  contentEl.classList.remove('is-visible');
+  contentEl.classList.add('is-transitioning');
+
+  // Hiển thị loading sau fade-out
+  setTimeout(() => {
+    showChapterLoading(contentEl);
+    contentEl.classList.remove('is-transitioning');
+    contentEl.classList.add('is-visible');
+  }, 150);
 
   const partPath = getChapterPath(currentChapter);
   const fallbackPath = createBookDataUrl(
@@ -663,14 +708,26 @@ function loadChapter() {
   tryFetch(partPath)
     .catch(() => tryFetch(fallbackPath))
     .then(text => {
-    renderChapterContent(contentEl, text);
+      // Fade-out loading, rồi fade-in nội dung
+      contentEl.classList.remove('is-visible');
+      contentEl.classList.add('is-transitioning');
 
-    loadedChapter = currentChapter;
+      setTimeout(() => {
+        renderChapterContent(contentEl, text);
 
-    saveProgress(currentBook, currentChapter);
-    restoreReadingPosition(currentBook, currentChapter);
+        loadedChapter = currentChapter;
+
+        contentEl.classList.remove('is-transitioning');
+        contentEl.classList.add('is-visible');
+
+        saveProgress(currentBook, currentChapter);
+        restoreReadingPosition(currentBook, currentChapter);
+      }, 180);
     })
     .catch(err => {
+      contentEl.classList.remove('is-transitioning');
+      contentEl.classList.add('is-visible');
+
       const msg = err && err.status
         ? `Không thể tải chương ${currentChapter} (HTTP ${err.status})`
         : (err && err.message) ? err.message : String(err);
@@ -1336,7 +1393,7 @@ window.addEventListener('load', () => {
   const openBtn = document.getElementById('backupModalTrigger');
   const closeBtn = document.getElementById('closeBackupDialog');
   const exportBtn = document.getElementById('exportBackupBtn');
-  const importBtb = document.getElementById('importBackupBtn');
+  const importBtn = document.getElementById('importBackupBtn');
   const fileInput = document.getElementById('backupFileInput');
   const statusEl = document.getElementById('backupStatus');
 
@@ -1345,5 +1402,189 @@ window.addEventListener('load', () => {
   const BACKUP_KEYS = [
     'readingProgress',
     'favoriteBooks',
-  ]
-})
+    'rememberReadingPosition',
+    'webdocsachSiteTheme',
+    'theme',
+    'fontsize',
+    'fontFamily',
+    'lineHeight',
+    'letterSpacing',
+    'textAlign'
+  ];
+
+  function showStatus(message, isError = false) {
+    if (!statusEl) return;
+    statusEl.textContent = message;
+    statusEl.className = `backup-status ${isError ? 'is-error' : 'is-success'}`;
+  }
+
+  // mở và đóng dialogg
+  openBtn.addEventListener('click', () => {
+    if (statusEl) statusEl.textContent = '';
+    dialog.showModal();
+  });
+
+  closeBtn?.addEventListener('click', () => dialog.close());
+
+  dialog.addEventListener('click', (event) => {
+    if (event.target === dialog) dialog.close();
+  });
+
+  // xuat file json
+  exportBtn?.addEventListener('click', () => {
+    try {
+      const data = {};
+      BACKUP_KEYS.forEach(key =>  {
+        const val = localStorage.getItem(key);
+        if (val !== null) {
+          try {
+            data[key] = JSON.parse(val);
+          } catch {
+            data[key] = val;
+          }
+        }
+      });
+
+      const payload = {
+        app: 'WebDocSach',
+        exportedAt: new Date().toISOString(),
+        data
+      };
+
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const dateStr = new Date().toISOString().slice(0, 10);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `webdocsach-backup-${dateStr}.json`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+
+      showStatus('Đã tải tệp sao lưu thành công!', false);
+    } catch (err) {
+      showStatus('Lỗi khi xuất tệp: ' + err.message, true);
+    }
+  });
+
+  // kích hoạt chọn file
+  importBtn?.addEventListener('click', () => {
+    if (fileInput) {
+      fileInput.value = '';
+      fileInput.click();
+    }
+  });
+
+  // Nhập và khôi phục dữ liệu từ file JSON
+  fileInput?.addEventListener('change', (event) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const json = JSON.parse(e.target.result);
+        const backupData = json?.data || json;
+
+        if (!backupData || typeof backupData !== 'object' || Object.keys(backupData).length === 0) {
+          showStatus('Tệp không đúng định dạng hoặc không có dữ liệu.', true);
+          return;
+        }
+
+        const confirmed = window.confirm('Dữ liệu sao lưu sẽ ghi đè lên tiến độ đọc và tủ sách hiện tại của bạn. Bạn có muốn tiếp tục ?');
+        if (!confirmed) return;
+
+        Object.entries(backupData).forEach(([key, val]) => {
+          if (BACKUP_KEYS.includes(key)) {
+            const strVal = typeof val === 'object' ? JSON.stringify(val) : String(val);
+            localStorage.setItem(key, strVal);
+          }
+        });
+
+        showStatus('Khôi phục thành công! Đang tải lại trang...', false);
+        setTimeout(() => window.location.reload(), 1000);
+      } catch (err) {
+        showStatus('Lỗi đọc tệp JSON: ' + err.message, true);
+      }
+    };
+    reader.readAsText(file);
+  });
+})();
+
+// ===== CẢI TIẾN TRANG ĐỌC =====
+
+// 1. Thanh tiến độ đọc
+(function setupReadingProgressBar() {
+  const bar = document.getElementById('readingProgressBar');
+  if (!bar || !document.body.classList.contains('reader-page')) return;
+
+  let ticking = false;
+
+  function updateProgress() {
+    const scrollY = window.scrollY;
+    const maxScroll = Math.max(
+      document.documentElement.scrollHeight - window.innerHeight,
+      1
+    );
+    const percent = Math.min((scrollY / maxScroll) * 100, 100);
+    bar.style.width = `${percent}%`;
+    ticking = false;
+  }
+
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      ticking = true;
+      window.requestAnimationFrame(updateProgress);
+    }
+  }, { passive: true });
+
+  updateProgress();
+})();
+
+// 2. Phím tắt bàn phím
+(function setupKeyboardShortcuts() {
+  if (!document.body.classList.contains('reader-page')) return;
+
+  document.addEventListener('keydown', (event) => {
+    // Không kích hoạt khi đang focus vào select, input
+    const tag = document.activeElement?.tagName;
+    if (tag === 'INPUT' || tag === 'SELECT' || tag === 'TEXTAREA') return;
+
+    // Không kích hoạt khi đang giữ Ctrl, Alt, Meta
+    if (event.ctrlKey || event.altKey || event.metaKey) return;
+
+    switch (event.key) {
+      case 'ArrowLeft':
+      case 'a':
+      case 'A':
+        event.preventDefault();
+        prevChapter();
+        break;
+
+      case 'ArrowRight':
+      case 'd':
+      case 'D':
+        event.preventDefault();
+        nextChapter();
+        break;
+    }
+  });
+})();
+
+// 3. Cập nhật link trang chi tiết truyện
+(function setupBookDetailLink() {
+  if (!document.body.classList.contains('reader-page')) return;
+
+  const link = document.getElementById('bookDetailLink');
+  if (!link) return;
+
+  const url = new URLSearchParams(window.location.search);
+  const bookId = url.get('book');
+
+  if (bookId) {
+    link.href = `book.html?id=${encodeURIComponent(bookId)}`;
+  } else {
+    link.hidden = true;
+  }
+})();

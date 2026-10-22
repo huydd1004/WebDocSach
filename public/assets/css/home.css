@@ -900,7 +900,7 @@
     background: rgb(15 23 42 / 6%);
 }
 
-backup-dialog-body {
+.backup-dialog-body {
     padding: 24px;
     display: flex;
     flex-direction: column;
@@ -964,14 +964,6 @@ backup-dialog-body {
 
 .backup-btn-secondary:hover {
     background: rgb(15 23 42 / 4%);
-}
-
-.backup-status {
-    margin: 0;
-    font-size: 13px;
-    font-weight: 600;
-    text-align: center;
-    min-height: 20px;
 }
 
 .backup-status {
