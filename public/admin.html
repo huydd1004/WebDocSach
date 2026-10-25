@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>Quản trị truyện | Thư Viện Truyện</title>
+
+    <script src="assets/js/theme.js"></script>
+
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/admin.css">
+    <link rel="stylesheet" href="assets/css/theme.css">
+</head>
+
+<body class="admin-page">
+    <header class="admin-header">
+        <div class="admin-container admin-header-inner">
+            <a class="admin-brand" href="index.html">
+                <img
+                    src="assets/images/Logo.png"
+                    alt=""
+                    width="42"
+                    height="42">
+
+                <span>
+                    <strong>Thư Viện Truyện</strong>
+                    <small>Quản trị nội dung</small>
+                </span>
+            </a>
+
+            <div class="admin-header-actions">
+                <a href="index.html">
+                    ← Trở về thư viện
+                </a>
+
+                <button
+                    class="site-theme-toggle"
+                    type="button"
+                    data-theme-toggle
+                    aria-label="Chuyển giao diện">
+                    <span 
+                        class="theme-toggle-icon"
+                        aria-hidden="true"
+                    >☾</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="admin-container admin-main">
+        <section class="admin-intro">
+            <p class="admin-label">QUẢN TRỊ DỮ LIỆU</p>
+
+            <h1>Thêm hoặc cập nhật truyện</h1>
+
+            <p>
+                Chọn thư mục chương và ảnh bìa.
+                Website sẽ kiểm tra dữ liệu trước khi tải lên R2.
+            </p>
+        </section>
+
+        <form
+            id="bookUploadForm"
+            class="admin-form"
+            autocomplete="off">
+
+            <section class="admin-card">
+                <div class="admin-card-heading">
+                    <span class="admin-step">1</span>
+
+                    <div>
+                        <h2>Xác thực quản trị</h2>
+                        <p>
+                            Nhập ADMIN_TOKEN đã lưu trên máy của bạn.
+                        </p>
+                    </div>
+                </div>
+
+                <label class="admin-field">
+                    <span>Mã quản trị</span>
+
+                    <input
+                        id="adminToken"
+                        type="password"
+                        placeholder="Nhập ADMIN_TOKEN"
+                        autocomplete="off"
+                        spellcheck="false"
+                        required>
+                </label>
+            </section>
+
+            <section class="admin-card">
+                <div class="admin-card-heading">
+                    <span class="admin-step">2</span>
+
+                    <div>
+                        <h2>Thông tin truyện</h2>
+                        <p>
+                            Truyện có cùng mã sẽ được cập nhật.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="admin-field-grid">
+                    <label class="admin-field">
+                        <span>Mã truyện</span>
+
+                        <input
+                            id="bookId"
+                            type="text"
+                            placeholder="ViDu: ToanAmMenh"
+                            pattern="[A-Za-z0-9_-]+"
+                            required>
+                    </label>
+
+                    <label class="admin-field">
+                        <span>Tên truyện</span>
+
+                        <input
+                            id="bookTitle"
+                            type="text"
+                            required>
+                    </label>
+
+                    <label class="admin-field">
+                        <span>Tác giả</span>
+
+                        <input
+                            id="bookAuthor"
+                            type="text"
+                            required>
+                    </label>
+
+                    <label class="admin-field">
+                        <span>Trạng thái</span>
+
+                        <select id="bookStatus">
+                            <option value="Đang cập nhật">
+                                Đang cập nhật
+                            </option>
+
+                            <option value="Hoàn thành">
+                                Hoàn thành
+                            </option>
+
+                            <option value="Tạm dừng">
+                                Tạm dừng
+                            </option>
+                        </select>
+                    </label>
+
+                    <label class="admin-field">
+                        <span>Ngày cập nhật</span>
+
+                        <input
+                            id="bookDate"
+                            type="date"
+                            required>
+                    </label>
+
+                    <label class="admin-field">
+                        <span>Thể loại</span>
+
+                        <input
+                            id="bookGenres"
+                            type="text"
+                            placeholder="Kinh dị, Linh dị, Huyền huyễn"
+                            required>
+                    </label>
+                </div>
+
+                <label class="admin-field">
+                    <span>Giới thiệu truyện</span>
+
+                    <textarea
+                        id="bookDescription"
+                        rows="5"
+                        required></textarea>
+                </label>
+            </section>
+
+            <section class="admin-card">
+                <div class="admin-card-heading">
+                    <span class="admin-step">3</span>
+
+                    <div>
+                        <h2>Chọn dữ liệu</h2>
+                        <p>
+                            Tên file chương phải có dạng 1.txt,
+                            2.txt, 3.txt...
+                        </p>
+                    </div>
+                </div>
+
+                <label class="admin-file-field">
+                    <span>Ảnh bìa</span>
+
+                    <input
+                        id="coverFile"
+                        type="file"
+                        accept=".jpg, .jpeg, .png, .webp"
+                        required>
+                </label>
+
+                <label class="admin-file-field">
+                    <span>Thư mục chứa chương</span>
+
+                    <input
+                        id="chapterFolder"
+                        type="file"
+                        accept=".txt"
+                        webkitdirectory
+                        directory
+                        multiple
+                        required>
+                </label>
+            </section>
+
+            <section class="admin-card">
+                <div class="admin-card-heading">
+                    <span class="admin-step">4</span>
+
+                    <div>
+                        <h2>Kiểm tra và tải lên</h2>
+                        <p>
+                            Dữ liệu chỉ được tải sau khi kiểm tra hợp lệ.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="admin-actions">
+                    <button
+                        id="validateBookButton"
+                        type="button">
+                        Kiểm tra dữ liệu
+                    </button>
+
+                    <button
+                        id="uploadBookButton"
+                        type="submit"
+                        disabled>
+                        Tải truyện lên R2
+                    </button>
+                </div>
+
+                <div
+                    id="uploadProgressWrapper"
+                    class="admin-progress"
+                    hidden>
+
+                    <progress
+                        id="uploadProgress"
+                        max="100"
+                        value="0">
+                    </progress>
+
+                    <span id="uploadProgressText">
+                        Đang chuẩn bị...
+                    </span>
+                </div>
+
+                <p
+                    id="adminStatus"
+                    class="admin-status"
+                    aria-live="polite"></p>
+
+                <pre
+                    id="uploadSummary"
+                    class="upload-summary"
+                    hidden></pre>
+            </section>
+        </form>
+    </main>
+
+    <script src="assets/js/admin.js?v=20261026-admin"></script>
+</body>
+</html>

@@ -5,6 +5,7 @@ database.sqlite-shm
 **/.wrangler/
 **/.dev.vars*
 .env.r2.local
+.env.admin.local
 public/data/ToanAmMenh/
 public/data/ToanTuMenh/
 public/data/ThienMenhXaDaoNhan/

@@ -1,8 +1,14 @@
 {
   "name": "webdocsach-data-api",
+  "account_id": "ecb5a6b56be2c3c76c0bf54804e1add9",
   "main": "worker.js",
   "compatibility_date": "2026-10-21",
   "workers_dev": true,
+  "secrets": {
+    "required": [
+      "ADMIN_TOKEN"
+    ]
+  },
   "r2_buckets": [
     {
       "binding": "BOOKS_BUCKET",

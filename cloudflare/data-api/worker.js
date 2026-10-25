@@ -3,10 +3,64 @@ const ALLOWED_ORIGINS = new Set([
   'http://localhost:3000'
 ]);
 
+const MAX_UPLOAD_SIZE = 20 * 1024 * 1024;
+const ALLOWED_DATA_EXTENSIONS = new Set(['txt', 'json']);
+
+const ALLOWED_IMAGE_EXTENSIONS = new Set(['jpg', 'jpeg', 'png', 'webp']);
+
+function hasAdminAccess(request, env) {
+  const authorization = request.headers.get('Authorization') || '';
+  const expectedAuthorization = env.ADMIN_TOKEN ? `Bearer ${env.ADMIN_TOKEN}` : '';
+
+  return Boolean(expectedAuthorization && authorization === expectedAuthorization);
+}
+
+function isSafeObjectKey(key) {
+  if (
+    !key ||
+    key.includes('\0') ||
+    key.includes('\\')
+  ) {
+    return false;
+  }
+
+  const segments = key.split('/');
+
+  const hasUnsafeSegment = segments.some(
+    segment =>
+      !segment ||
+      segment === '.' ||
+      segment === '..'
+  );
+
+  if (hasUnsafeSegment) {
+    return false;
+  }
+
+  const extension = key
+    .split('.')
+    .pop()
+    ?.toLowerCase();
+
+  if (key.startsWith('data/')) {
+    return ALLOWED_DATA_EXTENSIONS.has(
+      extension
+    );
+  }
+
+  if (key.startsWith('assets/images/')) {
+    return ALLOWED_IMAGE_EXTENSIONS.has(
+      extension
+    );
+  }
+
+  return false;
+}
+
 function createCorsHeaders(origin) {
   const headers = new Headers({
-    'Access-Control-Allow-Methods': 'GET, HEAD, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type',
+    'Access-Control-Allow-Methods': 'GET, HEAD, PUT, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
     'Access-Control-Max-Age': '86400',
     'Vary': 'Origin'
   });
@@ -69,7 +123,8 @@ export default {
 
     if (
       request.method !== 'GET' &&
-      request.method !== 'HEAD'
+      request.method !== 'HEAD' &&
+      request.method !== 'PUT'
     ) {
       return createJsonResponse(
         {
@@ -80,7 +135,7 @@ export default {
       );
     }
 
-    if (url.pathname === '/') {
+    if (url.pathname === '/' && request.method !== 'PUT') {
       return createJsonResponse(
         {
           service: 'webdocsach-data-api',
@@ -106,6 +161,49 @@ export default {
         400,
         origin
       );
+    }
+
+    if (request.method === 'PUT') {
+      if (!hasAdminAccess(request, env)) {
+        return createJsonResponse({
+          error: 'Không có quyền tải dữ liệu'
+        }, 401, origin);
+      }
+
+      if (!isSafeObjectKey(key)) {
+        return createJsonResponse({
+          error: 'Đường dẫn hoặc loại file không hợp lệ'
+        }, 400, origin);
+      }
+
+      const contentLength = Number(request.headers.get('Content-Length') || 0);
+
+      if (Number.isFinite(contentLength) && contentLength > MAX_UPLOAD_SIZE) {
+        return createJsonResponse({
+          error: 'File vượt quá giới hạn 20MB'
+        }, 413, origin);
+      }
+
+      try {
+        const uploadedObject = await env.BOOKS_BUCKET.put(key, request.body, {
+          httpMetadata: {
+            contentType: getContentType(key),
+            cacheControl: 'public, max-age=300'
+          }
+        });
+
+        return createJsonResponse({
+          success: true,
+          key,
+          size: uploadedObject?.size || contentLength
+        }, 201, origin);
+      } catch (error) {
+        console.error(error);
+
+        return createJsonResponse({
+          error: 'Không thể tải file lên R2'
+        }, 500, origin);
+      }
     }
 
     try {
