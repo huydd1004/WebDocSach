@@ -891,41 +891,47 @@ function loadChapter() {
 
 function loadSelects() {
   const partTop = document.getElementById('partSelect');
-  const selectTop = document.getElementById('chapterSelect');
-  const selectBottom = document.getElementById('chapterSelectBottom');
-  if (!partTop || !selectTop) return;
-
-  [partTop, selectTop, selectBottom].filter(Boolean).forEach(el => { el.innerHTML = ''; });
+  const chapterTop = document.getElementById('chapterSelect');
+  const partLabel = document.getElementById('topPartLabel');
+  const chapterLabel = document.getElementById('topChapterLabel');
+  const partMenu = document.getElementById('topPartMenu');
+  const chapterMenu = document.getElementById('topChapterMenu');
+  if (!partTop || !chapterTop || !partLabel || !chapterLabel || !partMenu || !chapterMenu) return;
 
   const currentPart = chapterToPart(currentChapter);
   const availableParts = getAvailableParts();
+  const chapters = getChaptersForPart(currentPart);
+
+  partTop.dataset.value = String(currentPart);
+  partLabel.textContent = `Phần ${currentPart}`;
+  partMenu.innerHTML = '';
 
   availableParts.forEach(part => {
-    const opt = document.createElement('option');
-    opt.value = part;
-    opt.innerText = `Phần ${part}`;
-    if (part === currentPart) opt.selected = true;
-    partTop.appendChild(opt);
+    partMenu.appendChild(createTocPopoverOption(
+      `Phần ${part}`,
+      part === currentPart,
+      () => {
+        const firstChapter = getChaptersForPart(part)[0];
+        closeTocMenus();
+        if (firstChapter) navigateToReaderChapter(firstChapter.number);
+      }
+    ));
   });
 
-  getChaptersForPart(currentPart).forEach(chapter => {
-    const title = chapter.title || `Chương ${chapter.number}`;
+  chapterTop.dataset.value = String(currentChapter);
+  chapterLabel.textContent = getChapterDisplayTitle(getCurrentChapterData());
+  chapterMenu.innerHTML = '';
 
-    const topOption = document.createElement('option');
-    topOption.value = chapter.number;
-    topOption.innerText = title;
-    if (chapter.number === currentChapter) topOption.selected = true;
-    selectTop.appendChild(topOption);
-
-    if (selectBottom) {
-      const bottomOption = document.createElement('option');
-      bottomOption.value = chapter.number;
-      bottomOption.innerText = title;
-      if (chapter.number === currentChapter) bottomOption.selected = true;
-      selectBottom.appendChild(bottomOption);
-    }
+  chapters.forEach(chapter => {
+    chapterMenu.appendChild(createTocPopoverOption(
+      getChapterDisplayTitle(chapter),
+      chapter.number === currentChapter,
+      () => goToReaderChapter(chapter.number)
+    ));
   });
 
+  bindReaderMenuTrigger(partTop, partMenu);
+  bindReaderMenuTrigger(chapterTop, chapterMenu);
   setupReaderToc();
   updateReaderChapterUI();
 }
@@ -942,17 +948,32 @@ function setTocMenuState(trigger, menu, open) {
   if (!trigger || !menu) return;
   trigger.setAttribute('aria-expanded', open ? 'true' : 'false');
   menu.hidden = !open;
-  trigger.closest('.reader-toc-field')?.classList.toggle('is-menu-open', open);
+  trigger.closest('.reader-toc-field, .reader-top-select-field')
+    ?.classList.toggle('is-menu-open', open);
 }
 
 function closeTocMenus(exceptMenu = null) {
   [
+    ['partSelect', 'topPartMenu'],
+    ['chapterSelect', 'topChapterMenu'],
     ['tocPartTrigger', 'tocPartMenu'],
     ['tocChapterTrigger', 'tocChapterMenu']
   ].forEach(([triggerId, menuId]) => {
     const trigger = document.getElementById(triggerId);
     const menu = document.getElementById(menuId);
     if (menu !== exceptMenu) setTocMenuState(trigger, menu, false);
+  });
+}
+
+function bindReaderMenuTrigger(trigger, menu) {
+  if (!trigger || !menu || trigger.dataset.menuBound === '1') return;
+  trigger.dataset.menuBound = '1';
+
+  trigger.addEventListener('click', event => {
+    event.stopPropagation();
+    const willOpen = menu.hidden;
+    closeTocMenus(willOpen ? menu : null);
+    setTocMenuState(trigger, menu, willOpen);
   });
 }
 
@@ -1110,7 +1131,9 @@ function setupReaderToc() {
 
   searchInput.addEventListener('focus', () => closeTocMenus());
   document.addEventListener('click', event => {
-    if (!event.target.closest('.reader-toc-field')) closeTocMenus();
+    if (!event.target.closest('.reader-toc-field, .reader-top-select-field')) {
+      closeTocMenus();
+    }
   });
 }
 
@@ -1465,7 +1488,7 @@ function changePart() {
   const partSel = document.getElementById('partSelect');
   if (!partSel) return;
 
-  const selectedPart = parseInt(partSel.value, 10);
+  const selectedPart = parseInt(partSel.dataset.value || partSel.value, 10);
   const firstChapter = getChaptersForPart(selectedPart)[0];
   if (!firstChapter) return;
 
@@ -1476,7 +1499,7 @@ function changeChapter() {
   const select = document.getElementById('chapterSelect');
   if (!select) return;
 
-  navigateToReaderChapter(parseInt(select.value, 10));
+  navigateToReaderChapter(parseInt(select.dataset.value || select.value, 10));
 }
 
 function changeChapterBottom() {

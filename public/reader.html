@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#111827">
   <title>Đọc truyện</title>
   <link rel="stylesheet" href="assets/css/style.css?v=20261026-chapter">
-  <link rel="stylesheet" href="assets/css/reader.css?v=20261027-reader-studio-5">
+  <link rel="stylesheet" href="assets/css/reader.css?v=20261027-reader-studio-6">
 </head>
 
 <body class="reader-page reader-v2" data-reader-theme="dark">
@@ -49,8 +49,21 @@
         <span>Trước</span>
       </button>
 
-      <select id="partSelect" onchange="changePart()"></select>
-      <select id="chapterSelect" onchange="changeChapter()"></select>
+      <div class="reader-top-select-field">
+        <button id="partSelect" class="reader-top-menu-trigger" type="button" aria-haspopup="listbox" aria-expanded="false" aria-controls="topPartMenu">
+          <span id="topPartLabel">Phần 1</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 10 4 4 4-4"/></svg>
+        </button>
+        <div id="topPartMenu" class="reader-toc-popover reader-top-popover" role="listbox" aria-label="Chọn phần" hidden></div>
+      </div>
+
+      <div class="reader-top-select-field">
+        <button id="chapterSelect" class="reader-top-menu-trigger" type="button" aria-haspopup="listbox" aria-expanded="false" aria-controls="topChapterMenu">
+          <span id="topChapterLabel">Chọn chương</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 10 4 4 4-4"/></svg>
+        </button>
+        <div id="topChapterMenu" class="reader-toc-popover reader-top-popover reader-top-chapter-popover" role="listbox" aria-label="Chọn chương" hidden></div>
+      </div>
 
       <button class="top-nav-chapter-btn top-nav-next" type="button" onclick="nextChapter()" aria-label="Chương sau">
         <span>Sau</span>
@@ -264,7 +277,7 @@
 </aside>
 
   <script src="assets/js/data-source.js?v=20261021-r2"></script>
-  <script src="assets/js/script.js?v=20261027-reader-studio-3"></script>
+  <script src="assets/js/script.js?v=20261027-reader-studio-4"></script>
 <button id="scrollTopBtn" class="scroll-top" type="button" title="Lên đầu trang">&#11014;</button>
 </body>
 </html>
