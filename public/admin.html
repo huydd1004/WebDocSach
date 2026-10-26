@@ -12,7 +12,7 @@
     <script src="assets/js/theme.js"></script>
 
     <link rel="stylesheet" href="assets/css/style.css?v=20261026-chapter">
-    <link rel="stylesheet" href="assets/css/admin.css?v=20261026-edit">
+    <link rel="stylesheet" href="assets/css/admin.css?v=20261026-genres">
     <link rel="stylesheet" href="assets/css/theme.css">
 </head>
 
@@ -162,15 +162,32 @@
                             required>
                     </label>
 
-                    <label class="admin-field">
+                    <div class="admin-field admin-genre-field">
                         <span>Thể loại</span>
 
-                        <input
-                            id="bookGenres"
-                            type="text"
-                            placeholder="Kinh dị, Linh dị, Huyền huyễn"
-                            required>
-                    </label>
+                        <div
+                            id="bookGenreTags"
+                            class="admin-genre-tags"
+                            aria-live="polite"></div>
+
+                        <div class="admin-genre-entry">
+                            <input
+                                id="bookGenres"
+                                type="text"
+                                placeholder="Ví dụ: Kinh dị">
+
+                            <button
+                                id="addBookGenreButton"
+                                type="button">
+                                Thêm
+                            </button>
+                        </div>
+
+                        <small class="admin-field-help">
+                            Nhập một thể loại rồi nhấn Enter hoặc dấu phẩy.
+                            Bạn có thể thêm nhiều thể loại.
+                        </small>
+                    </div>
                 </div>
 
                 <label class="admin-field">
@@ -383,6 +400,6 @@
         </section>
     </main>
 
-    <script src="assets/js/admin.js?v=20261026-empty-book"></script>
+    <script src="assets/js/admin.js?v=20261026-genres"></script>
 </body>
 </html>

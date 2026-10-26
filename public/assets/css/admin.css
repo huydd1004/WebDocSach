@@ -405,3 +405,82 @@
 #uploadSingleChapterButton:hover:not(:disabled) {
   background: var(--admin-accent-hover);
 }
+
+.admin-genre-field {
+  grid-column: 1 / -1;
+}
+
+.admin-genre-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.admin-genre-tags:empty {
+  display: none;
+}
+
+.admin-genre-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 34px;
+  padding: 6px 10px 6px 12px;
+  border: 1px solid rgb(15 118 110 / 28%);
+  border-radius: 999px;
+  background: rgb(20 184 166 / 12%);
+  color: var(--admin-accent);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.admin-genre-tag:hover {
+  border-color: var(--admin-error);
+  color: var(--admin-error);
+}
+
+.admin-genre-tag span {
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.admin-genre-entry {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+}
+
+.admin-genre-entry button {
+  min-width: 88px;
+  padding-inline: 18px;
+  border: 0;
+  border-radius: 11px;
+  background: var(--admin-accent);
+  color: var(--admin-on-accent);
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.admin-genre-entry button:hover {
+  background: var(--admin-accent-hover);
+}
+
+.admin-field-help {
+  color: var(--admin-muted);
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+@media (max-width: 560px) {
+  .admin-genre-entry {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-genre-entry button {
+    min-height: 44px;
+  }
+}

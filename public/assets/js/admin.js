@@ -36,6 +36,14 @@ const bookGenresInput = document.getElementById(
   'bookGenres'
 );
 
+const bookGenreTagsElement = document.getElementById(
+  'bookGenreTags'
+);
+
+const addBookGenreButton = document.getElementById(
+  'addBookGenreButton'
+);
+
 const bookDescriptionInput =
   document.getElementById(
     'bookDescription'
@@ -92,6 +100,7 @@ const singleChapterProgressText = document.getElementById('singleChapterProgress
 const singleChapterSummary = document.getElementById('singleChapterSummary');
 
 let preparedUpload = null;
+const selectedBookGenres = new Map();
 
 function showStatus(message, type = '') {
   statusElement.textContent = message;
@@ -271,19 +280,112 @@ async function collectChapterEntries() {
   return entries;
 }
 
-function getSelectedGenres() {
-  return [
-    ...new Set(
-      bookGenresInput.value
-        .split(',')
-        .map(genre => genre.trim())
-        .filter(Boolean)
+function normalizeGenreKey(genre) {
+  return String(genre || '')
+    .toLocaleLowerCase('vi-VN')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function syncBookGenreValidity() {
+  const hasPendingGenre =
+    bookGenresInput.value
+      .split(/[,;\n]+/)
+      .some(genre => genre.trim());
+
+  const hasGenre =
+    selectedBookGenres.size > 0 ||
+    hasPendingGenre;
+
+  bookGenresInput.setCustomValidity(
+    hasGenre
+      ? ''
+      : 'Hãy thêm ít nhất một thể loại.'
+  );
+}
+
+function renderBookGenreTags() {
+  const fragment =
+    document.createDocumentFragment();
+
+  selectedBookGenres.forEach(
+    (genre, genreKey) => {
+      const tag = document.createElement(
+        'button'
+      );
+
+      const removeIcon =
+        document.createElement('span');
+
+      tag.type = 'button';
+      tag.className = 'admin-genre-tag';
+      tag.setAttribute(
+        'aria-label',
+        `Xóa thể loại ${genre}`
+      );
+
+      tag.append(
+        document.createTextNode(genre),
+        removeIcon
+      );
+
+      removeIcon.textContent = '×';
+      removeIcon.setAttribute(
+        'aria-hidden',
+        'true'
+      );
+
+      tag.addEventListener('click', () => {
+        selectedBookGenres.delete(genreKey);
+        renderBookGenreTags();
+        syncBookGenreValidity();
+        invalidatePreparedUpload();
+      });
+
+      fragment.appendChild(tag);
+    }
+  );
+
+  bookGenreTagsElement.replaceChildren(
+    fragment
+  );
+}
+
+function addGenresFromInput() {
+  const genres = bookGenresInput.value
+    .split(/[,;\n]+/)
+    .map(genre =>
+      genre.replace(/\s+/g, ' ').trim()
     )
-  ];
+    .filter(Boolean);
+
+  genres.forEach(genre => {
+    const genreKey = normalizeGenreKey(genre);
+
+    if (genreKey) {
+      selectedBookGenres.set(
+        genreKey,
+        genre
+      );
+    }
+  });
+
+  if (genres.length > 0) {
+    bookGenresInput.value = '';
+    renderBookGenreTags();
+  }
+
+  syncBookGenreValidity();
+}
+
+function getSelectedGenres() {
+  addGenresFromInput();
+  return [...selectedBookGenres.values()];
 }
 
 async function prepareBookUpload() {
   resetPreparedUpload();
+  addGenresFromInput();
 
   if (!form.reportValidity()) {
     showStatus(
@@ -464,6 +566,42 @@ validateButton.addEventListener(
   'click',
   prepareBookUpload
 );
+
+addBookGenreButton.addEventListener(
+  'click',
+  () => {
+    addGenresFromInput();
+    bookGenresInput.focus();
+  }
+);
+
+bookGenresInput.addEventListener(
+  'keydown',
+  event => {
+    if (
+      event.key !== 'Enter' &&
+      event.key !== ',' &&
+      event.key !== ';'
+    ) {
+      return;
+    }
+
+    event.preventDefault();
+    addGenresFromInput();
+  }
+);
+
+bookGenresInput.addEventListener(
+  'input',
+  syncBookGenreValidity
+);
+
+bookGenresInput.addEventListener(
+  'blur',
+  addGenresFromInput
+);
+
+syncBookGenreValidity();
 
 form.addEventListener(
   'input',
