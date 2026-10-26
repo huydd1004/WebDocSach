@@ -6,9 +6,9 @@ const CHAPTERS_PER_PART = 200;
 const {createDataUrl, createBookDataUrl} = window.WebDocSachData;
 
 const THEMES = [
-  { bg: '#0f172a', text: '#e2e8f0' },
-  { bg: '#fdf6e3', text: '#222222' },
-  { bg: '#fff8dc', text: '#5b4636' }
+  { name: 'dark', color: '#0a0f1b' },
+  { name: 'light', color: '#eef1f5' },
+  { name: 'sepia', color: '#e9dfcb' }
 ];
 
 let booksData = [];
@@ -19,6 +19,7 @@ let chapterIndex = [];
 
 let loadedChapter = 0;
 let readingPositionTimer = null;
+let chapterNavigationLocked = false;
 
 async function fetchBooksData() {
   const response = await fetch(createDataUrl('books.json'));
@@ -578,6 +579,67 @@ function getCurrentChapterPosition() {
   return chapterIndex.findIndex(chapter => chapter.number === currentChapter);
 }
 
+function getCurrentChapterData() {
+  return chapterIndex.find(chapter => chapter.number === currentChapter) || null;
+}
+
+function getChapterDisplayTitle(chapter) {
+  if (!chapter) return `Chương ${currentChapter}`;
+  return String(chapter.title || `Chương ${chapter.number}`).trim();
+}
+
+function updateReaderChapterUI(title = '') {
+  const position = getCurrentChapterPosition();
+  const chapter = getCurrentChapterData();
+  const displayTitle = title || getChapterDisplayTitle(chapter);
+  const chapterLabel = `Chương ${currentChapter}`;
+  const totalLabel = chapterIndex.length > 0 && position >= 0
+    ? `${position + 1} / ${chapterIndex.length}`
+    : '-- / --';
+
+  const titleEl = document.getElementById('readerChapterTitle');
+  const numberEl = document.getElementById('readerChapterNumber');
+  const headerEl = document.getElementById('readerHeaderChapter');
+  const dockChapterEl = document.getElementById('readerDockChapter');
+  const dockProgressEl = document.getElementById('readerDockProgress');
+
+  if (titleEl) titleEl.textContent = displayTitle;
+  if (numberEl) numberEl.textContent = chapterLabel;
+  if (headerEl) headerEl.textContent = displayTitle;
+  if (dockChapterEl) dockChapterEl.textContent = chapterLabel;
+  if (dockProgressEl) dockProgressEl.textContent = totalLabel;
+
+  const previousChapter = position > 0 ? chapterIndex[position - 1] : null;
+  const nextChapterData = position >= 0 && position < chapterIndex.length - 1
+    ? chapterIndex[position + 1]
+    : null;
+
+  const prevLabel = document.getElementById('readerEndPrevLabel');
+  const nextLabel = document.getElementById('readerEndNextLabel');
+  if (prevLabel) prevLabel.textContent = previousChapter
+    ? getChapterDisplayTitle(previousChapter)
+    : 'Đây là chương đầu';
+  if (nextLabel) nextLabel.textContent = nextChapterData
+    ? getChapterDisplayTitle(nextChapterData)
+    : 'Đã hết chương';
+
+  [
+    document.getElementById('readerEndPrev'),
+    document.getElementById('readerDockPrev'),
+    document.querySelector('.top-nav-prev')
+  ].forEach(button => {
+    if (button) button.disabled = !previousChapter;
+  });
+
+  [
+    document.getElementById('readerEndNext'),
+    document.getElementById('readerDockNext'),
+    document.querySelector('.top-nav-next')
+  ].forEach(button => {
+    if (button) button.disabled = !nextChapterData;
+  });
+}
+
 function selectExistingChapter() {
   if (!chapterIndex.length || getCurrentChapterPosition() >= 0) return;
 
@@ -623,9 +685,9 @@ function showChapterMeta(text) {
   metaEl.innerHTML = '';
   const inner = document.createElement('div');
   inner.className = 'chapter-meta-inner';
-  inner.innerHTML = `<span>📖 ~${words.toLocaleString('vi-VN')} từ</span>` +
+  inner.innerHTML = `<span>${words.toLocaleString('vi-VN')} từ</span>` +
                     `<span class="chapter-meta-dot"></span>` +
-                    `<span>⏱ ~${minutes} phút đọc</span>`;
+                    `<span>${minutes} phút đọc</span>`;
   metaEl.appendChild(inner);
   metaEl.hidden = false;
 }
@@ -648,6 +710,7 @@ function appendChapterImage(
     'chapter-illustration';
 
   image.src = imageUrl;
+  image.className = 'chapter-image';
   image.alt =
     `Ảnh minh họa chương ${currentChapter}`;
   image.loading = 'lazy';
@@ -677,10 +740,11 @@ function renderChapterContent(
   contentEl.innerHTML = '';
 
   if (titleIndex === -1) {
-    contentEl.innerText =
-      `Chương ${currentChapter} ` +
-      'đang được cập nhật nội dung.';
-
+    const empty = document.createElement('p');
+    empty.className = 'chapter-empty';
+    empty.textContent = `Chương ${currentChapter} đang được cập nhật nội dung.`;
+    contentEl.appendChild(empty);
+    updateReaderChapterUI();
     showChapterMeta('');
     return;
   }
@@ -701,54 +765,50 @@ function renderChapterContent(
     );
 
   if (!hasChapterTitle) {
+    updateReaderChapterUI();
     appendChapterImage(
       contentEl,
       imageUrl
     );
 
-    const bodyElement =
-      document.createElement('div');
-
-    bodyElement.className = 'chapter-body';
-    bodyElement.textContent = normalized;
-
-    contentEl.appendChild(bodyElement);
+    appendChapterParagraphs(contentEl, normalized);
 
     showChapterMeta(normalized);
     return;
   }
 
-  const titleElement =
-    document.createElement('div');
-
-  titleElement.className = 'chapter-title';
-  titleElement.textContent = title;
-
-  contentEl.appendChild(titleElement);
+  updateReaderChapterUI(title);
 
   appendChapterImage(
     contentEl,
     imageUrl
   );
 
-  const bodyElement =
-    document.createElement('div');
-
-  bodyElement.className = 'chapter-body';
-  bodyElement.textContent = body;
-
-  contentEl.appendChild(bodyElement);
+  appendChapterParagraphs(contentEl, body);
 
   showChapterMeta(body);
 }
 
+function appendChapterParagraphs(contentEl, text) {
+  const normalized = String(text || '').trim();
+  if (!normalized) return;
+
+  let paragraphs = normalized.split(/\n\s*\n+/).map(item => item.trim()).filter(Boolean);
+  if (paragraphs.length === 1 && paragraphs[0].includes('\n')) {
+    paragraphs = paragraphs[0].split('\n').map(item => item.trim()).filter(Boolean);
+  }
+
+  paragraphs.forEach(paragraphText => {
+    const paragraph = document.createElement('p');
+    paragraph.textContent = paragraphText.replace(/\s+/g, ' ');
+    contentEl.appendChild(paragraph);
+  });
+}
+
 function showChapterLoading(contentEl) {
   contentEl.innerHTML =
-    '<div class="chapter-loading">' +
-      '<div class="chapter-loading-dots">' +
-        '<span></span><span></span><span></span>' +
-      '</div>' +
-      '<span>Đang tải chương...</span>' +
+    '<div class="reader-skeleton" aria-label="Đang tải chương">' +
+      '<span></span><span></span><span></span><span></span>' +
     '</div>';
 }
 
@@ -758,6 +818,8 @@ function loadChapter() {
 
   const metaEl = document.getElementById('chapterMeta');
   if (metaEl) metaEl.hidden = true;
+
+  updateReaderChapterUI();
 
   // Hiệu ứng fade-out
   contentEl.classList.remove('is-visible');
@@ -819,7 +881,11 @@ function loadChapter() {
       const msg = err && err.status
         ? `Không thể tải chương ${currentChapter} (HTTP ${err.status})`
         : (err && err.message) ? err.message : String(err);
-      contentEl.innerText = `Lỗi tải chương: ${msg}`;
+      contentEl.innerHTML = '';
+      const errorMessage = document.createElement('p');
+      errorMessage.className = 'chapter-error';
+      errorMessage.textContent = `Lỗi tải chương: ${msg}`;
+      contentEl.appendChild(errorMessage);
     });
 }
 
@@ -827,9 +893,9 @@ function loadSelects() {
   const partTop = document.getElementById('partSelect');
   const selectTop = document.getElementById('chapterSelect');
   const selectBottom = document.getElementById('chapterSelectBottom');
-  if (!partTop || !selectTop || !selectBottom) return;
+  if (!partTop || !selectTop) return;
 
-  [partTop, selectTop, selectBottom].forEach(el => { el.innerHTML = ''; });
+  [partTop, selectTop, selectBottom].filter(Boolean).forEach(el => { el.innerHTML = ''; });
 
   const currentPart = chapterToPart(currentChapter);
   const availableParts = getAvailableParts();
@@ -851,21 +917,144 @@ function loadSelects() {
     if (chapter.number === currentChapter) topOption.selected = true;
     selectTop.appendChild(topOption);
 
-    const bottomOption = document.createElement('option');
-    bottomOption.value = chapter.number;
-    bottomOption.innerText = title;
-    if (chapter.number === currentChapter) bottomOption.selected = true;
-    selectBottom.appendChild(bottomOption);
+    if (selectBottom) {
+      const bottomOption = document.createElement('option');
+      bottomOption.value = chapter.number;
+      bottomOption.innerText = title;
+      if (chapter.number === currentChapter) bottomOption.selected = true;
+      selectBottom.appendChild(bottomOption);
+    }
   });
+
+  setupReaderToc();
+  updateReaderChapterUI();
+}
+
+function normalizeReaderSearch(value) {
+  return String(value || '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .trim();
+}
+
+function populateTocChapterSelect(part) {
+  const select = document.getElementById('tocChapterSelect');
+  if (!select) return;
+
+  const chapters = getChaptersForPart(Number(part));
+  select.innerHTML = '';
+
+  chapters.forEach(chapter => {
+    const option = document.createElement('option');
+    option.value = String(chapter.number);
+    option.textContent = getChapterDisplayTitle(chapter);
+    option.selected = chapter.number === currentChapter;
+    select.appendChild(option);
+  });
+
+  if (!chapters.some(chapter => chapter.number === currentChapter) && chapters[0]) {
+    select.value = String(chapters[0].number);
+  }
+}
+
+function renderReaderToc(query = '') {
+  const list = document.getElementById('readerTocList');
+  const empty = document.getElementById('readerTocEmpty');
+  const count = document.getElementById('tocResultCount');
+  const title = document.getElementById('tocResultTitle');
+  const partSelect = document.getElementById('tocPartSelect');
+  if (!list || !empty) return;
+
+  const normalizedQuery = normalizeReaderSearch(query);
+  const selectedPart = Number(partSelect?.value || chapterToPart(currentChapter));
+  const source = normalizedQuery ? chapterIndex : getChaptersForPart(selectedPart);
+  const chapters = source.filter(chapter => {
+    if (!normalizedQuery) return true;
+    return normalizeReaderSearch(`${chapter.number} ${getChapterDisplayTitle(chapter)}`)
+      .includes(normalizedQuery);
+  });
+
+  list.innerHTML = '';
+  chapters.forEach(chapter => {
+    const button = document.createElement('button');
+    const number = document.createElement('span');
+    const name = document.createElement('span');
+    const arrow = document.createElement('span');
+
+    button.type = 'button';
+    button.className = 'reader-toc-item';
+    button.classList.toggle('is-current', chapter.number === currentChapter);
+    button.setAttribute('role', 'listitem');
+    button.setAttribute('aria-current', chapter.number === currentChapter ? 'page' : 'false');
+    button.addEventListener('click', () => goToReaderChapter(chapter.number));
+
+    number.className = 'reader-toc-number';
+    number.textContent = String(chapter.number).padStart(3, '0');
+    name.className = 'reader-toc-name';
+    name.textContent = getChapterDisplayTitle(chapter);
+    arrow.className = 'reader-toc-arrow';
+    arrow.setAttribute('aria-hidden', 'true');
+    arrow.textContent = '›';
+
+    button.append(number, name, arrow);
+    list.appendChild(button);
+  });
+
+  empty.hidden = chapters.length > 0;
+  if (count) count.textContent = `${chapters.length} chương`;
+  if (title) title.textContent = normalizedQuery ? 'Kết quả tìm kiếm' : `Phần ${selectedPart}`;
+}
+
+function setupReaderToc() {
+  const partSelect = document.getElementById('tocPartSelect');
+  const chapterSelect = document.getElementById('tocChapterSelect');
+  const searchInput = document.getElementById('tocSearchInput');
+  if (!partSelect || !chapterSelect || !searchInput) return;
+
+  const currentPart = chapterToPart(currentChapter);
+  partSelect.innerHTML = '';
+  getAvailableParts().forEach(part => {
+    const option = document.createElement('option');
+    option.value = String(part);
+    option.textContent = `Phần ${part}`;
+    option.selected = part === currentPart;
+    partSelect.appendChild(option);
+  });
+
+  populateTocChapterSelect(currentPart);
+  renderReaderToc(searchInput.value);
+
+  if (partSelect.dataset.readerBound === '1') return;
+  partSelect.dataset.readerBound = '1';
+
+  partSelect.addEventListener('change', () => {
+    searchInput.value = '';
+    populateTocChapterSelect(partSelect.value);
+    renderReaderToc();
+  });
+
+  chapterSelect.addEventListener('change', () => {
+    goToReaderChapter(Number(chapterSelect.value));
+  });
+
+  searchInput.addEventListener('input', () => {
+    renderReaderToc(searchInput.value);
+  });
+}
+
+function goToReaderChapter(chapterNumber) {
+  const chapter = chapterIndex.find(item => item.number === Number(chapterNumber));
+  if (!chapter) return;
+
+  navigateToReaderChapter(chapter.number);
 }
 
 function nextChapter() {
   const position = getCurrentChapterPosition();
 
   if (position >= 0 && position < chapterIndex.length - 1) {
-    currentChapter = chapterIndex[position + 1].number;
-    saveProgress(currentBook, currentChapter);
-    updateURL();
+    navigateToReaderChapter(chapterIndex[position + 1].number, 'next');
   }
 }
 
@@ -873,25 +1062,122 @@ function prevChapter() {
   const position = getCurrentChapterPosition();
 
   if (position > 0) {
-    currentChapter = chapterIndex[position - 1].number;
-    saveProgress(currentBook, currentChapter);
-    updateURL();
+    navigateToReaderChapter(chapterIndex[position - 1].number, 'prev');
   }
+}
+
+function navigateToReaderChapter(chapterNumber, requestedDirection = '') {
+  const targetChapter = Number(chapterNumber);
+  const exists = chapterIndex.some(chapter => chapter.number === targetChapter);
+  if (!exists || chapterNavigationLocked) return;
+
+  if (targetChapter === currentChapter) {
+    closeReaderPanels();
+    return;
+  }
+
+  const direction = requestedDirection === 'prev' || requestedDirection === 'next'
+    ? requestedDirection
+    : (targetChapter > currentChapter ? 'next' : 'prev');
+
+  chapterNavigationLocked = true;
+  closeReaderPanels();
+  currentChapter = targetChapter;
+  saveProgress(currentBook, currentChapter);
+
+  try {
+    sessionStorage.setItem('readerPageTurnDirection', direction);
+  } catch (error) {
+    // Continue without the entrance animation when storage is unavailable.
+  }
+
+  document.body.classList.add(`reader-turn-${direction}`);
+  document.body.setAttribute('aria-busy', 'true');
+
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  window.setTimeout(updateURL, reduceMotion ? 0 : 260);
 }
 
 function goHome() {
   window.location.href = 'index.html';
 }
 
+function goBack() {
+  const hasLocalReferrer = (() => {
+    try {
+      return document.referrer && new URL(document.referrer).origin === window.location.origin;
+    } catch (error) {
+      return false;
+    }
+  })();
+
+  if (hasLocalReferrer) {
+    window.history.back();
+    return;
+  }
+
+  window.location.href = currentBook
+    ? `book.html?id=${encodeURIComponent(currentBook)}`
+    : 'index.html';
+}
+
+function closeReaderPanels() {
+  document.querySelectorAll('.reader-side-panel.is-open').forEach(panel => {
+    panel.classList.remove('is-open');
+    panel.setAttribute('aria-hidden', 'true');
+  });
+
+  const backdrop = document.getElementById('readerBackdrop');
+  if (backdrop) {
+    backdrop.classList.remove('is-visible');
+    backdrop.setAttribute('aria-hidden', 'true');
+  }
+
+  document.body.classList.remove('reader-panel-open');
+}
+
+function openReaderPanel(panelId) {
+  const panel = document.getElementById(panelId);
+  if (!panel) return;
+
+  closeReaderPanels();
+  panel.classList.add('is-open');
+  panel.setAttribute('aria-hidden', 'false');
+
+  const backdrop = document.getElementById('readerBackdrop');
+  if (backdrop) {
+    backdrop.classList.add('is-visible');
+    backdrop.setAttribute('aria-hidden', 'false');
+  }
+
+  document.body.classList.add('reader-panel-open');
+}
+
+function toggleTocPanel() {
+  const panel = document.getElementById('tocPanel');
+  if (!panel) return;
+
+  if (panel.classList.contains('is-open')) {
+    closeReaderPanels();
+    return;
+  }
+
+  renderReaderToc(document.getElementById('tocSearchInput')?.value || '');
+  openReaderPanel('tocPanel');
+  window.setTimeout(() => document.getElementById('tocSearchInput')?.focus(), 180);
+}
+
 function toggleSettings() {
   const settings = document.getElementById('settings');
   if (!settings) return;
 
-  const willOpen = settings.classList.contains('hidden');
-  settings.classList.toggle('hidden', !willOpen);
-  settings.setAttribute('aria-hidden', willOpen ? 'false' : 'true');
+  if (settings.classList.contains('is-open')) {
+    closeReaderPanels();
+    return;
+  }
 
-  if (willOpen) syncSettingsUI();
+  syncSettingsUI();
+  openReaderPanel('settings');
 }
 
 function getReaderContent() {
@@ -928,7 +1214,7 @@ function syncSettingsUI() {
     button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
   });
 
-  const activeFont = localStorage.getItem('fontFamily') || 'Noto Sans';
+  const activeFont = localStorage.getItem('fontFamily') || 'Merriweather';
   document.querySelectorAll('[data-font]').forEach(button => {
     const isActive = button.dataset.font === activeFont;
     button.classList.toggle('is-active', isActive);
@@ -962,6 +1248,13 @@ function syncSettingsUI() {
     rememberToggle.classList.toggle('is-active', enabled);
     rememberToggle.setAttribute('aria-checked', enabled ? 'true' : 'false');
   }
+
+  const activeWidth = localStorage.getItem('readerWidth') || 'normal';
+  document.querySelectorAll('[data-reader-width]').forEach(button => {
+    const isActive = button.dataset.readerWidth === activeWidth;
+    button.classList.toggle('is-active', isActive);
+    button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+  });
 }
 
 function applyTheme(index, close = false) {
@@ -971,13 +1264,16 @@ function applyTheme(index, close = false) {
   const theme = THEMES[index];
   if (!theme) return;
 
-  document.body.style.background = theme.bg;
-  document.body.style.color = theme.text;
-  content.style.background = index === 0 ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.04)';
+  document.body.dataset.readerTheme = theme.name;
+  document.body.style.removeProperty('background');
+  document.body.style.removeProperty('color');
+  content.style.removeProperty('background');
+  const themeMeta = document.querySelector('meta[name="theme-color"]');
+  if (themeMeta) themeMeta.setAttribute('content', theme.color);
   localStorage.setItem('theme', index);
   syncSettingsUI();
 
-  if (close) toggleSettings();
+  if (close) closeReaderPanels();
 }
 
 function applyFontSize(size, close = false) {
@@ -1000,7 +1296,7 @@ function applyFontSize(size, close = false) {
   localStorage.setItem('fontsize', String(px));
   syncSettingsUI();
 
-  if (close) toggleSettings();
+  if (close) closeReaderPanels();
 }
 
 function adjustFontSize(delta) {
@@ -1019,12 +1315,12 @@ function setFont(fontName, close = false) {
     Verdana: "'Verdana', 'Geneva', sans-serif"
   };
 
-  const nextFont = fontMap[fontName] ? fontName : 'Noto Sans';
+  const nextFont = fontMap[fontName] ? fontName : 'Merriweather';
   content.style.setProperty('--font-family', fontMap[nextFont]);
   localStorage.setItem('fontFamily', nextFont);
   syncSettingsUI();
 
-  if (close) toggleSettings();
+  if (close) closeReaderPanels();
 }
 
 function setLineHeight(value, close = false) {
@@ -1040,7 +1336,7 @@ function setLineHeight(value, close = false) {
   localStorage.setItem('lineHeight', nextValue);
   syncSettingsUI();
 
-  if (close) toggleSettings();
+  if (close) closeReaderPanels();
 }
 
 function setLetterSpacing(value, close = false) {
@@ -1054,7 +1350,7 @@ function setLetterSpacing(value, close = false) {
   localStorage.setItem('letterSpacing', nextValue);
   syncSettingsUI();
 
-  if (close) toggleSettings();
+  if (close) closeReaderPanels();
 }
 
 function setTextAlign(value, close = false) {
@@ -1066,7 +1362,22 @@ function setTextAlign(value, close = false) {
   localStorage.setItem('textAlign', nextValue);
   syncSettingsUI();
 
-  if (close) toggleSettings();
+  if (close) closeReaderPanels();
+}
+
+function setReaderWidth(value, close = false) {
+  const widths = {
+    narrow: '680px',
+    normal: '820px',
+    wide: '1000px'
+  };
+  const nextValue = widths[value] ? value : 'normal';
+
+  document.body.style.setProperty('--reader-width', widths[nextValue]);
+  localStorage.setItem('readerWidth', nextValue);
+  syncSettingsUI();
+
+  if (close) closeReaderPanels();
 }
 
 function setRememberProgress(enabled) {
@@ -1086,27 +1397,23 @@ function changePart() {
   const firstChapter = getChaptersForPart(selectedPart)[0];
   if (!firstChapter) return;
 
-  currentChapter = firstChapter.number;
-  updateURL();
+  navigateToReaderChapter(firstChapter.number);
 }
 
 function changeChapter() {
   const select = document.getElementById('chapterSelect');
   if (!select) return;
 
-  currentChapter = parseInt(select.value, 10);
-  saveProgress(currentBook, currentChapter);
-  updateURL();
+  navigateToReaderChapter(parseInt(select.value, 10));
 }
 
 function changeChapterBottom() {
   const select = document.getElementById('chapterSelectBottom');
   if (!select) return;
 
-  currentChapter = parseInt(select.value, 10);
+  const targetChapter = parseInt(select.value, 10);
   closeChapterPicker();
-  saveProgress(currentBook, currentChapter);
-  updateURL();
+  navigateToReaderChapter(targetChapter);
 }
 
 function closeChapterPicker() {
@@ -1140,7 +1447,7 @@ function toggleChapterPicker() {
 }
 
 function updateURL() {
-  window.location.href = `reader.html?book=${currentBook}&chap=${currentChapter}`;
+  window.location.href = `reader.html?book=${encodeURIComponent(currentBook)}&chap=${currentChapter}`;
 }
 
 if (document.getElementById('book-list')) {
@@ -1156,6 +1463,12 @@ window.addEventListener('pageshow', () => {
     booksData.length > 0
   ) {
     applyBookFilters();
+  }
+
+  if (document.body.classList.contains('reader-v2')) {
+    document.body.classList.remove('reader-turn-next', 'reader-turn-prev');
+    document.body.removeAttribute('aria-busy');
+    chapterNavigationLocked = false;
   }
 });
 
@@ -1192,6 +1505,25 @@ if (document.getElementById('content')) {
     });
 }
 
+(function setupReaderPageTurnArrival() {
+  if (!document.body.classList.contains('reader-v2')) return;
+
+  let direction = '';
+  try {
+    direction = sessionStorage.getItem('readerPageTurnDirection') || '';
+    sessionStorage.removeItem('readerPageTurnDirection');
+  } catch (error) {
+    return;
+  }
+
+  if (direction !== 'next' && direction !== 'prev') return;
+
+  document.body.classList.add(`reader-arrive-${direction}`);
+  window.setTimeout(() => {
+    document.body.classList.remove(`reader-arrive-${direction}`);
+  }, 520);
+})();
+
 window.addEventListener('load', () => {
   const content = getReaderContent();
   if (!content) return;
@@ -1202,16 +1534,18 @@ window.addEventListener('load', () => {
   const savedLineHeight = localStorage.getItem('lineHeight');
   const savedLetterSpacing = localStorage.getItem('letterSpacing');
   const savedTextAlign = localStorage.getItem('textAlign');
+  const savedReaderWidth = localStorage.getItem('readerWidth');
 
-  if (savedTheme !== null) applyTheme(parseInt(savedTheme, 10), false);
+  applyTheme(savedTheme !== null ? parseInt(savedTheme, 10) : 0, false);
   if (savedFont !== null) applyFontSize(savedFont, false);
   if (savedFontFamily !== null) setFont(savedFontFamily, false);
   if (savedLineHeight !== null) setLineHeight(savedLineHeight, false);
   if (savedLetterSpacing !== null) setLetterSpacing(savedLetterSpacing, false);
   if (savedTextAlign !== null) setTextAlign(savedTextAlign, false);
+  setReaderWidth(savedReaderWidth || 'normal', false);
 
   const settings = document.getElementById('settings');
-  if (settings) settings.setAttribute('aria-hidden', settings.classList.contains('hidden') ? 'true' : 'false');
+  if (settings) settings.setAttribute('aria-hidden', settings.classList.contains('is-open') ? 'false' : 'true');
   syncSettingsUI();
 });
 
@@ -1296,22 +1630,13 @@ window.addEventListener('load', () => {
   onScroll();
 })();
 
-(function setupSettingsPanel() {
-  const settings = document.getElementById('settings');
-  const settingsTrigger = document.querySelector('.top-nav button[onclick="toggleSettings()"]');
-  if (!settings) return;
+(function setupReaderPanels() {
+  const backdrop = document.getElementById('readerBackdrop');
+  if (!backdrop) return;
 
-  document.addEventListener('click', (event) => {
-    if (settings.classList.contains('hidden')) return;
-    if (settings.contains(event.target)) return;
-    if (settingsTrigger && settingsTrigger.contains(event.target)) return;
-    toggleSettings();
-  });
-
+  backdrop.addEventListener('click', closeReaderPanels);
   document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape' && !settings.classList.contains('hidden')) {
-      toggleSettings();
-    }
+    if (event.key === 'Escape') closeReaderPanels();
   });
 })();
 
@@ -1497,7 +1822,8 @@ window.addEventListener('load', () => {
     'fontFamily',
     'lineHeight',
     'letterSpacing',
-    'textAlign'
+    'textAlign',
+    'readerWidth'
   ];
 
   function showStatus(message, isError = false) {

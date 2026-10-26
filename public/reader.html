@@ -2,22 +2,45 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#111827">
   <title>Đọc truyện</title>
   <link rel="stylesheet" href="assets/css/style.css?v=20261026-chapter">
+  <link rel="stylesheet" href="assets/css/reader.css?v=20261027-reader-studio-3">
 </head>
 
-<body class="reader-page">
+<body class="reader-page reader-v2" data-reader-theme="dark">
   <div id="readingProgressBar" class="reading-progress-bar" aria-hidden="true"></div>
 
-  <div id="readerTopChrome" class="reader-top-chrome">
+  <header id="readerTopChrome" class="reader-top-chrome reader-header">
     <div class="top-bar">
+      <button class="reader-icon-btn reader-back-btn" type="button" onclick="goBack()" aria-label="Quay lại" title="Quay lại">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+
       <button class="home-logo-btn home-brand-btn" onclick="goHome()" aria-label="Trang chủ" title="Trang chủ">
-        <img class="home-logo" src="assets/images/Logo.png" alt="Trang chủ">
+        <img class="home-logo" src="assets/images/Logo.png" alt="">
         <span class="home-brand-text">Thư viện truyện</span>
       </button>
-      <div id="readerBookTitle" class="reader-book-title" title=""></div>
-      <a id="bookDetailLink" class="reader-detail-link" href="#" title="Thông tin truyện" aria-label="Xem thông tin truyện">ℹ</a>
+
+      <div class="reader-header-context">
+        <strong id="readerBookTitle" class="reader-book-title" title="">Đang tải truyện...</strong>
+        <span id="readerHeaderChapter">Đang tải chương...</span>
+      </div>
+
+      <div class="reader-header-actions">
+        <button class="reader-icon-btn" type="button" onclick="toggleTocPanel()" aria-label="Mở mục lục" title="Mục lục">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01"/></svg>
+        </button>
+
+        <button class="reader-icon-btn" type="button" onclick="toggleSettings()" aria-label="Mở tùy chỉnh đọc" title="Tùy chỉnh đọc">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h2M10 17h10M14 4v6M6 14v6"/></svg>
+        </button>
+
+        <a id="bookDetailLink" class="reader-icon-btn reader-detail-link" href="#" title="Thông tin truyện" aria-label="Xem thông tin truyện">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg>
+        </a>
+      </div>
     </div>
 
     <div class="nav top-nav">
@@ -34,34 +57,112 @@
         <span class="top-nav-chapter-icon" aria-hidden="true">&rarr;</span>
       </button>
 
-      <button type="button" onclick="toggleSettings()" aria-label="Mở cài đặt">&#9881;</button>
     </div>
-  </div>
+  </header>
 
-<div id="chapterMeta" class="chapter-meta" hidden></div>
-<div id="content" class="content"></div>
+<main id="readerMain" class="reader-stage">
+  <article class="reader-paper">
+    <header class="reader-chapter-hero">
+      <div class="reader-chapter-kicker">
+        <span class="reader-kicker-line" aria-hidden="true"></span>
+        <span id="readerChapterNumber">Chương</span>
+        <span class="reader-kicker-line" aria-hidden="true"></span>
+      </div>
 
-<div class="nav bottom bottom-bar" aria-label="Điều hướng chương">
-  <button class="bottom-bar-btn bottom-bar-prev" type="button" onclick="prevChapter()" aria-label="Chương trước">&larr;</button>
+      <h1 id="readerChapterTitle">Đang tải chương...</h1>
+      <div id="chapterMeta" class="chapter-meta" hidden></div>
+    </header>
 
-  <button id="chapterPickerTrigger" class="bottom-bar-btn chapter-picker-trigger" type="button" onclick="toggleChapterPicker()" aria-label="Chọn chương" aria-expanded="false" aria-controls="bottomChapterMenu">
-    <span class="chapter-picker-icon" aria-hidden="true">
-      <span></span>
-      <span></span>
-      <span></span>
-    </span>
+    <div id="content" class="content reader-content" aria-live="polite"></div>
+
+    <nav class="reader-end-nav" aria-label="Điều hướng cuối chương">
+      <button id="readerEndPrev" class="reader-end-btn" type="button" onclick="prevChapter()">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+        <span>
+          <small>Chương trước</small>
+          <strong id="readerEndPrevLabel">Quay lại</strong>
+        </span>
+      </button>
+
+      <button class="reader-end-toc" type="button" onclick="toggleTocPanel()" aria-label="Mở mục lục">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01"/></svg>
+        <span>Mục lục</span>
+      </button>
+
+      <button id="readerEndNext" class="reader-end-btn reader-end-btn-next" type="button" onclick="nextChapter()">
+        <span>
+          <small>Chương sau</small>
+          <strong id="readerEndNextLabel">Đọc tiếp</strong>
+        </span>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>
+      </button>
+    </nav>
+  </article>
+</main>
+
+<nav class="reader-dock" aria-label="Điều khiển đọc nhanh">
+  <button id="readerDockPrev" class="reader-dock-btn" type="button" onclick="prevChapter()" aria-label="Chương trước">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
   </button>
 
-  <button class="bottom-bar-btn bottom-bar-next" type="button" onclick="nextChapter()" aria-label="Chương sau">&rarr;</button>
+  <button class="reader-dock-center" type="button" onclick="toggleTocPanel()" aria-label="Mở mục lục">
+    <span id="readerDockChapter">Chương --</span>
+    <small id="readerDockProgress">-- / --</small>
+  </button>
 
-  <div id="bottomChapterMenu" class="bottom-chapter-menu hidden" aria-hidden="true">
-    <label class="bottom-chapter-menu-label" for="chapterSelectBottom">Danh sách chương</label>
-    <select id="chapterSelectBottom" class="bottom-chapter-select" onchange="changeChapterBottom()" aria-label="Chọn chương"></select>
+  <button id="readerDockNext" class="reader-dock-btn" type="button" onclick="nextChapter()" aria-label="Chương sau">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>
+  </button>
+
+  <span class="reader-dock-divider" aria-hidden="true"></span>
+
+  <button class="reader-dock-btn" type="button" onclick="toggleSettings()" aria-label="Tùy chỉnh đọc">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h2M10 17h10M14 4v6M6 14v6"/></svg>
+  </button>
+</nav>
+
+<div id="readerBackdrop" class="reader-backdrop" aria-hidden="true"></div>
+
+<aside id="tocPanel" class="reader-side-panel reader-toc-panel" aria-hidden="true" aria-labelledby="tocPanelTitle">
+  <header class="reader-panel-header">
+    <div>
+      <span class="reader-panel-eyebrow">Điều hướng</span>
+      <h2 id="tocPanelTitle">Mục lục</h2>
+    </div>
+    <button class="reader-panel-close" type="button" onclick="closeReaderPanels()" aria-label="Đóng mục lục">&times;</button>
+  </header>
+
+  <div class="reader-panel-body">
+    <label class="reader-search-box" for="tocSearchInput">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+      <input id="tocSearchInput" type="search" placeholder="Tìm số hoặc tên chương..." autocomplete="off">
+    </label>
+
+    <div class="reader-toc-selects">
+      <label><span>Phần</span><select id="tocPartSelect" aria-label="Chọn phần để xem"></select></label>
+      <label><span>Đi nhanh</span><select id="tocChapterSelect" aria-label="Chọn chương để đọc"></select></label>
+    </div>
+
+    <div class="reader-toc-summary">
+      <strong id="tocResultTitle">Danh sách chương</strong>
+      <span id="tocResultCount"></span>
+    </div>
+
+    <div id="readerTocList" class="reader-toc-list" role="list"></div>
+    <p id="readerTocEmpty" class="reader-toc-empty" hidden>Không tìm thấy chương phù hợp.</p>
   </div>
-</div>
+</aside>
 
-<div id="settings" class="settings hidden" aria-hidden="true">
-  <button class="settings-close" type="button" onclick="toggleSettings()" aria-label="Đóng cài đặt">&times;</button>
+<aside id="settings" class="reader-side-panel reader-settings-panel" aria-hidden="true" aria-labelledby="settingsPanelTitle">
+  <header class="reader-panel-header">
+    <div>
+      <span class="reader-panel-eyebrow">Không gian đọc</span>
+      <h2 id="settingsPanelTitle">Tùy chỉnh</h2>
+    </div>
+    <button class="reader-panel-close" type="button" onclick="closeReaderPanels()" aria-label="Đóng tùy chỉnh">&times;</button>
+  </header>
+
+  <div class="reader-panel-body reader-settings-body">
   <div class="settings-row settings-row-top">
     <div class="settings-control settings-size-stepper" aria-label="Cỡ chữ">
       <button class="settings-step-btn" type="button" onclick="adjustFontSize(-1)" aria-label="Giảm cỡ chữ">A-</button>
@@ -130,34 +231,25 @@
 
   <div class="settings-divider" aria-hidden="true"></div>
 
-  <section class="settings-tts" aria-labelledby="ttsTitle">
-    <div class="settings-tts-heading">
-      <span id="ttsTitle" class="settings-tts-title">Đọc thành tiếng</span>
-      <span id="ttsStatus" class="settings-tts-status" aria-live="polite"></span>
-    </div>
-
-    <div class="settings-tts-controls">
-      <label for="voiceSelect">Giọng đọc</label>
-      <select id="voiceSelect" aria-label="Chọn giọng đọc">
-        <option>Đang tải giọng đọc...</option>
-      </select>
-
-      <div class="settings-tts-rate">
-        <label for="ttsRate">Tốc độ <span id="ttsRateVal">1.0x</span></label>
-        <input id="ttsRate" type="range" min="0.6" max="1.6" step="0.1" value="1">
-      </div>
-
-      <div class="settings-tts-actions" role="group" aria-label="Điều khiển đọc thành tiếng">
-        <button id="ttsPlayBtn" type="button">&#9654; Đọc</button>
-        <button id="ttsPauseBtn" type="button">&#8545; Tạm dừng</button>
-        <button id="ttsStopBtn" type="button">&#9632; Dừng</button>
-      </div>
+  <section class="reader-width-setting">
+    <span class="reader-setting-label">Độ rộng trang đọc</span>
+    <div class="reader-width-grid" role="group" aria-label="Độ rộng trang đọc">
+      <button type="button" data-reader-width="narrow" onclick="setReaderWidth('narrow')">
+        <span class="width-icon width-narrow" aria-hidden="true"></span><strong>Hẹp</strong>
+      </button>
+      <button type="button" data-reader-width="normal" onclick="setReaderWidth('normal')">
+        <span class="width-icon width-normal" aria-hidden="true"></span><strong>Vừa</strong>
+      </button>
+      <button type="button" data-reader-width="wide" onclick="setReaderWidth('wide')">
+        <span class="width-icon width-wide" aria-hidden="true"></span><strong>Rộng</strong>
+      </button>
     </div>
   </section>
-</div>
+  </div>
+</aside>
 
   <script src="assets/js/data-source.js?v=20261021-r2"></script>
-  <script src="assets/js/script.js?v=20261026-chapter"></script>
+  <script src="assets/js/script.js?v=20261027-reader-studio-2"></script>
 <button id="scrollTopBtn" class="scroll-top" type="button" title="Lên đầu trang">&#11014;</button>
 </body>
 </html>
