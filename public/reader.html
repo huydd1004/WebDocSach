@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#111827">
   <title>Đọc truyện</title>
   <link rel="stylesheet" href="assets/css/style.css?v=20261026-chapter">
-  <link rel="stylesheet" href="assets/css/reader.css?v=20261027-reader-studio-3">
+  <link rel="stylesheet" href="assets/css/reader.css?v=20261027-reader-studio-5">
 </head>
 
 <body class="reader-page reader-v2" data-reader-theme="dark">
@@ -139,8 +139,23 @@
     </label>
 
     <div class="reader-toc-selects">
-      <label><span>Phần</span><select id="tocPartSelect" aria-label="Chọn phần để xem"></select></label>
-      <label><span>Đi nhanh</span><select id="tocChapterSelect" aria-label="Chọn chương để đọc"></select></label>
+      <div id="tocPartField" class="reader-toc-field">
+        <span class="reader-toc-field-label">Phần</span>
+        <button id="tocPartTrigger" class="reader-toc-menu-trigger" type="button" aria-haspopup="listbox" aria-expanded="false" aria-controls="tocPartMenu">
+          <span id="tocPartLabel">Phần 1</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 10 4 4 4-4"/></svg>
+        </button>
+        <div id="tocPartMenu" class="reader-toc-popover" role="listbox" aria-label="Chọn phần" hidden></div>
+      </div>
+
+      <div id="tocChapterField" class="reader-toc-field">
+        <span class="reader-toc-field-label">Đi nhanh</span>
+        <button id="tocChapterTrigger" class="reader-toc-menu-trigger" type="button" aria-haspopup="listbox" aria-expanded="false" aria-controls="tocChapterMenu">
+          <span id="tocChapterLabel">Chọn chương</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 10 4 4 4-4"/></svg>
+        </button>
+        <div id="tocChapterMenu" class="reader-toc-popover reader-toc-chapter-popover" role="listbox" aria-label="Chọn chương" hidden></div>
+      </div>
     </div>
 
     <div class="reader-toc-summary">
@@ -249,7 +264,7 @@
 </aside>
 
   <script src="assets/js/data-source.js?v=20261021-r2"></script>
-  <script src="assets/js/script.js?v=20261027-reader-studio-2"></script>
+  <script src="assets/js/script.js?v=20261027-reader-studio-3"></script>
 <button id="scrollTopBtn" class="scroll-top" type="button" title="Lên đầu trang">&#11014;</button>
 </body>
 </html>

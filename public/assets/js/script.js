@@ -938,24 +938,91 @@ function normalizeReaderSearch(value) {
     .trim();
 }
 
+function setTocMenuState(trigger, menu, open) {
+  if (!trigger || !menu) return;
+  trigger.setAttribute('aria-expanded', open ? 'true' : 'false');
+  menu.hidden = !open;
+  trigger.closest('.reader-toc-field')?.classList.toggle('is-menu-open', open);
+}
+
+function closeTocMenus(exceptMenu = null) {
+  [
+    ['tocPartTrigger', 'tocPartMenu'],
+    ['tocChapterTrigger', 'tocChapterMenu']
+  ].forEach(([triggerId, menuId]) => {
+    const trigger = document.getElementById(triggerId);
+    const menu = document.getElementById(menuId);
+    if (menu !== exceptMenu) setTocMenuState(trigger, menu, false);
+  });
+}
+
+function createTocPopoverOption(label, selected, onSelect) {
+  const option = document.createElement('button');
+  const check = document.createElement('span');
+
+  option.type = 'button';
+  option.className = 'reader-toc-popover-option';
+  option.classList.toggle('is-selected', selected);
+  option.setAttribute('role', 'option');
+  option.setAttribute('aria-selected', selected ? 'true' : 'false');
+  option.textContent = label;
+
+  check.className = 'reader-toc-option-check';
+  check.setAttribute('aria-hidden', 'true');
+  check.textContent = selected ? '✓' : '';
+  option.appendChild(check);
+  option.addEventListener('click', onSelect);
+  return option;
+}
+
+function populateTocPartMenu(selectedPart) {
+  const trigger = document.getElementById('tocPartTrigger');
+  const label = document.getElementById('tocPartLabel');
+  const menu = document.getElementById('tocPartMenu');
+  if (!trigger || !label || !menu) return;
+
+  const partValue = Number(selectedPart) || chapterToPart(currentChapter);
+  trigger.dataset.value = String(partValue);
+  label.textContent = `Phần ${partValue}`;
+  menu.innerHTML = '';
+
+  getAvailableParts().forEach(part => {
+    menu.appendChild(createTocPopoverOption(
+      `Phần ${part}`,
+      part === partValue,
+      () => {
+        trigger.dataset.value = String(part);
+        label.textContent = `Phần ${part}`;
+        document.getElementById('tocSearchInput').value = '';
+        closeTocMenus();
+        populateTocPartMenu(part);
+        populateTocChapterSelect(part);
+        renderReaderToc();
+      }
+    ));
+  });
+}
+
 function populateTocChapterSelect(part) {
-  const select = document.getElementById('tocChapterSelect');
-  if (!select) return;
+  const trigger = document.getElementById('tocChapterTrigger');
+  const label = document.getElementById('tocChapterLabel');
+  const menu = document.getElementById('tocChapterMenu');
+  if (!trigger || !label || !menu) return;
 
   const chapters = getChaptersForPart(Number(part));
-  select.innerHTML = '';
+  const selectedChapter = chapters.find(chapter => chapter.number === currentChapter) || chapters[0];
+  trigger.dataset.value = selectedChapter ? String(selectedChapter.number) : '';
+  label.textContent = selectedChapter ? getChapterDisplayTitle(selectedChapter) : 'Không có chương';
+  trigger.disabled = chapters.length === 0;
+  menu.innerHTML = '';
 
   chapters.forEach(chapter => {
-    const option = document.createElement('option');
-    option.value = String(chapter.number);
-    option.textContent = getChapterDisplayTitle(chapter);
-    option.selected = chapter.number === currentChapter;
-    select.appendChild(option);
+    menu.appendChild(createTocPopoverOption(
+      getChapterDisplayTitle(chapter),
+      chapter.number === currentChapter,
+      () => goToReaderChapter(chapter.number)
+    ));
   });
-
-  if (!chapters.some(chapter => chapter.number === currentChapter) && chapters[0]) {
-    select.value = String(chapters[0].number);
-  }
 }
 
 function renderReaderToc(query = '') {
@@ -963,11 +1030,11 @@ function renderReaderToc(query = '') {
   const empty = document.getElementById('readerTocEmpty');
   const count = document.getElementById('tocResultCount');
   const title = document.getElementById('tocResultTitle');
-  const partSelect = document.getElementById('tocPartSelect');
+  const partTrigger = document.getElementById('tocPartTrigger');
   if (!list || !empty) return;
 
   const normalizedQuery = normalizeReaderSearch(query);
-  const selectedPart = Number(partSelect?.value || chapterToPart(currentChapter));
+  const selectedPart = Number(partTrigger?.dataset.value || chapterToPart(currentChapter));
   const source = normalizedQuery ? chapterIndex : getChaptersForPart(selectedPart);
   const chapters = source.filter(chapter => {
     if (!normalizedQuery) return true;
@@ -1007,39 +1074,43 @@ function renderReaderToc(query = '') {
 }
 
 function setupReaderToc() {
-  const partSelect = document.getElementById('tocPartSelect');
-  const chapterSelect = document.getElementById('tocChapterSelect');
+  const partTrigger = document.getElementById('tocPartTrigger');
+  const partMenu = document.getElementById('tocPartMenu');
+  const chapterTrigger = document.getElementById('tocChapterTrigger');
+  const chapterMenu = document.getElementById('tocChapterMenu');
   const searchInput = document.getElementById('tocSearchInput');
-  if (!partSelect || !chapterSelect || !searchInput) return;
+  if (!partTrigger || !partMenu || !chapterTrigger || !chapterMenu || !searchInput) return;
 
   const currentPart = chapterToPart(currentChapter);
-  partSelect.innerHTML = '';
-  getAvailableParts().forEach(part => {
-    const option = document.createElement('option');
-    option.value = String(part);
-    option.textContent = `Phần ${part}`;
-    option.selected = part === currentPart;
-    partSelect.appendChild(option);
-  });
-
+  populateTocPartMenu(currentPart);
   populateTocChapterSelect(currentPart);
   renderReaderToc(searchInput.value);
 
-  if (partSelect.dataset.readerBound === '1') return;
-  partSelect.dataset.readerBound = '1';
+  if (partTrigger.dataset.readerBound === '1') return;
+  partTrigger.dataset.readerBound = '1';
 
-  partSelect.addEventListener('change', () => {
-    searchInput.value = '';
-    populateTocChapterSelect(partSelect.value);
-    renderReaderToc();
+  partTrigger.addEventListener('click', event => {
+    event.stopPropagation();
+    const willOpen = partMenu.hidden;
+    closeTocMenus(willOpen ? partMenu : null);
+    setTocMenuState(partTrigger, partMenu, willOpen);
   });
 
-  chapterSelect.addEventListener('change', () => {
-    goToReaderChapter(Number(chapterSelect.value));
+  chapterTrigger.addEventListener('click', event => {
+    event.stopPropagation();
+    const willOpen = chapterMenu.hidden;
+    closeTocMenus(willOpen ? chapterMenu : null);
+    setTocMenuState(chapterTrigger, chapterMenu, willOpen);
   });
 
   searchInput.addEventListener('input', () => {
+    closeTocMenus();
     renderReaderToc(searchInput.value);
+  });
+
+  searchInput.addEventListener('focus', () => closeTocMenus());
+  document.addEventListener('click', event => {
+    if (!event.target.closest('.reader-toc-field')) closeTocMenus();
   });
 }
 
@@ -1122,6 +1193,7 @@ function goBack() {
 }
 
 function closeReaderPanels() {
+  closeTocMenus();
   document.querySelectorAll('.reader-side-panel.is-open').forEach(panel => {
     panel.classList.remove('is-open');
     panel.setAttribute('aria-hidden', 'true');

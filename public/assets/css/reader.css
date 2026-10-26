@@ -640,6 +640,7 @@
   box-shadow: 0 18px 48px rgba(0, 0, 0, 0.28);
   backdrop-filter: blur(20px) saturate(140%);
   -webkit-backdrop-filter: blur(20px) saturate(140%);
+  transform: translateX(-50%);
 }
 
 .reader-v2 .reader-dock-btn,
@@ -849,6 +850,141 @@
   color: var(--reader-muted);
   font-size: 11px;
   font-weight: 700;
+}
+
+.reader-v2 .reader-toc-field {
+  position: relative;
+  min-width: 0;
+  display: grid;
+  gap: 6px;
+}
+
+.reader-v2 .reader-toc-field.is-menu-open {
+  z-index: 20;
+}
+
+.reader-v2 .reader-toc-field-label {
+  color: var(--reader-muted);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.reader-v2 .reader-toc-menu-trigger {
+  width: 100%;
+  min-width: 0;
+  min-height: 42px;
+  margin: 0;
+  padding: 0 11px 0 13px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 7px;
+  color: var(--reader-text);
+  text-align: left;
+  background: var(--reader-control);
+  border: 1px solid var(--reader-line);
+  border-radius: 11px;
+  box-shadow: none;
+  transform: none;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.reader-v2 .reader-toc-menu-trigger > span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.reader-v2 .reader-toc-menu-trigger svg {
+  width: 16px;
+  height: 16px;
+  color: var(--reader-muted);
+  transition: transform 170ms ease;
+}
+
+.reader-v2 .reader-toc-menu-trigger:hover,
+.reader-v2 .reader-toc-menu-trigger[aria-expanded="true"] {
+  color: var(--reader-text);
+  background: var(--reader-control-hover);
+  border-color: color-mix(in srgb, var(--reader-accent) 48%, var(--reader-line));
+  transform: none;
+}
+
+.reader-v2 .reader-toc-menu-trigger[aria-expanded="true"] svg {
+  color: var(--reader-accent);
+  transform: rotate(180deg);
+}
+
+.reader-v2 .reader-toc-popover {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  z-index: 30;
+  width: max(100%, 180px);
+  max-height: min(310px, 50vh);
+  padding: 6px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  color: var(--reader-text);
+  background: var(--reader-paper);
+  border: 1px solid var(--reader-line-strong);
+  border-radius: 13px;
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.34);
+  scrollbar-width: thin;
+  scrollbar-color: var(--reader-faint) transparent;
+}
+
+.reader-v2 .reader-toc-chapter-popover {
+  right: 0;
+  left: auto;
+  width: max(100%, 270px);
+}
+
+.reader-v2 .reader-toc-popover[hidden] {
+  display: none;
+}
+
+.reader-v2 .reader-toc-popover-option {
+  width: 100%;
+  min-width: 0;
+  min-height: 40px;
+  margin: 0;
+  padding: 8px 10px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 18px;
+  gap: 8px;
+  align-items: center;
+  justify-items: start;
+  color: var(--reader-muted);
+  text-align: left;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 9px;
+  box-shadow: none;
+  transform: none;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.reader-v2 .reader-toc-popover-option:hover {
+  color: var(--reader-text);
+  background: var(--reader-control-hover);
+  border-color: var(--reader-line);
+  transform: none;
+}
+
+.reader-v2 .reader-toc-popover-option.is-selected {
+  color: var(--reader-accent);
+  background: var(--reader-accent-soft);
+}
+
+.reader-v2 .reader-toc-option-check {
+  justify-self: end;
+  color: var(--reader-accent);
+  font-size: 13px;
+  font-weight: 800;
 }
 
 .reader-v2 .reader-toc-summary {
