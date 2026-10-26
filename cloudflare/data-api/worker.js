@@ -233,9 +233,14 @@ export default {
         headers.get('Content-Type') ||
           getContentType(key)
       );
+      const cacheControl =
+      key.toLowerCase().endsWith('.json')
+      ? 'no-store'
+      : 'public, max-age=3600';
+
       headers.set(
         'Cache-Control',
-        'public, max-age=3600'
+        cacheControl
       );
       headers.set(
         'X-Content-Type-Options',

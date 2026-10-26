@@ -78,6 +78,18 @@ const summaryElement = document.getElementById(
   'uploadSummary'
 );
 
+const singleChapterBookInput = document.getElementById('singleChapterBook');
+const singleChapterStatusElement = document.getElementById('singleChapterStatus');
+const singleChapterNumberInput = document.getElementById('singleChapterNumber');
+const singleChapterTitleInput = document.getElementById('singleChapterTitle');
+const singleChapterContentInput = document.getElementById('singleChapterContent');
+const singleChapterImageInput = document.getElementById('singleChapterImage');
+const uploadSingleChapterButton = document.getElementById('uploadSingleChapterButton');
+const singleChapterProgressWrapper = document.getElementById('singleChapterProgressWrapper');
+const singleChapterProgress = document.getElementById('singleChapterProgress');
+const singleChapterProgressText = document.getElementById('singleChapterProgressText');
+const singleChapterSummary = document.getElementById('singleChapterSummary');
+
 let preparedUpload = null;
 
 function showStatus(message, type = '') {
@@ -588,13 +600,12 @@ async function runUploadPool(
 
 async function createUpdatedCatalog(book) {
   const response = await fetch(
-    `${API_BASE_URL}/data/books.json` +
-    `?time=${Date.now()}`,
-    {
-      cache: 'no-store'
-    }
+  `${API_BASE_URL}/data/books.json` +
+  `?time=${Date.now()}`,
+  {
+    cache: 'no-store'
+  }
   );
-
   let catalog = [];
 
   if (response.ok) {
@@ -816,3 +827,357 @@ form.addEventListener(
   'submit',
   uploadPreparedBook
 );
+
+function showSingleChapterStatus(message, type = '') {
+  singleChapterStatusElement.textContent = message;
+  singleChapterStatusElement.className = 'admin-status';
+
+  if (type) {
+    singleChapterStatusElement.classList.add(`is-${type}`);
+  }
+}
+
+async function loadChapterBookOptions() {
+  singleChapterBookInput.disabled = true;
+
+  try {
+    const response = await fetch(
+      `${API_BASE_URL}/data/books.json` +
+      `?time=${Date.now()}`,
+      {
+        cache: 'no-store'
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error('Không thể tải danh sách truyện.');
+    }
+
+    const books = await response.json();
+
+    if (!Array.isArray(books)) {
+      throw new Error('Danh sách truyện không hợp lệ.');
+    }
+
+    const placeholder = document.createElement('option');
+
+    placeholder.value = '';
+    placeholder.textContent = 'Chọn truyện cần đăng chương';
+    placeholder.selected = true;
+    placeholder.disabled = true;
+
+    singleChapterBookInput.replaceChildren(placeholder);
+
+    books
+      .filter(book => book?.id)
+      .sort((firstBook, secondBook) => String(firstBook.title || firstBook.id)
+        .localeCompare(
+          String(secondBook.title || secondBook.id), 'vi'
+        ))
+      .forEach(book => {
+        const option = document.createElement('option');
+
+        option.value = book.id;
+
+        option.textContent = `${book.title || book.id} ` + `(${book.id})`;
+
+        singleChapterBookInput.appendChild(option);
+      });
+
+      if (singleChapterBookInput.options.length < 2) {
+        throw new Error('Danh mục hiện chưa có truyện.');
+      }
+
+      singleChapterBookInput.disabled = false;
+
+      showSingleChapterStatus('');
+  } catch (error) {
+    const failedOption = document.createElement('option');
+
+    failedOption.value = '';
+    failedOption.textContent = 'Không thể tải danh sách truyện';
+
+    singleChapterBookInput.replaceChildren(failedOption);
+
+    showSingleChapterStatus(error instanceof Error ? error.message : 'Không thể tải danh sách truyện.', 'error');
+  }
+}
+
+function createSingleChapterDraft() {
+  const bookId = singleChapterBookInput.value.trim();
+  const chapterNumber = Number(singleChapterNumberInput.value);
+  const enteredTitle = singleChapterTitleInput.value.trim();
+  const chapterContent = singleChapterContentInput.value
+        .replace(/\r\n/g, '\n')
+        .trim();
+
+  if (!bookId) {
+    throw new Error('Bạn chưa chọn truyện.');
+  }
+
+  if (!Number.isInteger(chapterNumber) || chapterNumber < 1) {
+    throw new Error('Số chương phải là số nguyên lớn hơn 0.');
+  }
+
+  if (!enteredTitle) {
+    throw new Error('Bạn chưa nhập tên chương.');
+  }
+
+  if (!chapterContent) {
+    throw new Error('Bạn chưa nhập nội dung chương.');
+  }
+
+  const chapterTitle = /^chương\s+/i.test(enteredTitle) ? enteredTitle : `Chương ${chapterNumber}: ` + enteredTitle;
+
+  const textContent = `${chapterTitle}\n\n` + `${chapterContent}\n`;
+
+  const chapterFile = new File([textContent], `${chapterNumber}.txt`, {
+    type: 'text/plain; charset=utf-8'
+  });
+
+  if (chapterFile.size > MAX_UPLOAD_SIZE) {
+    throw new Error('Nội dung chương vượt quá giới hạn 20MB.');
+  }
+
+  return {
+    bookId,
+    chapterNumber,
+    chapterTitle,
+    chapterPath: `chapters/${chapterNumber}.txt`,
+    chapterFile,
+    imageFile: singleChapterImageInput.files?.[0] || null
+  };
+}
+
+function validateSingleChapterImage(imageFile) {
+  if (!imageFile) {
+    return '';
+  }
+
+  if (imageFile.size > MAX_UPLOAD_SIZE) {
+    throw new Error('Ảnh minh họa vượt quá giới hạn 20MB.');
+  }
+
+  const extension = getFileExtension(imageFile.name);
+
+  const allowedExtensions = new Set(['jpg', 'jpeg', 'png', 'webp']);
+
+  if (!allowedExtensions.has(extension)) {
+    throw new Error('Ảnh minh họa phải là JPG, PNG hoặc WEBP.');
+  }
+
+  return extension;
+}
+
+async function fetchBookChapters(bookId) {
+  const response = await fetch(
+    `${API_BASE_URL}/data/${encodeURIComponent(
+      bookId
+    )}/chapters.json?time=${Date.now()}`,
+    {
+      cache: 'no-store'
+    }
+  );
+
+  if (response.status === 404) {
+    return [];
+  }
+
+  if (!response.ok) {
+    throw new Error('Không thể đọc danh sách chương trên R2.');
+  }
+
+  const data = await response.json();
+
+  if (!Array.isArray(data)) {
+    throw new Error('File chapters.json trên R2 không hợp lệ.');
+  }
+
+  return data
+    .map(chapter => ({
+      ...chapter,
+      number: Number(chapter?.number)
+    }))
+    .filter(chapter =>
+      Number.isInteger(chapter.number) &&
+      chapter.number > 0
+    );
+}
+
+async function prepareSingleChapterUpload() {
+  const draft = createSingleChapterDraft();
+
+  const imageExtension = validateSingleChapterImage(draft.imageFile);
+
+  const chapters = await fetchBookChapters(draft.bookId);
+
+  const existingIndex = chapters.findIndex(chapter => chapter.number === draft.chapterNumber);
+
+  const previousChapter =
+  existingIndex >= 0
+    ? chapters[existingIndex]
+    : null;
+
+  if (previousChapter) {
+    const shouldOverwrite = window.confirm(`Chương ${draft.chapterNumber} đã tồn tại.\n\n` + 'Bạn có muốn ghi đè chương này không?');
+
+    if (!shouldOverwrite) {
+      throw new Error('Bạn đã hủy cập nhật chương.');
+    }
+  }
+
+  const imageKey = imageExtension
+  ? (
+    `assets/images/chapters/` +
+    `${draft.bookId}/` +
+    `${draft.chapterNumber}.` +
+    imageExtension
+  )
+  : '';
+
+  const chapterEntry = {...(previousChapter || {}),
+                      number: draft.chapterNumber,
+                      title: draft.chapterTitle,
+                      path: draft.chapterPath
+                      };
+
+  if (imageKey) {chapterEntry.image = `${API_BASE_URL}/${imageKey}`;}
+
+  const updatedChapters = [...chapters];
+
+  if (existingIndex >= 0) {
+    updatedChapters[existingIndex] = chapterEntry;
+  } else {
+    updatedChapters.push(chapterEntry);
+  }
+
+  updatedChapters.sort((firstChapter, secondChapter) => firstChapter.number - secondChapter.number);
+
+  const index = {
+    total: updatedChapters.length,
+    firstChapter: updatedChapters[0]?.number || 0,
+    lastChapter: updatedChapters.at(-1)?.number || 0
+  };
+
+  return {
+    ...draft,
+    imageKey,
+    chapters: updatedChapters,
+    index,
+    isUpdate: existingIndex >= 0
+  };
+}
+
+async function uploadSingleChapter() {
+  const adminToken = adminTokenInput.value.trim();
+
+  if (!adminToken) {
+    showSingleChapterStatus('Bạn chưa nhập ADMIN_TOKEN ở bước 1.', 'error');
+
+    adminTokenInput.focus();
+    return;
+  }
+
+  uploadSingleChapterButton.disabled = true;
+
+  showSingleChapterStatus('Đang kiểm tra dữ liệu chương...');
+
+  singleChapterSummary.hidden = true;
+  singleChapterProgressWrapper.hidden = false;
+  singleChapterProgress.value = 0;
+
+  singleChapterProgressText.textContent = 'Đang chuẩn bị...';
+
+  try {
+    const uploadData = await prepareSingleChapterUpload();
+
+    const contentItems = [
+      {
+        key: `data/${uploadData.bookId}/` + uploadData.chapterPath,
+        body: uploadData.chapterFile,
+        contentType: 'text/plain; charset=utf-8'
+      }
+    ];
+
+    if (uploadData.imageFile && uploadData.imageKey) {
+      contentItems.push({
+        key: uploadData.imageKey,
+        body: uploadData.imageFile,
+        contentType: getCoverContentType(uploadData.imageFile)
+      });
+    }
+
+    const totalSteps = contentItems.length + 2;
+    singleChapterProgress.max = totalSteps;
+
+    const failures = await runUploadPool(contentItems, item =>
+      uploadObject(item.key, item.body, item.contentType, adminToken),
+      (completed, total, item) => {
+        singleChapterProgress.value = completed;
+
+        singleChapterProgressText.textContent = `Đã tải ${completed}/${totalSteps}: ` + item.key;
+      }, 2
+    );
+
+    if (failures.length > 0) {
+      const firstFailure = failures[0];
+
+      throw new Error(`Có ${failures.length} file tải thất bại. ` + `${firstFailure.key}: ` + firstFailure.message);
+    }
+
+    let completedSteps = contentItems.length;
+
+    singleChapterProgressText.textContent = 'Đang cập nhật index.json...';
+
+    await uploadObject(`data/${uploadData.bookId}/index.json`,
+                        createJsonBlob(uploadData.index),
+                        'application/json; charset=utf-8',
+                        adminToken
+    );
+
+    completedSteps += 1;
+    singleChapterProgress.value = completedSteps;
+    singleChapterProgressText.textContent = 'Đang cập nhật chapters.json...';
+
+    await uploadObject(`data/${uploadData.bookId}/chapters.json`,
+                       createJsonBlob(uploadData.chapters),
+                       'application/json; charset=utf-8',
+                       adminToken
+    );
+
+    completedSteps += 1;
+    singleChapterProgress.value = completedSteps;
+    singleChapterProgressText.textContent = `Hoàn tất ${completedSteps}/${totalSteps}`;
+
+    showSingleChapterStatus(uploadData.isUpdate ? `Đã cập nhật chương ` + `${uploadData.chapterNumber}.` : `Đã đăng chương ` + `${uploadData.chapterNumber}.`, 'success');
+
+    singleChapterSummary.textContent = [
+      `Truyện: ${uploadData.bookId}`,
+      `Chương: ${uploadData.chapterNumber}`,
+      `Tên: ${uploadData.chapterTitle}`,
+      `File: ${uploadData.chapterPath}`,
+      uploadData.imageKey ? `Ảnh: ${uploadData.imageKey}` : 'Ảnh: Không có', '',
+      uploadData.isUpdate ? 'Cập nhật chương thành công.' : 'Đăng chương mới thành công.'
+    ].join('\n');
+
+    singleChapterSummary.hidden = false;
+
+    singleChapterNumberInput.value = String(uploadData.chapterNumber + 1);
+
+    singleChapterTitleInput.value = '';
+    singleChapterContentInput.value = '';
+    singleChapterImageInput.value = '';
+
+    singleChapterContentInput.focus();
+  } catch (error) {
+    showSingleChapterStatus(error instanceof Error ? error.message : 'Không thể tải chương lên R2.', 'error');
+
+    singleChapterProgressText.textContent = 'Quá trình tải chương chưa hoàn tất.';
+  } finally {
+    uploadSingleChapterButton.disabled = false;
+  }
+}
+
+uploadSingleChapterButton.addEventListener('click', uploadSingleChapter);
+
+loadChapterBookOptions();

@@ -381,3 +381,16 @@
         width: 100%;
     }
 }
+
+#singleChapterSection {
+  margin-top: 22px;
+}
+
+#uploadSingleChapterButton {
+  background: var(--admin-accent);
+  color: var(--admin-on-accent);
+}
+
+#uploadSingleChapterButton:hover:not(:disabled) {
+  background: var(--admin-accent-hover);
+}

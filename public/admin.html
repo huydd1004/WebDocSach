@@ -11,8 +11,8 @@
 
     <script src="assets/js/theme.js"></script>
 
-    <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="stylesheet" href="assets/css/admin.css">
+    <link rel="stylesheet" href="assets/css/style.css?v=20261026-chapter">
+    <link rel="stylesheet" href="assets/css/admin.css?v=20261026-chapter">
     <link rel="stylesheet" href="assets/css/theme.css">
 </head>
 
@@ -274,8 +274,111 @@
                     hidden></pre>
             </section>
         </form>
+
+        <section
+            id="singleChapterSection"
+            class="admin-card">
+
+            <div class="admin-card-heading">
+                <span class="admin-step">+</span>
+
+                <div>
+                    <h2>Đăng một chương trực tiếp</h2>
+
+                    <p>
+                        Chọn truyện, đặt tên chương và dán toàn bộ nội dung đã dịch.
+                    </p>
+                </div>
+            </div>
+
+            <div class="admin-field-grid">
+                <label class="admin-field">
+                    <span>Chọn truyện</span>
+
+                    <select id="singleChapterBook">
+                        <option value="">
+                            Đang tải danh sách truyện...
+                        </option>
+                    </select>
+                </label>
+
+                <label class="admin-field">
+                    <span>Số chương</span>
+
+                    <input
+                        id="singleChapterNumber"
+                        type="number"
+                        min="1"
+                        step="1"
+                        placeholder="Ví dụ: 125">
+                </label>
+            </div>
+
+            <label class="admin-field">
+                <span>Tên chương</span>
+
+                <input
+                    id="singleChapterTitle"
+                    type="text"
+                    maxlength="160"
+                    placeholder="Ví dụ: Bí mật trong căn phòng">
+            </label>
+
+            <label class="admin-field">
+                <span>Nội dung chương</span>
+
+                <textarea
+                    id="singleChapterContent"
+                    rows="20"
+                    placeholder="Dán toàn bộ nội dung chương đã dịch vào đây..."
+                    spellcheck="true"></textarea>
+            </label>
+
+            <label class="admin-file-field">
+                <span>Ảnh minh họa chương (không bắt buộc)</span>
+
+                <input
+                    id="singleChapterImage"
+                    type="file"
+                    accept=".jpg, .jpeg, .png, .webp">
+            </label>
+
+            <div class="admin-actions">
+                <button
+                    id="uploadSingleChapterButton"
+                    type="button">
+                    Tải chương lên R2
+                </button>
+            </div>
+
+            <div
+                id="singleChapterProgressWrapper"
+                class="admin-progress"
+                hidden>
+
+                <progress
+                    id="singleChapterProgress"
+                    max="100"
+                    value="0">
+                </progress>
+
+                <span id="singleChapterProgressText">
+                    Đang chuẩn bị...
+                </span>
+            </div>
+
+            <p
+                id="singleChapterStatus"
+                class="admin-status"
+                aria-live="polite"></p>
+
+            <pre
+                id="singleChapterSummary"
+                class="upload-summary"
+                hidden></pre>
+        </section>
     </main>
 
-    <script src="assets/js/admin.js?v=20261026-admin"></script>
+    <script src="assets/js/admin.js?v=20261026-chapter"></script>
 </body>
 </html>

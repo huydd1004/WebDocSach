@@ -179,6 +179,25 @@ select {
   text-justify: inter-word;
 }
 
+.chapter-illustration {
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto 32px;
+  text-align: center;
+}
+
+.chapter-illustration img {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  max-height: 75vh;
+  margin-inline: auto;
+  border-radius: 14px;
+  object-fit: contain;
+  box-shadow: 0 16px 40px
+    rgba(0, 0, 0, 0.22);
+}
+
 .scroll-top {
   position: fixed;
   right: 18px;

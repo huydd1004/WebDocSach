@@ -556,7 +556,8 @@ function normalizeChapterIndex(data) {
       .map(chapter => ({
         number: Number(chapter?.number),
         title: String(chapter?.title || '').trim(),
-        path: String(chapter?.path || '').trim()
+        path: String(chapter?.path || '').trim(),
+        image: String(chapter?.image || '').trim()
       }))
       .filter(chapter => Number.isInteger(chapter.number) && chapter.number > 0)
       .sort((first, second) => first.number - second.number);
@@ -629,38 +630,114 @@ function showChapterMeta(text) {
   metaEl.hidden = false;
 }
 
-function renderChapterContent(contentEl, text) {
-  const normalized = String(text || '').replace(/\r\n/g, '\n');
+function appendChapterImage(
+  contentEl,
+  imageUrl
+) {
+  if (!imageUrl) {
+    return;
+  }
+
+  const figure =
+    document.createElement('figure');
+
+  const image =
+    document.createElement('img');
+
+  figure.className =
+    'chapter-illustration';
+
+  image.src = imageUrl;
+  image.alt =
+    `Ảnh minh họa chương ${currentChapter}`;
+  image.loading = 'lazy';
+
+  image.addEventListener('error', () => {
+    figure.remove();
+  });
+
+  figure.appendChild(image);
+  contentEl.appendChild(figure);
+}
+
+function renderChapterContent(
+  contentEl,
+  text,
+  imageUrl = ''
+) {
+  const normalized = String(text || '')
+    .replace(/\r\n/g, '\n');
+
   const lines = normalized.split('\n');
-  const titleIndex = lines.findIndex(line => line.trim());
+
+  const titleIndex = lines.findIndex(
+    line => line.trim()
+  );
 
   contentEl.innerHTML = '';
 
   if (titleIndex === -1) {
-    contentEl.innerText = `Chương ${currentChapter} đang được cập nhật nội dung.`;
+    contentEl.innerText =
+      `Chương ${currentChapter} ` +
+      'đang được cập nhật nội dung.';
+
     showChapterMeta('');
     return;
   }
 
   const title = lines[titleIndex].trim();
-  const body = lines.slice(titleIndex + 1).join('\n').trim();
-  const hasChapterTitle = title.length <= 160 && (body.length > 0 || /^ch/i.test(title) || title.includes(':'));
+
+  const body = lines
+    .slice(titleIndex + 1)
+    .join('\n')
+    .trim();
+
+  const hasChapterTitle =
+    title.length <= 160 &&
+    (
+      body.length > 0 ||
+      /^ch/i.test(title) ||
+      title.includes(':')
+    );
 
   if (!hasChapterTitle) {
-    contentEl.innerText = normalized;
+    appendChapterImage(
+      contentEl,
+      imageUrl
+    );
+
+    const bodyElement =
+      document.createElement('div');
+
+    bodyElement.className = 'chapter-body';
+    bodyElement.textContent = normalized;
+
+    contentEl.appendChild(bodyElement);
+
     showChapterMeta(normalized);
     return;
   }
 
-  const titleEl = document.createElement('div');
-  titleEl.className = 'chapter-title';
-  titleEl.textContent = title;
-  contentEl.appendChild(titleEl);
+  const titleElement =
+    document.createElement('div');
 
-  const bodyEl = document.createElement('div');
-  bodyEl.className = 'chapter-body';
-  bodyEl.textContent = body;
-  contentEl.appendChild(bodyEl);
+  titleElement.className = 'chapter-title';
+  titleElement.textContent = title;
+
+  contentEl.appendChild(titleElement);
+
+  appendChapterImage(
+    contentEl,
+    imageUrl
+  );
+
+  const bodyElement =
+    document.createElement('div');
+
+  bodyElement.className = 'chapter-body';
+  bodyElement.textContent = body;
+
+  contentEl.appendChild(bodyElement);
 
   showChapterMeta(body);
 }
@@ -693,6 +770,17 @@ function loadChapter() {
     contentEl.classList.add('is-visible');
   }, 150);
 
+  const currentChapterData =
+  chapterIndex.find(
+    chapter =>
+      chapter.number === currentChapter
+  );
+
+  const chapterImage =
+  String(
+    currentChapterData?.image || ''
+  ).trim();
+
   const partPath = getChapterPath(currentChapter);
   const fallbackPath = createBookDataUrl(
     currentBook,
@@ -713,7 +801,7 @@ function loadChapter() {
       contentEl.classList.add('is-transitioning');
 
       setTimeout(() => {
-        renderChapterContent(contentEl, text);
+        renderChapterContent(contentEl, text, chapterImage);
 
         loadedChapter = currentChapter;
 
