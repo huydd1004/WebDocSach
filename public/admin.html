@@ -12,7 +12,7 @@
     <script src="assets/js/theme.js"></script>
 
     <link rel="stylesheet" href="assets/css/style.css?v=20261026-chapter">
-    <link rel="stylesheet" href="assets/css/admin.css?v=20261026-chapter">
+    <link rel="stylesheet" href="assets/css/admin.css?v=20261026-edit">
     <link rel="stylesheet" href="assets/css/theme.css">
 </head>
 
@@ -283,10 +283,10 @@
                 <span class="admin-step">+</span>
 
                 <div>
-                    <h2>Đăng một chương trực tiếp</h2>
+                    <h2>Đăng hoặc sửa một chương</h2>
 
                     <p>
-                        Chọn truyện, đặt tên chương và dán toàn bộ nội dung đã dịch.
+                        Đăng chương mới hoặc mở chương đã có để sửa nội dung.
                     </p>
                 </div>
             </div>
@@ -345,6 +345,12 @@
 
             <div class="admin-actions">
                 <button
+                    id="loadExistingChapterButton"
+                    type="button">
+                    Mở chương để sửa
+                </button>
+
+                <button
                     id="uploadSingleChapterButton"
                     type="button">
                     Tải chương lên R2
@@ -379,6 +385,6 @@
         </section>
     </main>
 
-    <script src="assets/js/admin.js?v=20261026-chapter"></script>
+    <script src="assets/js/admin.js?v=20261026-edit"></script>
 </body>
 </html>

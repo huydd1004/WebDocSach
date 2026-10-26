@@ -391,6 +391,17 @@
   color: var(--admin-on-accent);
 }
 
+#loadExistingChapterButton {
+  border-color: var(--admin-border);
+  background: var(--admin-surface-soft);
+  color: var(--admin-text);
+}
+
+#loadExistingChapterButton:hover:not(:disabled) {
+  border-color: var(--admin-accent);
+  color: var(--admin-accent);
+}
+
 #uploadSingleChapterButton:hover:not(:disabled) {
   background: var(--admin-accent-hover);
 }

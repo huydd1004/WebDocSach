@@ -85,6 +85,7 @@ const singleChapterTitleInput = document.getElementById('singleChapterTitle');
 const singleChapterContentInput = document.getElementById('singleChapterContent');
 const singleChapterImageInput = document.getElementById('singleChapterImage');
 const uploadSingleChapterButton = document.getElementById('uploadSingleChapterButton');
+const loadExistingChapterButton = document.getElementById('loadExistingChapterButton');
 const singleChapterProgressWrapper = document.getElementById('singleChapterProgressWrapper');
 const singleChapterProgress = document.getElementById('singleChapterProgress');
 const singleChapterProgressText = document.getElementById('singleChapterProgressText');
@@ -1035,10 +1036,14 @@ async function prepareSingleChapterUpload() {
   )
   : '';
 
+  const chapterPath =
+    previousChapter?.path ||
+    draft.chapterPath;
+
   const chapterEntry = {...(previousChapter || {}),
                       number: draft.chapterNumber,
                       title: draft.chapterTitle,
-                      path: draft.chapterPath
+                      path: chapterPath
                       };
 
   if (imageKey) {chapterEntry.image = `${API_BASE_URL}/${imageKey}`;}
@@ -1061,11 +1066,236 @@ async function prepareSingleChapterUpload() {
 
   return {
     ...draft,
+    chapterPath,
     imageKey,
     chapters: updatedChapters,
     index,
     isUpdate: existingIndex >= 0
   };
+}
+
+async function fetchExistingChapterText(
+  bookId,
+  chapter
+) {
+  const chapterNumber = chapter.number;
+  const partNumber = Math.floor(
+    (chapterNumber - 1) / 200
+  ) + 1;
+
+  const possiblePaths = [
+    chapter.path,
+    `chapters/${chapterNumber}.txt`,
+    `${chapterNumber}.txt`,
+    `phần ${partNumber}/${chapterNumber}.txt`
+  ].filter(Boolean);
+
+  const uniquePaths = [
+    ...new Set(possiblePaths)
+  ];
+
+  for (const path of uniquePaths) {
+    const key = `data/${bookId}/${path}`;
+
+    const response = await fetch(
+      `${API_BASE_URL}/${encodeObjectKey(key)}` +
+      `?time=${Date.now()}`,
+      {
+        cache: 'no-store'
+      }
+    );
+
+    if (response.ok) {
+      return {
+        path,
+        text: await response.text()
+      };
+    }
+  }
+
+  throw new Error(
+    `Không tìm thấy file của chương ${chapterNumber}.`
+  );
+}
+
+function parseExistingChapterText(
+  text,
+  chapter
+) {
+  const normalized = String(text || '')
+    .replace(/^\uFEFF/, '')
+    .replace(/\r\n/g, '\n')
+    .trim();
+
+  const lines = normalized.split('\n');
+  const titleIndex = lines.findIndex(
+    line => line.trim()
+  );
+
+  const manifestTitle = String(
+    chapter.title || ''
+  ).trim();
+
+  if (titleIndex === -1) {
+    return {
+      title: manifestTitle,
+      content: ''
+    };
+  }
+
+  const firstLine = lines[titleIndex]
+    .replace(/^\*+|\*+$/g, '')
+    .trim();
+
+  const normalizeTitle = value =>
+    String(value || '')
+      .toLocaleLowerCase('vi-VN')
+      .replace(/\s+/g, ' ')
+      .trim();
+
+  const firstLineIsTitle =
+    normalizeTitle(firstLine) ===
+      normalizeTitle(manifestTitle) ||
+    /^ch(?:ương|uong)?\s*\d+/i.test(
+      firstLine
+    );
+
+  return {
+    title:
+      firstLineIsTitle
+        ? firstLine
+        : manifestTitle,
+    content:
+      firstLineIsTitle
+        ? lines
+            .slice(titleIndex + 1)
+            .join('\n')
+            .trim()
+        : normalized
+  };
+}
+
+function getEditableChapterTitle(
+  title,
+  chapterNumber
+) {
+  const cleanTitle = String(title || '')
+    .replace(
+      new RegExp(
+        `^Chương\\s*${chapterNumber}` +
+        `\\s*[:\\-]?\\s*`,
+        'i'
+      ),
+      ''
+    )
+    .trim();
+
+  return cleanTitle || String(title || '').trim();
+}
+
+async function loadExistingChapterForEdit() {
+  const bookId =
+    singleChapterBookInput.value.trim();
+
+  const chapterNumber = Number(
+    singleChapterNumberInput.value
+  );
+
+  if (!bookId) {
+    showSingleChapterStatus(
+      'Bạn chưa chọn truyện.',
+      'error'
+    );
+    return;
+  }
+
+  if (
+    !Number.isInteger(chapterNumber) ||
+    chapterNumber < 1
+  ) {
+    showSingleChapterStatus(
+      'Hãy nhập số chương cần sửa.',
+      'error'
+    );
+    singleChapterNumberInput.focus();
+    return;
+  }
+
+  loadExistingChapterButton.disabled = true;
+  uploadSingleChapterButton.disabled = true;
+  singleChapterSummary.hidden = true;
+
+  showSingleChapterStatus(
+    `Đang tải chương ${chapterNumber}...`
+  );
+
+  try {
+    const chapters = await fetchBookChapters(
+      bookId
+    );
+
+    const chapter = chapters.find(
+      item => item.number === chapterNumber
+    );
+
+    if (!chapter) {
+      throw new Error(
+        `Chương ${chapterNumber} chưa tồn tại.`
+      );
+    }
+
+    const loaded =
+      await fetchExistingChapterText(
+        bookId,
+        chapter
+      );
+
+    const parsed = parseExistingChapterText(
+      loaded.text,
+      chapter
+    );
+
+    singleChapterTitleInput.value =
+      getEditableChapterTitle(
+        parsed.title,
+        chapterNumber
+      );
+
+    singleChapterContentInput.value =
+      parsed.content;
+
+    singleChapterImageInput.value = '';
+    singleChapterProgressWrapper.hidden = true;
+
+    singleChapterSummary.textContent = [
+      `Đang sửa chương ${chapterNumber}`,
+      `File hiện tại: ${loaded.path}`,
+      chapter.image
+        ? `Ảnh hiện tại: ${chapter.image}`
+        : 'Ảnh hiện tại: Không có',
+      '',
+      'Chỉ sửa phần cần thay đổi rồi bấm Tải chương lên R2.'
+    ].join('\n');
+
+    singleChapterSummary.hidden = false;
+
+    showSingleChapterStatus(
+      `Đã mở chương ${chapterNumber} để sửa.`,
+      'success'
+    );
+
+    singleChapterContentInput.focus();
+  } catch (error) {
+    showSingleChapterStatus(
+      error instanceof Error
+        ? error.message
+        : 'Không thể mở chương để sửa.',
+      'error'
+    );
+  } finally {
+    loadExistingChapterButton.disabled = false;
+    uploadSingleChapterButton.disabled = false;
+  }
 }
 
 async function uploadSingleChapter() {
@@ -1079,6 +1309,7 @@ async function uploadSingleChapter() {
   }
 
   uploadSingleChapterButton.disabled = true;
+  loadExistingChapterButton.disabled = true;
 
   showSingleChapterStatus('Đang kiểm tra dữ liệu chương...');
 
@@ -1175,9 +1406,15 @@ async function uploadSingleChapter() {
     singleChapterProgressText.textContent = 'Quá trình tải chương chưa hoàn tất.';
   } finally {
     uploadSingleChapterButton.disabled = false;
+    loadExistingChapterButton.disabled = false;
   }
 }
 
 uploadSingleChapterButton.addEventListener('click', uploadSingleChapter);
+
+loadExistingChapterButton.addEventListener(
+  'click',
+  loadExistingChapterForEdit
+);
 
 loadChapterBookOptions();
