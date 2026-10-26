@@ -947,9 +947,65 @@ function normalizeReaderSearch(value) {
 function setTocMenuState(trigger, menu, open) {
   if (!trigger || !menu) return;
   trigger.setAttribute('aria-expanded', open ? 'true' : 'false');
+  const owner = trigger.closest('.reader-toc-field, .reader-top-select-field');
+  owner?.classList.toggle('is-menu-open', open);
+
+  if (open && owner?.classList.contains('reader-top-select-field')) {
+    mountTopReaderMenu(trigger, menu, owner);
+  }
+
   menu.hidden = !open;
-  trigger.closest('.reader-toc-field, .reader-top-select-field')
-    ?.classList.toggle('is-menu-open', open);
+
+  if (!open && menu.classList.contains('is-portal-menu')) {
+    unmountTopReaderMenu(menu);
+  }
+}
+
+function mountTopReaderMenu(trigger, menu, owner) {
+  const rect = trigger.getBoundingClientRect();
+  const viewportGap = 12;
+  const isChapterMenu = menu.classList.contains('reader-top-chapter-popover');
+  const desiredWidth = isChapterMenu
+    ? Math.max(rect.width, Math.min(460, window.innerWidth - viewportGap * 2))
+    : Math.max(rect.width, 180);
+  const width = Math.min(desiredWidth, window.innerWidth - viewportGap * 2);
+  const left = Math.min(
+    Math.max(viewportGap, rect.left),
+    window.innerWidth - width - viewportGap
+  );
+  const spaceBelow = window.innerHeight - rect.bottom - viewportGap;
+  const spaceAbove = rect.top - viewportGap;
+  const openAbove = spaceBelow < 180 && spaceAbove > spaceBelow;
+
+  menu._readerMenuOwner = owner;
+  document.body.appendChild(menu);
+  menu.classList.add('is-portal-menu');
+  menu.style.width = `${width}px`;
+  menu.style.left = `${left}px`;
+  menu.style.right = 'auto';
+  menu.style.maxHeight = `${Math.max(120, Math.min(420, openAbove ? spaceAbove - 8 : spaceBelow - 8))}px`;
+
+  if (openAbove) {
+    menu.style.top = 'auto';
+    menu.style.bottom = `${window.innerHeight - rect.top + 7}px`;
+  } else {
+    menu.style.top = `${rect.bottom + 7}px`;
+    menu.style.bottom = 'auto';
+  }
+}
+
+function unmountTopReaderMenu(menu) {
+  const owner = menu._readerMenuOwner;
+  if (owner) owner.appendChild(menu);
+
+  menu.classList.remove('is-portal-menu');
+  menu.style.removeProperty('width');
+  menu.style.removeProperty('left');
+  menu.style.removeProperty('right');
+  menu.style.removeProperty('top');
+  menu.style.removeProperty('bottom');
+  menu.style.removeProperty('max-height');
+  delete menu._readerMenuOwner;
 }
 
 function closeTocMenus(exceptMenu = null) {
