@@ -200,6 +200,10 @@ async function collectChapterEntries() {
     chapterFolderInput.files || []
   );
 
+  if (selectedFiles.length === 0) {
+    return [];
+  }
+
   const chapterFiles = selectedFiles.filter(
     file =>
       getFileExtension(file.name) === 'txt'
@@ -381,6 +385,23 @@ async function prepareBookUpload() {
         0
       );
 
+    const chapterSummary = chapters.length > 0
+      ? [
+          `Số chương: ${chapters.length}`,
+          `Chương đầu: ${index.firstChapter}`,
+          `Chương cuối: ${index.lastChapter}`,
+          `Dung lượng chương: ` +
+            `${(
+              totalChapterBytes /
+              1024 /
+              1024
+            ).toFixed(2)} MB`
+        ]
+      : [
+          'Số chương: Chưa có',
+          'Nội dung sẽ được đăng sau ở phần Đăng hoặc sửa một chương.'
+        ];
+
     preparedUpload = {
       book,
       chapters,
@@ -394,15 +415,7 @@ async function prepareBookUpload() {
       `Truyện: ${book.title}`,
       `Mã truyện: ${book.id}`,
       `Tác giả: ${book.author}`,
-      `Số chương: ${chapters.length}`,
-      `Chương đầu: ${index.firstChapter}`,
-      `Chương cuối: ${index.lastChapter}`,
-      `Dung lượng chương: ` +
-        `${(
-          totalChapterBytes /
-          1024 /
-          1024
-        ).toFixed(2)} MB`,
+      ...chapterSummary,
       `Ảnh bìa: ${coverFile.name}`,
       '',
       'Dữ liệu hợp lệ và sẵn sàng tải lên.'
@@ -412,7 +425,9 @@ async function prepareBookUpload() {
     uploadButton.disabled = false;
 
     showStatus(
-      `Đã kiểm tra ${chapters.length} chương.`,
+      chapters.length > 0
+        ? `Đã kiểm tra ${chapters.length} chương.`
+        : 'Thông tin truyện hợp lệ. Bạn có thể tải lên mà chưa cần nội dung.',
       'success'
     );
   } catch (error) {
@@ -662,6 +677,32 @@ function buildUploadItems(data) {
         'text/plain; charset=utf-8'
     }));
 
+  const chapterDataItems =
+    chapterItems.length > 0
+      ? [
+          {
+            key:
+              `data/${data.book.id}/` +
+              'chapters.json',
+            body: createJsonBlob(
+              data.chapters
+            ),
+            contentType:
+              'application/json; charset=utf-8'
+          },
+          {
+            key:
+              `data/${data.book.id}/` +
+              'index.json',
+            body: createJsonBlob(
+              data.index
+            ),
+            contentType:
+              'application/json; charset=utf-8'
+          }
+        ]
+      : [];
+
   return [
     ...chapterItems,
     {
@@ -672,26 +713,7 @@ function buildUploadItems(data) {
           data.coverFile
         )
     },
-    {
-      key:
-        `data/${data.book.id}/` +
-        'chapters.json',
-      body: createJsonBlob(
-        data.chapters
-      ),
-      contentType:
-        'application/json; charset=utf-8'
-    },
-    {
-      key:
-        `data/${data.book.id}/` +
-        'index.json',
-      body: createJsonBlob(
-        data.index
-      ),
-      contentType:
-        'application/json; charset=utf-8'
-    }
+    ...chapterDataItems
   ];
 }
 
@@ -785,6 +807,15 @@ async function uploadPreparedBook(event) {
       'application/json; charset=utf-8',
       adminToken
     );
+
+    if (uploadData.chapterEntries.length === 0) {
+      await loadChapterBookOptions();
+
+      singleChapterBookInput.value =
+        uploadData.book.id;
+
+      singleChapterNumberInput.value = '1';
+    }
 
     progressBar.value = totalSteps;
 
