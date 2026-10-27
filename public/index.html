@@ -9,11 +9,11 @@
   <script src="assets/js/theme.js"></script>
 
   <link rel="stylesheet" href="assets/css/style.css">
-  <link rel="stylesheet" href="assets/css/home.css">
   <link rel="stylesheet" href="assets/css/theme.css">
+  <link rel="stylesheet" href="assets/css/home.css?v=20261027-home-v4">
 </head>
 
-<body class="home-page">
+<body class="home-page home-v2">
   <header class="site-header">
     <div class="home-container header-inner">
       <a class="site-brand" href="index.html">
@@ -65,109 +65,285 @@
     </div>
   </header>
 
-  <main class="home-container">
-    <section
-      id="featuredBook"
-      class="featured-book"
-      aria-labelledby="featuredTitle">
-    
-    <div class="featured-content">
-      <p class="featured-label">TRUYỆN NỔI BẬT</p>
+  <main id="mainContent" class="home-main">
+    <div class="home-container">
 
-      <h1 id="featuredTitle">Đang tải truyện...</h1>
+      <!-- Truyện nổi bật -->
+       <section
+        id="featuredBook"
+        class="featured-book home-hero"
+        aria-labelledby="featuredTitle">
 
-      <p class="featured-author">
-        <span>Tác giả</span>
-        <strong id="featuredAuthor">Đang cập nhật</strong>
-      </p>
+        <div class="featured-content">
+          <div class="featured-heading-row">
+            <p class="featured-label">
+              <span class="featured-label-dot" aria-hidden="true"></span>
+              TRUYỆN NỔI BẬT
+            </p>
 
-      <div
-        id="featuredGenres"
-        class="featured-genres"
-        aria-label="Thể loại truyện">
-      </div>
+            <span class="featured-status">Đề xuất hôm nay</span>
+          </div>
 
-      <p id="featuredDescription" class="featured-description"></p>
+          <h1 id="featuredTitle">Đang tải truyện...</h1>
 
-      <div class="featured-actions">
-        <a id="featuredReadButton" class="featured-read-button" href="#">
-          Đọc ngay
-        </a>
+          <p class="featured-author">
+            <span>Tác giả</span>
+            <strong id="featuredAuthor">Đang cập nhật</strong>
+          </p>
 
-        <a id="featuredDetailButton" class="featured-detail-button" href="#">
-          Thông tin truyện
-        </a>
-      </div>
-    </div>
+          <div
+            id="featuredGenres"
+            class="featured-genres"
+            aria-label="Thể loại truyện">
+          </div>
 
-    <div class="featured-cover-frame">
-      <img
-        id="featuredCover"
-        src="assets/images/Logo.png"
-        alt="">
-    </div>
-    </section>
+          <p
+            id="featuredDescription"
+            class="featured-description">
+          </p>
 
-    <section id="library" class="home-library" aria-labelledby="libraryTitle">
-      <div class="library-heading">
-        <div>
-          <p class="section-label">KHÁM PHÁ</p>
-          <h2 id="libraryTitle">Tủ sách của bạn</h2>
+          <div
+            id="featuredProgress"
+            class="featured-reading-progress"
+            hidden>
+
+            <div class="featured-progress-heading">
+              <span>Tiến độ của bạn</span>
+              <strong id="featuredProgressText">0%</strong>
+            </div>
+
+            <div class="featured-progress-track">
+              <span id="featuredProgressBar"></span>
+            </div>
+          </div>
+
+          <div class="featured-actions">
+            <a
+              id="featuredReadButton"
+              class="featured-read-button"
+              href="#">
+              Đọc ngay
+            </a>
+
+            <a
+              id="featuredDetailButton"
+              class="featured-detail-button"
+              href="#">
+              Thông tin truyện
+            </a>
+          </div>
         </div>
 
-        <p class="library-hint">Chọn một cuốn để bắt đầu đọc</p>
-      </div>
+        <div class="featured-visual">
+          <span
+            class="featured-cover-glow"
+            aria-hidden="true">
+          </span>
 
-      <div
-        id="libraryViewTabs"
-        class="library-view-tabs"
-        role="group"
-        aria-label="Chọn nội dung tủ sách">
+          <div class="featured-cover-frame">
+            <img
+              id="featuredCover"
+              src="assets/images/Logo.png"
+              alt="">
+          </div>
 
-        <button
-          class="library-view-tab is-active"
-          type="button"
-          data-library-view="all"
-          aria-pressed="true">Tất cả</button>
+          <span class="featured-cover-caption">
+            Lựa chọn của thư viện
+          </span>
+        </div>
+      </section>
 
-        <button
-          class="library-view-tab"
-          type="button"
-          data-library-view="reading"
-          aria-pressed="false">Đang đọc</button>
+      <!-- Thống kê nhanh -->
+       <section
+        class="library-overview"
+        aria-label="Tổng quan thư viện">
 
-        <button
-          class="library-view-tab"
-          type="button"
-          data-library-view="favorite"
-          aria-pressed="false">Yêu thích</button>
-      </div>
+        <article class="overview-card">
+          <span class="overview-icon" aria-hidden="true">▦</span>
 
-      <div
-        id="genreFilters"
-        class="genre-filters"
-        role="group"
-        aria-label="Lọc truyện theo thể loại"
-      ></div>
+          <div>
+            <strong id="totalBooksStat">—</strong>
+            <span>Truyện trong thư viện</span>
+          </div>
+        </article>
 
-      <div class="library-results">
-        <p id="bookResultCount" aria-live="polite"></p>
+        <article class="overview-card">
+          <span class="overview-icon" aria-hidden="true">◷</span>
 
-        <button
-          id="clearBookFilters"
-          class="clear-book-filters"
-          type="button"
+          <div>
+            <strong id="readingBooksStat">—</strong>
+            <span>Truyện đang đọc</span>
+          </div>
+        </article>
+
+        <article class="overview-card">
+          <span class="overview-icon" aria-hidden="true">♡</span>
+
+          <div>
+            <strong id="favoriteBooksStat">—</strong>
+            <span>Truyện yêu thích</span>
+          </div>
+        </article>
+      </section>
+
+      <!-- Danh sách đọc tiêp -->
+       <section
+        id="continueReadingSection"
+        class="continue-reading-section"
+        aria-labelledby="continueReadingTitle"
+        hidden>
+
+        <div class="home-section-heading">
+          <div>
+            <p class="section-label">TIẾP TỤC HÀNH TRÌNH</p>
+            <h2 id="continueReadingTitle">Đọc tiếp</h2>
+          </div>
+
+          <button
+            id="showAllReadingBooks"
+            class="section-text-button"
+            type="button">
+            Xem tất cả
+          </button>
+        </div>
+
+        <div
+          id="continueReadingList"
+          class="continue-reading-list">
+        </div>
+      </section>
+
+      <!-- Kho truyện -->
+       <section
+        id="library"
+        class="home-library"
+        aria-labelledby="libraryTitle">
+
+        <div class="library-heading">
+          <div>
+            <p class="section-label">THƯ VIỆN CỦA BẠN</p>
+            <h2 id="libraryTitle">Khám phá kho truyện</h2>
+            <p class="library-subtitle">
+              Tìm câu chuyện phù hợp với tâm trạng của bạn hôm nay.
+            </p>
+          </div>
+
+          <p class="library-hint">
+            Chọn một cuốn để xem thông tin và mục lục
+          </p>
+        </div>
+
+        <div class="library-toolbar">
+          <div
+            id="libraryViewTabs"
+            class="library-view-tabs"
+            role="group"
+            aria-label="Chọn nội dung trong tủ sách">
+
+            <button
+              class="library-view-tab is-active"
+              type="button"
+              data-library-view="all"
+              aria-pressed="true">
+              Tất cả
+            </button>
+
+            <button
+              class="library-view-tab"
+              type="button"
+              data-library-view="reading"
+              aria-pressed="false">
+              Đang đọc
+            </button>
+
+            <button
+              class="library-view-tab"
+              type="button"
+              data-library-view="favorite"
+              aria-pressed="false">
+              Yêu thích
+            </button>
+          </div>
+
+          <div class="library-display-actions">
+            <label class="book-sort-field" for="bookSort">
+              <span>Sắp xếp</span>
+
+              <select id="bookSort">
+                <option value="default">Mặc định</option>
+                <option value="title-asc">Tên A-Z</option>
+                <option value="title-desc">Tên Z-A</option>
+                <option value="newest">Mới cập nhật</option>
+              </select>
+            </label>
+
+            <div
+              class="library-layout-switch"
+              role="group"
+              aria-label="Kiểu hiển thị truyện">
+
+              <button
+                class="layout-switch-button is-active"
+                type="button"
+                data-library-layout="grid"
+                aria-label="Hiển thị dạng lưới"
+                aria-pressed="true">
+                ▦
+              </button>
+
+              <button
+                class="layout-switch-button"
+                type="button"
+                data-library-layout="list"
+                aria-label="Hiển thị dạng danh sách"
+                aria-pressed="false">
+                ☷
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="genre-filter-area">
+          <div class="genre-filter-heading">
+            <span>Thể loại</span>
+            <small>Có thể chọn nhiều thể loại</small>
+          </div>
+
+          <div
+            id="genreFilters"
+            class="genre-filters"
+            role="group"
+            aria-label="Lọc truyện theo thể loại">
+          </div>
+        </div>
+
+        <div class="library-results">
+          <p id="bookResultCount" aria-live="polite"></p>
+
+          <button
+            id="clearBookFilters"
+            class="clear-book-filters"
+            type="button"
+            hidden>
+            Xóa bộ lọc
+          </button>
+        </div>
+
+        <p
+          id="emptyBookState"
+          class="empty-book-state"
           hidden>
-          Xóa bộ lọc
-        </button>
-      </div>
+          Không tìm thấy truyện phù hợp. Hãy thử tên hoặc thể loại khác.
+        </p>
 
-      <p id="emptyBookState" class="empty-book-state" hidden>
-        Không tìm thấy truyện phù hợp. Hãy thử tên hoặc thể loại khác.
-      </p>
+        <div
+          id="book-list"
+          class="grid"
+          aria-live="polite">
+        </div>
+      </section>
 
-      <div id="book-list" class="grid"></div>
-    </section>
+    </div>
   </main>
 
   <footer class="site-footer">
@@ -214,6 +390,6 @@
    </dialog>
 
   <script src="assets/js/data-source.js?v=20261021-r2"></script>
-  <script src="assets/js/script.js?v=20261021-r2"></script>
+  <script src="assets/js/script.js?v=20261027-home-v4"></script>
 </body>
 </html>
