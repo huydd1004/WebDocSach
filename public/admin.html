@@ -2,406 +2,219 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0">
-
-    <title>Quản trị truyện | Thư Viện Truyện</title>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#0b1220">
+    <title>Studio nội dung | Thư Viện Truyện</title>
     <link rel="icon" type="image/png" href="assets/images/Logo.png?v=20261028-favicon">
-
     <script src="assets/js/theme.js"></script>
-
     <link rel="stylesheet" href="assets/css/style.css?v=20261026-chapter">
     <link rel="stylesheet" href="assets/css/admin.css?v=20261026-genres">
+    <link rel="stylesheet" href="assets/css/admin-studio.css?v=20261029-studio">
     <link rel="stylesheet" href="assets/css/theme.css">
 </head>
 
 <body class="admin-page">
+    <div class="studio-ambient" aria-hidden="true"><span></span><span></span><span></span></div>
+
     <header class="admin-header">
         <div class="admin-container admin-header-inner">
-            <a class="admin-brand" href="index.html">
-                <img
-                    src="assets/images/Logo.png"
-                    alt=""
-                    width="42"
-                    height="42">
-
-                <span>
-                    <strong>Thư Viện Truyện</strong>
-                    <small>Quản trị nội dung</small>
-                </span>
+            <a class="admin-brand" href="index.html" aria-label="Về trang chủ">
+                <span class="admin-brand-mark"><img src="assets/images/Logo.png" alt="" width="42" height="42"></span>
+                <span><strong>Content Studio</strong><small>Thư Viện Truyện</small></span>
             </a>
 
             <div class="admin-header-actions">
-                <a href="index.html">
-                    ← Trở về thư viện
-                </a>
-
-                <button
-                    class="site-theme-toggle"
-                    type="button"
-                    data-theme-toggle
-                    aria-label="Chuyển giao diện">
-                    <span 
-                        class="theme-toggle-icon"
-                        aria-hidden="true"
-                    >☾</span>
+                <span class="studio-connection-pill" id="studioConnectionPill">
+                    <i aria-hidden="true"></i><span id="studioConnectionText">Đang kết nối R2</span>
+                </span>
+                <a class="studio-library-link" href="index.html"><span aria-hidden="true">←</span><span>Thư viện</span></a>
+                <button class="site-theme-toggle" type="button" data-theme-toggle aria-label="Chuyển giao diện">
+                    <span class="theme-toggle-icon" aria-hidden="true">☾</span>
                 </button>
             </div>
         </div>
     </header>
 
     <main class="admin-container admin-main">
-        <section class="admin-intro">
-            <p class="admin-label">QUẢN TRỊ DỮ LIỆU</p>
+        <section class="studio-hero" aria-labelledby="studioTitle">
+            <div class="studio-hero-copy">
+                <p class="admin-label"><span aria-hidden="true"></span>TRUNG TÂM QUẢN LÝ NỘI DUNG</p>
+                <h1 id="studioTitle">Đăng truyện nhẹ nhàng,<br>quản lý <em>thật gọn gàng.</em></h1>
+                <p>Tạo đầu truyện, đăng từng chương và chỉnh sửa nội dung đã có trong cùng một không gian làm việc.</p>
+            </div>
 
-            <h1>Thêm hoặc cập nhật truyện</h1>
-
-            <p>
-                Thêm thông tin và ảnh bìa trước.
-                Nội dung chương có thể đăng sau bất cứ lúc nào.
-            </p>
+            <div class="studio-overview" aria-label="Thống kê thư viện">
+                <article><span class="studio-stat-icon" aria-hidden="true">▤</span><div><strong id="studioBookCount">—</strong><small>Truyện trong kho</small></div></article>
+                <article><span class="studio-stat-icon" aria-hidden="true">≡</span><div><strong id="studioChapterCount">—</strong><small>Chương đã đăng</small></div></article>
+                <article><span class="studio-stat-icon" aria-hidden="true">◷</span><div><strong id="studioUpdatingCount">—</strong><small>Truyện đang làm</small></div></article>
+            </div>
         </section>
 
-        <form
-            id="bookUploadForm"
-            class="admin-form"
-            autocomplete="off">
+        <section class="studio-auth" aria-labelledby="authTitle">
+            <div class="studio-auth-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M7 10V7a5 5 0 0 1 10 0v3M6 10h12v10H6z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 14v2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+            </div>
+            <div class="studio-auth-copy">
+                <strong id="authTitle">Phiên quản trị</strong>
+                <span>Token chỉ được lưu trong tab này và sẽ mất khi bạn đóng trình duyệt.</span>
+            </div>
+            <label class="studio-token-field">
+                <span class="sr-only">Mã quản trị</span>
+                <input id="adminToken" type="password" placeholder="Nhập ADMIN_TOKEN" autocomplete="new-password" spellcheck="false" required>
+                <button id="toggleAdminToken" type="button" aria-label="Hiện mã quản trị" title="Hiện hoặc ẩn token">
+                    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="2.7" stroke="currentColor" stroke-width="1.6"/></svg>
+                </button>
+            </label>
+            <span class="studio-session-state" id="studioSessionState">Chưa nhập token</span>
+        </section>
 
-            <section class="admin-card">
-                <div class="admin-card-heading">
-                    <span class="admin-step">1</span>
+        <div class="studio-shell">
+            <aside class="studio-sidebar" aria-label="Điều hướng quản trị">
+                <nav class="studio-mode-switch" aria-label="Chọn công việc">
+                    <button class="studio-mode-button is-active" type="button" data-studio-mode="book" aria-controls="bookStudioPanel" aria-selected="true">
+                        <span class="studio-mode-icon" aria-hidden="true">＋</span><span><strong>Tạo truyện</strong><small>Thông tin và ảnh bìa</small></span><b aria-hidden="true">›</b>
+                    </button>
+                    <button class="studio-mode-button" type="button" data-studio-mode="chapter" aria-controls="singleChapterSection" aria-selected="false">
+                        <span class="studio-mode-icon" aria-hidden="true">✎</span><span><strong>Đăng chương</strong><small>Viết, sửa và tải lên</small></span><b aria-hidden="true">›</b>
+                    </button>
+                </nav>
 
-                    <div>
-                        <h2>Xác thực quản trị</h2>
-                        <p>
-                            Nhập ADMIN_TOKEN đã lưu trên máy của bạn.
-                        </p>
+                <section class="studio-side-card studio-checklist" aria-labelledby="checklistTitle">
+                    <div class="studio-side-heading">
+                        <span><small>TIẾN ĐỘ</small><strong id="checklistTitle">Sẵn sàng đăng</strong></span>
+                        <b id="studioChecklistProgress">0/4</b>
                     </div>
-                </div>
+                    <div class="studio-mini-progress" aria-hidden="true"><span id="studioChecklistBar"></span></div>
+                    <ul>
+                        <li id="studioCheckToken"><i>✓</i><span>Đã nhập mã quản trị</span></li>
+                        <li id="studioCheckBook"><i>✓</i><span>Đủ thông tin truyện</span></li>
+                        <li id="studioCheckCover"><i>✓</i><span>Đã chọn ảnh bìa</span></li>
+                        <li id="studioCheckReady"><i>✓</i><span>Dữ liệu đã kiểm tra</span></li>
+                    </ul>
+                </section>
 
-                <label class="admin-field">
-                    <span>Mã quản trị</span>
+                <section class="studio-side-card studio-draft-card">
+                    <div><small>BẢN NHÁP</small><strong id="studioDraftState">Chưa có thay đổi</strong><span id="studioDraftTime">Tự động lưu khi bạn nhập</span></div>
+                    <button id="clearStudioDraft" type="button">Xóa bản nháp</button>
+                </section>
 
-                    <input
-                        id="adminToken"
-                        type="password"
-                        placeholder="Nhập ADMIN_TOKEN"
-                        autocomplete="off"
-                        spellcheck="false"
-                        required>
-                </label>
-            </section>
+                <section class="studio-shortcuts" aria-label="Phím tắt">
+                    <span><kbd>Ctrl</kbd><kbd>S</kbd> Lưu nháp</span>
+                    <span><kbd>Ctrl</kbd><kbd>Enter</kbd> Thao tác chính</span>
+                </section>
+            </aside>
 
-            <section class="admin-card">
-                <div class="admin-card-heading">
-                    <span class="admin-step">2</span>
-
-                    <div>
-                        <h2>Thông tin truyện</h2>
-                        <p>
-                            Truyện có cùng mã sẽ được cập nhật.
-                        </p>
+            <div class="studio-panels">
+                <form id="bookUploadForm" class="admin-form studio-panel" data-studio-panel="book" autocomplete="off">
+                    <div id="bookStudioPanel" class="studio-panel-head">
+                        <div><span class="studio-kicker">TẠO ĐẦU TRUYỆN</span><h2>Thông tin xuất bản</h2><p>Tạo truyện mới hoặc nạp một truyện đã có để cập nhật thông tin.</p></div>
+                        <label class="studio-existing-picker"><span>Nạp truyện đã có</span><select id="existingBookPicker"><option value="">Chọn truyện để chỉnh sửa...</option></select></label>
                     </div>
-                </div>
 
-                <div class="admin-field-grid">
-                    <label class="admin-field">
-                        <span>Mã truyện</span>
-
-                        <input
-                            id="bookId"
-                            type="text"
-                            placeholder="ViDu: ToanAmMenh"
-                            pattern="[A-Za-z0-9_-]+"
-                            required>
-                    </label>
-
-                    <label class="admin-field">
-                        <span>Tên truyện</span>
-
-                        <input
-                            id="bookTitle"
-                            type="text"
-                            required>
-                    </label>
-
-                    <label class="admin-field">
-                        <span>Tác giả</span>
-
-                        <input
-                            id="bookAuthor"
-                            type="text"
-                            required>
-                    </label>
-
-                    <label class="admin-field">
-                        <span>Trạng thái</span>
-
-                        <select id="bookStatus">
-                            <option value="Đang cập nhật">
-                                Đang cập nhật
-                            </option>
-
-                            <option value="Hoàn thành">
-                                Hoàn thành
-                            </option>
-
-                            <option value="Tạm dừng">
-                                Tạm dừng
-                            </option>
-                        </select>
-                    </label>
-
-                    <label class="admin-field">
-                        <span>Ngày cập nhật</span>
-
-                        <input
-                            id="bookDate"
-                            type="date"
-                            required>
-                    </label>
-
-                    <div class="admin-field admin-genre-field">
-                        <span>Thể loại</span>
-
-                        <div
-                            id="bookGenreTags"
-                            class="admin-genre-tags"
-                            aria-live="polite"></div>
-
-                        <div class="admin-genre-entry">
-                            <input
-                                id="bookGenres"
-                                type="text"
-                                placeholder="Ví dụ: Kinh dị">
-
-                            <button
-                                id="addBookGenreButton"
-                                type="button">
-                                Thêm
-                            </button>
+                    <section class="admin-card studio-section-card">
+                        <div class="admin-card-heading"><span class="admin-step">1</span><div><h2>Thông tin cơ bản</h2><p>Các mục có dấu * là bắt buộc.</p></div></div>
+                        <div class="admin-field-grid">
+                            <label class="admin-field">
+                                <span>Mã truyện <em>*</em></span>
+                                <div class="studio-input-action"><input id="bookId" type="text" placeholder="Ví dụ: ToanAmMenh" pattern="[A-Za-z0-9_-]+" required><button id="generateBookId" type="button" title="Tạo mã từ tên truyện">Tạo mã</button></div>
+                                <small class="admin-field-help">Dùng chữ không dấu, không khoảng trắng.</small>
+                            </label>
+                            <label class="admin-field"><span>Tên truyện <em>*</em></span><input id="bookTitle" type="text" placeholder="Nhập tên hiển thị của truyện" required></label>
+                            <label class="admin-field"><span>Tác giả <em>*</em></span><input id="bookAuthor" type="text" placeholder="Tên tác giả hoặc bút danh" required></label>
+                            <label class="admin-field"><span>Trạng thái</span><select id="bookStatus"><option value="Đang cập nhật">Đang cập nhật</option><option value="Hoàn thành">Hoàn thành</option><option value="Tạm dừng">Tạm dừng</option></select></label>
+                            <label class="admin-field"><span>Ngày cập nhật <em>*</em></span><input id="bookDate" type="date" required></label>
+                            <div class="admin-field admin-genre-field">
+                                <span>Thể loại <em>*</em></span>
+                                <div id="bookGenreTags" class="admin-genre-tags" aria-live="polite"></div>
+                                <div class="admin-genre-entry"><input id="bookGenres" type="text" placeholder="Nhập thể loại rồi nhấn Enter"><button id="addBookGenreButton" type="button">Thêm</button></div>
+                                <small class="admin-field-help">Có thể nhập nhiều thể loại, ngăn cách bằng dấu phẩy.</small>
+                            </div>
                         </div>
+                        <label class="admin-field studio-description-field">
+                            <span><b>Giới thiệu truyện <em>*</em></b><small id="bookDescriptionCount">0 ký tự</small></span>
+                            <textarea id="bookDescription" rows="6" maxlength="3000" placeholder="Viết vài dòng giúp người đọc hiểu nội dung và điểm hấp dẫn của truyện..." required></textarea>
+                        </label>
+                    </section>
 
-                        <small class="admin-field-help">
-                            Nhập một thể loại rồi nhấn Enter hoặc dấu phẩy.
-                            Bạn có thể thêm nhiều thể loại.
-                        </small>
+                    <section class="admin-card studio-section-card">
+                        <div class="admin-card-heading"><span class="admin-step">2</span><div><h2>Ảnh bìa và dữ liệu</h2><p>Chỉ cần ảnh bìa để tạo truyện. Chương có thể đăng sau.</p></div></div>
+                        <div class="studio-media-grid">
+                            <label class="admin-file-field studio-cover-drop" id="coverDropZone">
+                                <input id="coverFile" type="file" accept=".jpg, .jpeg, .png, .webp" required>
+                                <span class="studio-cover-preview"><img id="coverPreviewImage" alt="Xem trước ảnh bìa" hidden><i id="coverPreviewPlaceholder" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3h11A2.5 2.5 0 0 1 20 5.5v13a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 18.5z" stroke="currentColor" stroke-width="1.5"/><circle cx="9" cy="9" r="1.5" stroke="currentColor" stroke-width="1.5"/><path d="m5 17 4.3-4.3 3.2 3.2 2-2 4.5 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></i></span>
+                                <span class="studio-file-copy"><strong>Ảnh bìa truyện <em>*</em></strong><b>Chọn ảnh hoặc kéo thả vào đây</b><small id="coverFileMeta">JPG, PNG hoặc WEBP · Tối đa 20 MB</small></span>
+                            </label>
+                            <label class="admin-file-field studio-folder-drop" id="chapterFolderDropZone">
+                                <input id="chapterFolder" type="file" accept=".txt" webkitdirectory directory multiple>
+                                <span class="studio-folder-icon" aria-hidden="true">▱</span>
+                                <span class="studio-file-copy"><strong>Thư mục chương</strong><b>Chọn thư mục .txt (không bắt buộc)</b><small id="chapterFolderMeta">Bạn có thể đăng từng chương ở mục bên cạnh.</small></span>
+                            </label>
+                        </div>
+                    </section>
+
+                    <section class="admin-card studio-section-card studio-publish-card">
+                        <div class="admin-card-heading"><span class="admin-step">3</span><div><h2>Kiểm tra và xuất bản</h2><p>Xem lại dữ liệu trước khi gửi lên Cloudflare R2.</p></div></div>
+                        <div class="admin-actions studio-publish-actions">
+                            <button id="validateBookButton" type="button"><span aria-hidden="true">✓</span>Kiểm tra dữ liệu</button>
+                            <button id="uploadBookButton" type="submit" disabled>Tải truyện lên R2 <span aria-hidden="true">↑</span></button>
+                        </div>
+                        <div id="uploadProgressWrapper" class="admin-progress" hidden>
+                            <div class="studio-progress-heading"><strong>Đang xử lý dữ liệu</strong><span id="uploadProgressText">Đang chuẩn bị...</span></div>
+                            <progress id="uploadProgress" max="100" value="0"></progress>
+                        </div>
+                        <p id="adminStatus" class="admin-status" aria-live="polite"></p>
+                        <pre id="uploadSummary" class="upload-summary" hidden></pre>
+                    </section>
+                </form>
+
+                <section id="singleChapterSection" class="admin-card studio-panel studio-chapter-panel" data-studio-panel="chapter" hidden>
+                    <div class="studio-panel-head">
+                        <div><span class="studio-kicker">TRÌNH SOẠN THẢO</span><h2>Đăng hoặc sửa chương</h2><p>Nội dung được tự động lưu nháp trên thiết bị khi bạn đang viết.</p></div>
+                        <span class="studio-save-indicator" id="chapterSaveIndicator"><i aria-hidden="true"></i>Đã lưu nháp</span>
                     </div>
-                </div>
 
-                <label class="admin-field">
-                    <span>Giới thiệu truyện</span>
-
-                    <textarea
-                        id="bookDescription"
-                        rows="5"
-                        required></textarea>
-                </label>
-            </section>
-
-            <section class="admin-card">
-                <div class="admin-card-heading">
-                    <span class="admin-step">3</span>
-
-                    <div>
-                        <h2>Chọn dữ liệu</h2>
-                        <p>
-                            Ảnh bìa là bắt buộc. Thư mục chương có thể để trống.
-                        </p>
+                    <div class="studio-chapter-setup">
+                        <label class="admin-field studio-book-select-field"><span>Chọn truyện <em>*</em></span><select id="singleChapterBook"><option value="">Đang tải danh sách truyện...</option></select></label>
+                        <label class="admin-field"><span>Số chương <em>*</em></span><input id="singleChapterNumber" type="number" min="1" step="1" inputmode="numeric" placeholder="Ví dụ: 125"></label>
+                        <button id="suggestNextChapter" class="studio-inline-button" type="button">Chương tiếp theo</button>
                     </div>
-                </div>
 
-                <label class="admin-file-field">
-                    <span>Ảnh bìa</span>
-
-                    <input
-                        id="coverFile"
-                        type="file"
-                        accept=".jpg, .jpeg, .png, .webp"
-                        required>
-                </label>
-
-                <label class="admin-file-field">
-                    <span>Thư mục chứa chương (không bắt buộc)</span>
-
-                    <input
-                        id="chapterFolder"
-                        type="file"
-                        accept=".txt"
-                        webkitdirectory
-                        directory
-                        multiple>
-                </label>
-            </section>
-
-            <section class="admin-card">
-                <div class="admin-card-heading">
-                    <span class="admin-step">4</span>
-
-                    <div>
-                        <h2>Kiểm tra và tải lên</h2>
-                        <p>
-                            Dữ liệu chỉ được tải sau khi kiểm tra hợp lệ.
-                        </p>
+                    <div class="studio-editor-card" id="studioEditorCard">
+                        <div class="studio-editor-toolbar">
+                            <span><b id="chapterWordCount">0 từ</b><i aria-hidden="true"></i><b id="chapterReadingTime">0 phút đọc</b></span>
+                            <div><button id="formatChapterText" type="button" title="Chuẩn hóa khoảng trắng">Chuẩn hóa</button><button id="toggleFocusEditor" type="button" title="Mở trình soạn thảo toàn màn hình">Toàn màn hình</button></div>
+                        </div>
+                        <label class="admin-field studio-chapter-title"><span>Tên chương <em>*</em></span><input id="singleChapterTitle" type="text" maxlength="160" placeholder="Ví dụ: Bí mật trong căn phòng"></label>
+                        <label class="admin-field studio-chapter-content"><span class="sr-only">Nội dung chương</span><textarea id="singleChapterContent" rows="24" placeholder="Dán toàn bộ nội dung chương đã dịch vào đây..." spellcheck="true"></textarea></label>
                     </div>
-                </div>
 
-                <div class="admin-actions">
-                    <button
-                        id="validateBookButton"
-                        type="button">
-                        Kiểm tra dữ liệu
-                    </button>
+                    <div class="studio-chapter-footer-grid">
+                        <label class="admin-file-field studio-chapter-image" id="chapterImageDropZone">
+                            <input id="singleChapterImage" type="file" accept=".jpg, .jpeg, .png, .webp">
+                            <span class="studio-chapter-image-preview"><img id="chapterPreviewImage" alt="Xem trước ảnh chương" hidden><i aria-hidden="true">＋</i></span>
+                            <span class="studio-file-copy"><strong>Ảnh minh họa</strong><b>Chọn ảnh nếu chương này có hình</b><small id="chapterImageMeta">Không bắt buộc · tối đa 20 MB</small></span>
+                        </label>
+                        <div class="studio-chapter-info"><strong>Mẹo khi sửa chương</strong><p>Chọn truyện và số chương, sau đó bấm “Mở chương để sửa”. Nội dung hiện có sẽ được nạp vào trình soạn thảo.</p></div>
+                    </div>
 
-                    <button
-                        id="uploadBookButton"
-                        type="submit"
-                        disabled>
-                        Tải truyện lên R2
-                    </button>
-                </div>
-
-                <div
-                    id="uploadProgressWrapper"
-                    class="admin-progress"
-                    hidden>
-
-                    <progress
-                        id="uploadProgress"
-                        max="100"
-                        value="0">
-                    </progress>
-
-                    <span id="uploadProgressText">
-                        Đang chuẩn bị...
-                    </span>
-                </div>
-
-                <p
-                    id="adminStatus"
-                    class="admin-status"
-                    aria-live="polite"></p>
-
-                <pre
-                    id="uploadSummary"
-                    class="upload-summary"
-                    hidden></pre>
-            </section>
-        </form>
-
-        <section
-            id="singleChapterSection"
-            class="admin-card">
-
-            <div class="admin-card-heading">
-                <span class="admin-step">+</span>
-
-                <div>
-                    <h2>Đăng hoặc sửa một chương</h2>
-
-                    <p>
-                        Đăng chương mới hoặc mở chương đã có để sửa nội dung.
-                    </p>
-                </div>
+                    <div class="admin-actions studio-chapter-actions">
+                        <button id="loadExistingChapterButton" type="button">Mở chương để sửa</button>
+                        <button id="uploadSingleChapterButton" type="button">Tải chương lên R2 <span aria-hidden="true">↑</span></button>
+                    </div>
+                    <div id="singleChapterProgressWrapper" class="admin-progress" hidden>
+                        <div class="studio-progress-heading"><strong>Đang đăng chương</strong><span id="singleChapterProgressText">Đang chuẩn bị...</span></div>
+                        <progress id="singleChapterProgress" max="100" value="0"></progress>
+                    </div>
+                    <p id="singleChapterStatus" class="admin-status" aria-live="polite"></p>
+                    <pre id="singleChapterSummary" class="upload-summary" hidden></pre>
+                </section>
             </div>
-
-            <div class="admin-field-grid">
-                <label class="admin-field">
-                    <span>Chọn truyện</span>
-
-                    <select id="singleChapterBook">
-                        <option value="">
-                            Đang tải danh sách truyện...
-                        </option>
-                    </select>
-                </label>
-
-                <label class="admin-field">
-                    <span>Số chương</span>
-
-                    <input
-                        id="singleChapterNumber"
-                        type="number"
-                        min="1"
-                        step="1"
-                        placeholder="Ví dụ: 125">
-                </label>
-            </div>
-
-            <label class="admin-field">
-                <span>Tên chương</span>
-
-                <input
-                    id="singleChapterTitle"
-                    type="text"
-                    maxlength="160"
-                    placeholder="Ví dụ: Bí mật trong căn phòng">
-            </label>
-
-            <label class="admin-field">
-                <span>Nội dung chương</span>
-
-                <textarea
-                    id="singleChapterContent"
-                    rows="20"
-                    placeholder="Dán toàn bộ nội dung chương đã dịch vào đây..."
-                    spellcheck="true"></textarea>
-            </label>
-
-            <label class="admin-file-field">
-                <span>Ảnh minh họa chương (không bắt buộc)</span>
-
-                <input
-                    id="singleChapterImage"
-                    type="file"
-                    accept=".jpg, .jpeg, .png, .webp">
-            </label>
-
-            <div class="admin-actions">
-                <button
-                    id="loadExistingChapterButton"
-                    type="button">
-                    Mở chương để sửa
-                </button>
-
-                <button
-                    id="uploadSingleChapterButton"
-                    type="button">
-                    Tải chương lên R2
-                </button>
-            </div>
-
-            <div
-                id="singleChapterProgressWrapper"
-                class="admin-progress"
-                hidden>
-
-                <progress
-                    id="singleChapterProgress"
-                    max="100"
-                    value="0">
-                </progress>
-
-                <span id="singleChapterProgressText">
-                    Đang chuẩn bị...
-                </span>
-            </div>
-
-            <p
-                id="singleChapterStatus"
-                class="admin-status"
-                aria-live="polite"></p>
-
-            <pre
-                id="singleChapterSummary"
-                class="upload-summary"
-                hidden></pre>
-        </section>
+        </div>
     </main>
 
+    <div class="studio-toast" id="studioToast" role="status" aria-live="polite" hidden><span aria-hidden="true">✓</span><p></p></div>
+
     <script src="assets/js/admin.js?v=20261029-chapter-count"></script>
+    <script src="assets/js/admin-studio.js?v=20261029-studio"></script>
 </body>
 </html>
