@@ -4,6 +4,7 @@ const ALLOWED_ORIGINS = new Set([
 ]);
 
 const MAX_UPLOAD_SIZE = 20 * 1024 * 1024;
+const MAX_SYNC_SIZE = 512 * 1024;
 const ALLOWED_DATA_EXTENSIONS = new Set(['txt', 'json']);
 
 const ALLOWED_IMAGE_EXTENSIONS = new Set(['jpg', 'jpeg', 'png', 'webp']);
@@ -89,6 +90,96 @@ function createJsonResponse(data, status, origin) {
   );
 }
 
+function getSyncSecret(request) {
+  const authorization = request.headers.get('Authorization') || '';
+  const match = authorization.match(/^Bearer\s+(.+)$/i);
+  const secret = match?.[1]?.trim() || '';
+
+  if (secret.length < 12 || secret.length > 128) {
+    return '';
+  }
+
+  return secret;
+}
+
+async function hashSyncSecret(secret) {
+  const bytes = new TextEncoder().encode(secret);
+  const digest = await crypto.subtle.digest('SHA-256', bytes);
+
+  return Array.from(new Uint8Array(digest))
+    .map(value => value.toString(16).padStart(2, '0'))
+    .join('');
+}
+
+async function handleSyncRequest(request, env, origin) {
+  const secret = getSyncSecret(request);
+  if (!secret) {
+    return createJsonResponse({
+      error: 'Mã đồng bộ phải có ít nhất 12 ký tự'
+    }, 401, origin);
+  }
+
+  const objectKey = `_sync/${await hashSyncSecret(secret)}.json`;
+
+  if (request.method === 'PUT') {
+    const contentLength = Number(request.headers.get('Content-Length') || 0);
+    if (Number.isFinite(contentLength) && contentLength > MAX_SYNC_SIZE) {
+      return createJsonResponse({
+        error: 'Dữ liệu đồng bộ vượt quá giới hạn 512KB'
+      }, 413, origin);
+    }
+
+    let payload;
+    try {
+      payload = await request.json();
+    } catch {
+      return createJsonResponse({ error: 'Dữ liệu đồng bộ không hợp lệ' }, 400, origin);
+    }
+
+    if (!payload || payload.app !== 'WebDocSach' || typeof payload.data !== 'object') {
+      return createJsonResponse({ error: 'Sai định dạng dữ liệu đồng bộ' }, 400, origin);
+    }
+
+    const serialized = JSON.stringify({
+      ...payload,
+      syncedAt: new Date().toISOString()
+    });
+
+    if (new TextEncoder().encode(serialized).byteLength > MAX_SYNC_SIZE) {
+      return createJsonResponse({
+        error: 'Dữ liệu đồng bộ vượt quá giới hạn 512KB'
+      }, 413, origin);
+    }
+
+    await env.BOOKS_BUCKET.put(objectKey, serialized, {
+      httpMetadata: {
+        contentType: 'application/json; charset=utf-8',
+        cacheControl: 'no-store'
+      }
+    });
+
+    return createJsonResponse({ success: true }, 200, origin);
+  }
+
+  const object = request.method === 'HEAD'
+    ? await env.BOOKS_BUCKET.head(objectKey)
+    : await env.BOOKS_BUCKET.get(objectKey);
+
+  if (!object) {
+    return createJsonResponse({ error: 'Chưa có dữ liệu đồng bộ' }, 404, origin);
+  }
+
+  const headers = createCorsHeaders(origin);
+  headers.set('Content-Type', 'application/json; charset=utf-8');
+  headers.set('Cache-Control', 'no-store');
+  headers.set('X-Content-Type-Options', 'nosniff');
+
+  return new Response(request.method === 'HEAD' ? null : object.body, {
+    status: 200,
+    headers
+  });
+}
+
 function getContentType(key) {
   const extension = key
     .split('.')
@@ -147,6 +238,15 @@ export default {
       );
     }
 
+    if (url.pathname === '/sync') {
+      try {
+        return await handleSyncRequest(request, env, origin);
+      } catch (error) {
+        console.error(error);
+        return createJsonResponse({ error: 'Không thể đồng bộ dữ liệu' }, 500, origin);
+      }
+    }
+
     let key;
 
     try {
@@ -161,6 +261,10 @@ export default {
         400,
         origin
       );
+    }
+
+    if (key.startsWith('_sync/')) {
+      return createJsonResponse({ error: 'Không tìm thấy dữ liệu' }, 404, origin);
     }
 
     if (request.method === 'PUT') {

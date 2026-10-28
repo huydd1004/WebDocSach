@@ -10,13 +10,14 @@
 
   <link rel="icon" type="image/png" href="assets/images/Logo.png?v=20261028-favicon">
   <link rel="apple-touch-icon" sizes="192x192" href="assets/images/app-icon-192.png?v=20261028-app-1">
-  <link rel="manifest" href="manifest.webmanifest?v=20261028-app-1">
+  <link rel="manifest" href="manifest.webmanifest?v=20261029-app-2">
 
   <script src="assets/js/theme.js"></script>
 
   <link rel="stylesheet" href="assets/css/style.css">
   <link rel="stylesheet" href="assets/css/theme.css">
   <link rel="stylesheet" href="assets/css/home.css?v=20261028-app-1">
+  <link rel="stylesheet" href="assets/css/home-upgrades.css?v=20261029-library-pro-1">
 </head>
 
 <body class="home-page home-v2">
@@ -268,6 +269,37 @@
         </div>
       </section>
 
+      <!-- Các kệ truyện được cá nhân hóa -->
+      <section id="smartShelvesSection" class="smart-shelves-section" aria-labelledby="smartShelvesTitle" hidden>
+        <div class="home-section-heading smart-shelves-heading">
+          <div>
+            <p class="section-label">GỢI Ý RIÊNG CHO BẠN</p>
+            <h2 id="smartShelvesTitle">Chọn truyện theo cảm hứng</h2>
+          </div>
+
+          <button id="randomBookButton" class="discover-random-button" type="button">
+            <span aria-hidden="true">✦</span> Hôm nay đọc gì?
+          </button>
+        </div>
+
+        <div class="smart-shelf-grid">
+          <article class="smart-shelf-card">
+            <div class="smart-shelf-title"><span>✧</span><div><small>DÀNH CHO BẠN</small><h3>Có thể bạn sẽ thích</h3></div></div>
+            <div id="recommendationShelf" class="smart-shelf-books"></div>
+          </article>
+
+          <article class="smart-shelf-card">
+            <div class="smart-shelf-title"><span>↗</span><div><small>NỔI BẬT</small><h3>Đang được quan tâm</h3></div></div>
+            <div id="trendingShelf" class="smart-shelf-books"></div>
+          </article>
+
+          <article class="smart-shelf-card">
+            <div class="smart-shelf-title"><span>✓</span><div><small>ĐỌC TRỌN BỘ</small><h3>Truyện đã hoàn thành</h3></div></div>
+            <div id="completedShelf" class="smart-shelf-books"></div>
+          </article>
+        </div>
+      </section>
+
       <!-- Kho truyện -->
        <section
         id="library"
@@ -283,9 +315,10 @@
             </p>
           </div>
 
-          <p class="library-hint">
-            Chọn một cuốn để xem thông tin và mục lục
-          </p>
+          <div class="library-heading-actions">
+            <p class="library-hint">Chọn một cuốn để xem thông tin và mục lục</p>
+            <button id="libraryRandomButton" class="library-random-button" type="button">✦ Chọn ngẫu nhiên</button>
+          </div>
         </div>
 
         <div class="library-toolbar">
@@ -338,6 +371,25 @@
                 <option value="title-asc">Tên A-Z</option>
                 <option value="title-desc">Tên Z-A</option>
                 <option value="newest">Mới cập nhật</option>
+              </select>
+            </label>
+
+            <label class="book-sort-field book-filter-field" for="bookStatusFilter">
+              <span>Trạng thái</span>
+              <select id="bookStatusFilter">
+                <option value="all">Tất cả</option>
+                <option value="updating">Đang cập nhật</option>
+                <option value="completed">Đã hoàn thành</option>
+              </select>
+            </label>
+
+            <label class="book-sort-field book-filter-field" for="bookLengthFilter">
+              <span>Độ dài</span>
+              <select id="bookLengthFilter">
+                <option value="all">Mọi độ dài</option>
+                <option value="short">Dưới 100 chương</option>
+                <option value="medium">100–500 chương</option>
+                <option value="long">Trên 500 chương</option>
               </select>
             </label>
 
@@ -460,8 +512,34 @@
         </button>
       </div>
 
+      <div class="backup-block cloud-sync-block">
+        <div class="cloud-sync-heading">
+          <div>
+            <h4>2. Đồng bộ nhiều thiết bị</h4>
+            <p>Dùng cùng một mã bí mật trên các thiết bị. Không chia sẻ mã này với người khác.</p>
+          </div>
+          <span id="cloudSyncState" class="cloud-sync-state">Chưa kết nối</span>
+        </div>
+
+        <label class="sync-code-field" for="syncSecretInput">
+          <span>Mã đồng bộ cá nhân</span>
+          <input id="syncSecretInput" type="password" minlength="12" maxlength="128" autocomplete="new-password" placeholder="Ít nhất 12 ký tự">
+        </label>
+
+        <div class="sync-code-actions">
+          <button id="generateSyncCode" class="backup-btn backup-btn-secondary" type="button">Tạo mã an toàn</button>
+          <button id="saveSyncCode" class="backup-btn backup-btn-secondary" type="button">Lưu mã</button>
+        </div>
+
+        <div class="sync-transfer-actions">
+          <button id="pullCloudData" class="backup-btn backup-btn-secondary" type="button">↓ Tải dữ liệu từ cloud</button>
+          <button id="pushCloudData" class="backup-btn backup-btn-primary" type="button">↑ Đồng bộ lên cloud</button>
+        </div>
+        <small id="cloudSyncLastTime" class="cloud-sync-last-time"></small>
+      </div>
+
       <div class="backup-block">
-        <h4>2. Khôi phục dữ liệu</h4>
+        <h4>3. Khôi phục dữ liệu</h4>
         <p>Nhập tệp sao lưu đã tải trước đây để đồng bộ lại tủ sách của bạn trên thiết bị này.</p>
         <input type="file" id="backupFileInput" accept=".json" style="display: none;">
         <button id="importBackupBtn" class="backup-btn backup-btn-secondary" type="button">
@@ -504,6 +582,27 @@
     </div>
   </dialog>
 
+  <!-- Xem nhanh thông tin truyện -->
+  <dialog id="quickBookDialog" class="quick-book-dialog" aria-labelledby="quickBookTitle">
+    <div class="quick-book-shell">
+      <button id="closeQuickBookDialog" class="dialog-close-button quick-book-close" type="button" aria-label="Đóng xem nhanh">×</button>
+      <div class="quick-book-cover-wrap">
+        <img id="quickBookCover" src="assets/images/Logo.png" alt="">
+      </div>
+      <div class="quick-book-copy">
+        <p id="quickBookStatus" class="dialog-eyebrow">THÔNG TIN TRUYỆN</p>
+        <h2 id="quickBookTitle">Tên truyện</h2>
+        <p id="quickBookAuthor" class="quick-book-author"></p>
+        <div id="quickBookGenres" class="quick-book-genres"></div>
+        <p id="quickBookDescription" class="quick-book-description"></p>
+        <div class="quick-book-actions">
+          <a id="quickBookRead" class="featured-read-button" href="#">Đọc ngay</a>
+          <a id="quickBookDetail" class="featured-detail-button" href="#">Xem mục lục</a>
+        </div>
+      </div>
+    </div>
+  </dialog>
+
   <!-- Bộ lọc trên điện thoại -->
   <dialog id="filterDialog" class="filter-dialog" aria-labelledby="filterDialogTitle">
     <div class="filter-dialog-shell">
@@ -525,6 +624,27 @@
           <option value="newest">Mới cập nhật</option>
         </select>
       </label>
+
+      <div class="mobile-advanced-filters">
+        <label class="mobile-sort-field" for="mobileStatusFilter">
+          <span>Trạng thái</span>
+          <select id="mobileStatusFilter">
+            <option value="all">Tất cả</option>
+            <option value="updating">Đang cập nhật</option>
+            <option value="completed">Đã hoàn thành</option>
+          </select>
+        </label>
+
+        <label class="mobile-sort-field" for="mobileLengthFilter">
+          <span>Độ dài</span>
+          <select id="mobileLengthFilter">
+            <option value="all">Mọi độ dài</option>
+            <option value="short">Dưới 100 chương</option>
+            <option value="medium">100–500 chương</option>
+            <option value="long">Trên 500 chương</option>
+          </select>
+        </label>
+      </div>
 
       <div class="mobile-filter-heading">
         <strong>Thể loại</strong>
@@ -581,8 +701,10 @@
   </nav>
 
   <script src="assets/js/data-source.js?v=20261021-r2"></script>
-  <script src="assets/js/script.js?v=20261028-app-1"></script>
+  <script src="assets/js/sync-client.js?v=20261029-sync-1"></script>
+  <script src="assets/js/script.js?v=20261029-library-pro-1"></script>
   <script src="assets/js/home-effects.js?v=20261028-app-1"></script>
-  <script src="assets/js/home-app.js?v=20261028-app-1"></script>
+  <script src="assets/js/home-app.js?v=20261029-library-pro-1"></script>
+  <script src="assets/js/home-upgrades.js?v=20261029-library-pro-1"></script>
 </body>
 </html>

@@ -560,12 +560,18 @@
   function setupMobileFilters() {
     const mobileSort = document.getElementById('mobileBookSort');
     const desktopSort = document.getElementById('bookSort');
+    const mobileStatus = document.getElementById('mobileStatusFilter');
+    const desktopStatus = document.getElementById('bookStatusFilter');
+    const mobileLength = document.getElementById('mobileLengthFilter');
+    const desktopLength = document.getElementById('bookLengthFilter');
 
     document.getElementById('openFilterDialog')?.addEventListener('click', () => {
       buildMobileFilters();
       if (mobileSort && desktopSort) {
         mobileSort.value = desktopSort.value;
       }
+      if (mobileStatus && desktopStatus) mobileStatus.value = desktopStatus.value;
+      if (mobileLength && desktopLength) mobileLength.value = desktopLength.value;
       openDialog(filterDialog);
     });
 
@@ -575,6 +581,20 @@
       if (desktopSort) {
         desktopSort.value = mobileSort.value;
         desktopSort.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+    });
+
+    mobileStatus?.addEventListener('change', () => {
+      if (desktopStatus) {
+        desktopStatus.value = mobileStatus.value;
+        desktopStatus.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+    });
+
+    mobileLength?.addEventListener('change', () => {
+      if (desktopLength) {
+        desktopLength.value = mobileLength.value;
+        desktopLength.dispatchEvent(new Event('change', { bubbles: true }));
       }
     });
 

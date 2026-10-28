@@ -7,12 +7,12 @@
   <title>Đọc truyện</title>
   <link rel="icon" type="image/png" href="assets/images/Logo.png?v=20261028-favicon">
   <link rel="stylesheet" href="assets/css/style.css?v=20261026-chapter">
-  <link rel="stylesheet" href="assets/css/reader.css?v=20261028-page-turn-1">
+  <link rel="stylesheet" href="assets/css/reader.css?v=20261028-reader-pro-2">
+  <link rel="stylesheet" href="assets/css/reader-upgrades.css?v=20261029-reader-pro-1">
 </head>
 
 <body class="reader-page reader-v2" data-reader-theme="dark">
   <div id="readingProgressBar" class="reading-progress-bar" aria-hidden="true"></div>
-  <p id="readerGestureStatus" class="screen-reader-only" aria-live="polite"></p>
 
   <header id="readerTopChrome" class="reader-top-chrome reader-header">
     <div class="top-bar">
@@ -33,6 +33,14 @@
       <div class="reader-header-actions">
         <button class="reader-icon-btn" type="button" onclick="toggleTocPanel()" aria-label="Mở mục lục" title="Mục lục">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01"/></svg>
+        </button>
+
+        <button class="reader-icon-btn" type="button" onclick="toggleReaderSearch()" aria-label="Tìm trong truyện" title="Tìm trong truyện">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+        </button>
+
+        <button class="reader-icon-btn" type="button" onclick="toggleReaderAnnotations()" aria-label="Mở dấu trang và ghi chú" title="Dấu trang & ghi chú">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h12v17l-6-4-6 4z"/><path d="M9 8h6M9 12h6"/></svg>
         </button>
 
         <button class="reader-icon-btn" type="button" onclick="toggleSettings()" aria-label="Mở tùy chỉnh đọc" title="Tùy chỉnh đọc">
@@ -77,6 +85,7 @@
 
 <main id="readerMain" class="reader-stage">
   <article class="reader-paper">
+    <div id="readerPageFlow" class="reader-page-flow">
     <header class="reader-chapter-hero">
       <div class="reader-chapter-kicker">
         <span class="reader-kicker-line" aria-hidden="true"></span>
@@ -112,6 +121,7 @@
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>
       </button>
     </nav>
+    </div>
   </article>
 </main>
 
@@ -204,7 +214,14 @@
       <button class="theme-swatch theme-swatch-dark" type="button" data-theme="0" onclick="applyTheme(0)" aria-label="Dark"></button>
       <button class="theme-swatch theme-swatch-light" type="button" data-theme="1" onclick="applyTheme(1)" aria-label="Light"></button>
       <button class="theme-swatch theme-swatch-sepia" type="button" data-theme="2" onclick="applyTheme(2)" aria-label="Sepia"></button>
+      <button class="theme-swatch theme-swatch-oled" type="button" data-theme="3" onclick="applyTheme(3)" aria-label="OLED"></button>
+      <button class="theme-swatch theme-swatch-sage" type="button" data-theme="4" onclick="applyTheme(4)" aria-label="Xanh dịu mắt"></button>
     </div>
+
+    <label class="reader-range-setting" for="readerBrightnessRange">
+      <span><strong>Độ sáng trang</strong><small id="readerBrightnessValue">100%</small></span>
+      <input id="readerBrightnessRange" type="range" min="45" max="100" step="5" value="100">
+    </label>
 
     <div class="settings-control settings-segment font-segment" role="group" aria-label="Font chữ">
       <button type="button" data-font="Merriweather" onclick="setFont('Merriweather')">Serif</button>
@@ -275,11 +292,145 @@
       </button>
     </div>
   </section>
+
+  <div class="settings-divider" aria-hidden="true"></div>
+
+  <section class="reader-experience-settings" aria-labelledby="readerExperienceTitle">
+    <span id="readerExperienceTitle" class="reader-setting-label">Trải nghiệm đọc</span>
+
+    <div class="reader-mode-grid" role="group" aria-label="Chế độ đọc">
+      <button type="button" data-reader-mode="scroll" onclick="setReaderMode('scroll')">
+        <span aria-hidden="true">↕</span><strong>Cuộn dọc</strong>
+      </button>
+      <button type="button" data-reader-mode="paginated" onclick="setReaderMode('paginated')">
+        <span aria-hidden="true">▤</span><strong>Lật trang</strong>
+      </button>
+    </div>
+
+    <div class="reader-feature-switches">
+      <button id="readerWakeLockToggle" class="reader-feature-toggle" type="button" role="switch" aria-checked="false" onclick="toggleReaderWakeLock()">
+        <span><strong>Giữ màn hình sáng</strong><small>Không tự tắt khi đang đọc</small></span>
+        <i aria-hidden="true"></i>
+      </button>
+
+      <button id="readerPageSoundToggle" class="reader-feature-toggle" type="button" role="switch" aria-checked="false" onclick="toggleReaderPageSound()">
+        <span><strong>Âm thanh lật giấy</strong><small>Âm thanh nhẹ khi chuyển trang</small></span>
+        <i aria-hidden="true"></i>
+      </button>
+
+      <button id="readerSpreadToggle" class="reader-feature-toggle" type="button" role="switch" aria-checked="true" onclick="toggleReaderSpread()">
+        <span><strong>Sách hai trang</strong><small>Tự bật trên màn hình máy tính rộng</small></span>
+        <i aria-hidden="true"></i>
+      </button>
+
+      <button id="readerGestureToggle" class="reader-feature-toggle" type="button" role="switch" aria-checked="true" onclick="toggleReaderGestures()">
+        <span><strong>Cử chỉ chạm và vuốt</strong><small>Vuốt hoặc chạm mép để lật trang</small></span>
+        <i aria-hidden="true"></i>
+      </button>
+
+      <button id="readerHapticsToggle" class="reader-feature-toggle" type="button" role="switch" aria-checked="true" onclick="toggleReaderHaptics()">
+        <span><strong>Rung nhẹ khi lật</strong><small>Phản hồi xúc giác trên điện thoại</small></span>
+        <i aria-hidden="true"></i>
+      </button>
+
+      <button id="readerHighContrastToggle" class="reader-feature-toggle" type="button" role="switch" aria-checked="false" onclick="toggleReaderHighContrast()">
+        <span><strong>Tương phản cao</strong><small>Làm chữ và đường viền rõ hơn</small></span>
+        <i aria-hidden="true"></i>
+      </button>
+
+      <button id="readerReduceMotionToggle" class="reader-feature-toggle" type="button" role="switch" aria-checked="false" onclick="toggleReaderReduceMotion()">
+        <span><strong>Giảm chuyển động</strong><small>Hạn chế hiệu ứng cho mắt nhạy cảm</small></span>
+        <i aria-hidden="true"></i>
+      </button>
+    </div>
+
+    <div class="reader-auto-scroll-setting">
+      <button id="readerAutoScrollToggle" class="reader-auto-scroll-button" type="button" aria-pressed="false" onclick="toggleReaderAutoScroll()">
+        <span aria-hidden="true">▶</span><strong>Tự động cuộn</strong>
+      </button>
+      <label for="readerAutoScrollSpeed"><span>Tốc độ</span><input id="readerAutoScrollSpeed" type="range" min="10" max="90" step="5" value="35"></label>
+    </div>
+
+    <div class="reader-offline-actions">
+      <button id="saveOfflineChapters" type="button" onclick="saveReaderOffline()">↓ Lưu 5 chương ngoại tuyến</button>
+      <button id="clearOfflineChapters" type="button" onclick="clearReaderOffline()">Xóa bản ngoại tuyến</button>
+      <small id="readerOfflineStatus" aria-live="polite"></small>
+    </div>
+
+    <div id="readerSessionSummary" class="reader-session-summary" aria-live="polite">
+      <span><small>Chương hiện tại</small><strong>Đang tính…</strong></span>
+      <span><small>Ước tính toàn truyện</small><strong>Đang tính…</strong></span>
+      <span><small>Phiên đọc này</small><strong>0 phút</strong></span>
+    </div>
+
+    <button id="readerFullscreenButton" class="reader-fullscreen-button" type="button" onclick="toggleReaderFullscreen()">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5"/></svg>
+      <span>Đọc toàn màn hình</span>
+    </button>
+  </section>
   </div>
 </aside>
 
+<aside id="readerAnnotationsPanel" class="reader-side-panel reader-annotations-panel" aria-hidden="true" aria-labelledby="readerAnnotationsTitle">
+  <header class="reader-panel-header">
+    <div>
+      <span class="reader-panel-eyebrow">Sổ tay đọc</span>
+      <h2 id="readerAnnotationsTitle">Dấu trang & ghi chú</h2>
+    </div>
+    <button class="reader-panel-close" type="button" onclick="closeReaderPanels()" aria-label="Đóng sổ tay">&times;</button>
+  </header>
+
+  <div class="reader-panel-body reader-annotations-body">
+    <button id="bookmarkCurrentPage" class="reader-bookmark-button" type="button">
+      <span aria-hidden="true">◇</span>
+      <span><strong>Đánh dấu vị trí hiện tại</strong><small>Lưu chương và trang đang đọc</small></span>
+    </button>
+
+    <button id="exportReaderNotes" class="reader-export-notes" type="button">↓ Xuất ghi chú thành file</button>
+
+    <p class="reader-annotation-help">Bôi chọn một đoạn chữ trong trang để đánh dấu hoặc thêm ghi chú.</p>
+    <div id="readerAnnotationsList" class="reader-annotations-list"></div>
+    <p id="readerAnnotationsEmpty" class="reader-annotations-empty">Bạn chưa lưu ghi chú hay dấu trang nào.</p>
+  </div>
+</aside>
+
+<aside id="readerSearchPanel" class="reader-side-panel reader-search-panel" aria-hidden="true" aria-labelledby="readerSearchTitle">
+  <header class="reader-panel-header">
+    <div>
+      <span class="reader-panel-eyebrow">Tra cứu nội dung</span>
+      <h2 id="readerSearchTitle">Tìm trong truyện</h2>
+    </div>
+    <button class="reader-panel-close" type="button" onclick="closeReaderPanels()" aria-label="Đóng tìm kiếm">&times;</button>
+  </header>
+
+  <div class="reader-panel-body reader-search-body">
+    <label class="reader-story-search" for="readerStorySearchInput">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+      <input id="readerStorySearchInput" type="search" placeholder="Nhập từ khóa cần tìm…" autocomplete="off">
+    </label>
+
+    <div class="reader-search-scope" role="group" aria-label="Phạm vi tìm kiếm">
+      <button class="is-active" type="button" data-reader-search-scope="chapter" aria-pressed="true">Chương này</button>
+      <button type="button" data-reader-search-scope="book" aria-pressed="false">Toàn bộ truyện</button>
+    </div>
+
+    <button id="runReaderSearch" class="reader-search-submit" type="button">Tìm kiếm</button>
+    <p id="readerSearchStatus" class="reader-search-status" aria-live="polite">Nhập từ khóa để bắt đầu.</p>
+    <div id="readerSearchResults" class="reader-search-results"></div>
+  </div>
+</aside>
+
+<div id="readerSelectionTools" class="reader-selection-tools" role="toolbar" aria-label="Công cụ đoạn văn" hidden>
+  <button type="button" data-annotation-action="highlight">Đánh dấu</button>
+  <button type="button" data-annotation-action="note">Ghi chú</button>
+</div>
+
+<div id="readerBrightnessOverlay" class="reader-brightness-overlay" aria-hidden="true"></div>
+
   <script src="assets/js/data-source.js?v=20261021-r2"></script>
-  <script src="assets/js/script.js?v=20261028-page-turn-1"></script>
+  <script src="assets/js/sync-client.js?v=20261029-sync-1"></script>
+  <script src="assets/js/script.js?v=20261029-reader-pro-1"></script>
+  <script src="assets/js/reader-experience.js?v=20261029-reader-pro-1"></script>
 <button id="scrollTopBtn" class="scroll-top" type="button" title="Lên đầu trang">&#11014;</button>
 </body>
 </html>

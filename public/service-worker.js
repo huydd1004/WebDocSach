@@ -1,4 +1,5 @@
-const CACHE_VERSION = 'webdocsach-shell-v3';
+const CACHE_VERSION = 'webdocsach-shell-v7';
+const DATA_RUNTIME_CACHE = 'webdocsach-data-runtime-v1';
 const BASE_URL = new URL('./', self.location.href);
 
 const SHELL_FILES = [
@@ -10,14 +11,19 @@ const SHELL_FILES = [
   './assets/css/style.css',
   './assets/css/theme.css',
   './assets/css/home.css',
+  './assets/css/home-upgrades.css',
   './assets/css/book.css',
   './assets/css/reader.css',
+  './assets/css/reader-upgrades.css',
   './assets/js/theme.js',
   './assets/js/data-source.js',
+  './assets/js/sync-client.js',
   './assets/js/script.js',
   './assets/js/book.js',
   './assets/js/home-effects.js',
   './assets/js/home-app.js',
+  './assets/js/home-upgrades.js',
+  './assets/js/reader-experience.js',
   './assets/images/Logo.png',
   './assets/images/app-icon-192.png',
   './assets/images/app-icon-512.png'
@@ -86,7 +92,7 @@ async function staleWhileRevalidate(request) {
 }
 
 async function dataNetworkFirst(request) {
-  const cache = await caches.open(CACHE_VERSION);
+  const cache = await caches.open(DATA_RUNTIME_CACHE);
 
   try {
     const response = await fetch(request);
@@ -95,7 +101,11 @@ async function dataNetworkFirst(request) {
     }
     return response;
   } catch (error) {
-    return await cache.match(request, { ignoreSearch: true }) || Response.error();
+    return (
+      await cache.match(request, { ignoreSearch: true }) ||
+      await caches.match(request, { ignoreSearch: true }) ||
+      Response.error()
+    );
   }
 }
 
@@ -110,7 +120,7 @@ self.addEventListener('fetch', event => {
 
   const isBookDataRequest =
     url.hostname === 'webdocsach-data-api.huydd12401.workers.dev' &&
-    url.pathname.startsWith('/data/');
+    (url.pathname.startsWith('/data/') || url.pathname.startsWith('/assets/images/'));
 
   if (isBookDataRequest) {
     event.respondWith(dataNetworkFirst(request));

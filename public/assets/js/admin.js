@@ -788,6 +788,7 @@ async function createUpdatedCatalog(book) {
       : null;
 
   const nextBook = {
+    ...(previousBook || {}),
     ...book
   };
 
@@ -936,7 +937,10 @@ async function uploadPreparedBook(event) {
 
     const updatedCatalog =
       await createUpdatedCatalog(
-        uploadData.book
+        {
+          ...uploadData.book,
+          chapterCount: uploadData.chapters.length || uploadData.book.chapterCount || 0
+        }
       );
 
     await uploadObject(
@@ -1507,7 +1511,7 @@ async function uploadSingleChapter() {
       });
     }
 
-    const totalSteps = contentItems.length + 2;
+    const totalSteps = contentItems.length + 3;
     singleChapterProgress.max = totalSteps;
 
     const failures = await runUploadPool(contentItems, item =>
@@ -1541,6 +1545,22 @@ async function uploadSingleChapter() {
 
     await uploadObject(`data/${uploadData.bookId}/chapters.json`,
                        createJsonBlob(uploadData.chapters),
+                       'application/json; charset=utf-8',
+                       adminToken
+    );
+
+    completedSteps += 1;
+    singleChapterProgress.value = completedSteps;
+    singleChapterProgressText.textContent = 'Đang cập nhật số chương trong books.json...';
+
+    const updatedCatalog = await createUpdatedCatalog({
+      id: uploadData.bookId,
+      chapterCount: uploadData.chapters.length,
+      updatedAt: new Date().toISOString()
+    });
+
+    await uploadObject('data/books.json',
+                       createJsonBlob(updatedCatalog),
                        'application/json; charset=utf-8',
                        adminToken
     );

@@ -9,7 +9,9 @@ const {createDataUrl, createBookDataUrl} = window.WebDocSachData;
 const THEMES = [
   { name: 'dark', color: '#0a0f1b' },
   { name: 'light', color: '#eef1f5' },
-  { name: 'sepia', color: '#e9dfcb' }
+  { name: 'sepia', color: '#e9dfcb' },
+  { name: 'oled', color: '#000000' },
+  { name: 'sage', color: '#dfe9df' }
 ];
 
 let booksData = [];
@@ -25,6 +27,7 @@ let loadedChapter = 0;
 let readingPositionTimer = null;
 let chapterNavigationLocked = false;
 let readerPageTurnState = null;
+const readerChapterTextCache = new Map();
 
 async function fetchBooksData() {
   const response = await fetch(createDataUrl('books.json'));
@@ -449,6 +452,22 @@ function getBookDateValue(book) {
   return Number.isFinite(timestamp) ? timestamp : 0;
 }
 
+function getBookChapterCount(book) {
+  const candidates = [
+    book?.chapterCount,
+    book?.totalChapters,
+    book?.chaptersCount,
+    typeof book?.chapters === 'number' ? book.chapters : undefined
+  ];
+  const value = candidates.map(Number).find(Number.isFinite);
+  return value && value > 0 ? value : 0;
+}
+
+function isCompletedBook(book) {
+  const status = normalizeSearchText(book?.status || '');
+  return ['hoan thanh', 'hoan', 'completed', 'full'].some(value => status.includes(value));
+}
+
 function sortBookList(list) {
   const sortValue = document.getElementById('bookSort')?.value || 'default';
   const sortedList = [...list];
@@ -499,6 +518,14 @@ function setupHomeLibraryControls() {
     sortSelect.dataset.bound = 'true';
     sortSelect.addEventListener('change', applyBookFilters);
   }
+
+  ['bookStatusFilter', 'bookLengthFilter'].forEach(id => {
+    const select = document.getElementById(id);
+    if (select && select.dataset.bound !== 'true') {
+      select.dataset.bound = 'true';
+      select.addEventListener('change', applyBookFilters);
+    }
+  });
 
   const layoutContainer = document.querySelector('.library-layout-switch');
 
@@ -614,6 +641,9 @@ function updateBookResultStatus(list) {
   );
   const hasSelectedLibraryView =
     activeLibraryView !== 'all';
+  const hasAdvancedFilter =
+    (document.getElementById('bookStatusFilter')?.value || 'all') !== 'all' ||
+    (document.getElementById('bookLengthFilter')?.value || 'all') !== 'all';
 
   if (resultCount) {
     const visibleCount = Math.min(homeBookDisplayLimit, list.length);
@@ -646,6 +676,7 @@ function updateBookResultStatus(list) {
     clearButton.hidden =
       !hasSearch &&
       !hasSelectedGenre &&
+      !hasAdvancedFilter &&
       !hasSelectedLibraryView;
   }
 }
@@ -671,6 +702,7 @@ function renderBookList(list) {
 
     const card = document.createElement('article');
     card.className = 'book';
+    card.dataset.bookId = book.id;
     card.tabIndex = 0;
     card.setAttribute('role', 'link');
     card.setAttribute('aria-label', `Xem truyện ${book.title}`);
@@ -887,6 +919,8 @@ function setupLibraryViewTabs() {
 
 function applyBookFilters() {
   const query = normalizeSearchText(document.getElementById('bookSearch')?.value);
+  const statusFilter = document.getElementById('bookStatusFilter')?.value || 'all';
+  const lengthFilter = document.getElementById('bookLengthFilter')?.value || 'all';
 
   const selectedGenres = Array.from(document.querySelectorAll('#genreFilters input[type="checkbox"]:checked')).map(input => normalizeSearchText(input.value));
   const favoriteBookIds = new Set(
@@ -921,9 +955,21 @@ function applyBookFilters() {
           ? favoriteBookIds.has(book.id)
           : true;
 
+    const completed = isCompletedBook(book);
+    const matchesStatus = statusFilter === 'all' ||
+      (statusFilter === 'completed' ? completed : !completed);
+
+    const chapterCount = getBookChapterCount(book);
+    const matchesLength = lengthFilter === 'all' ||
+      (lengthFilter === 'short' && chapterCount > 0 && chapterCount < 100) ||
+      (lengthFilter === 'medium' && chapterCount >= 100 && chapterCount <= 500) ||
+      (lengthFilter === 'long' && chapterCount > 500);
+
     return (
       matchesSearch &&
       matchesGenre &&
+      matchesStatus &&
+      matchesLength &&
       matchesLibraryView
     );
   });
@@ -934,6 +980,8 @@ function applyBookFilters() {
     query,
     selectedGenres,
     activeLibraryView,
+    statusFilter,
+    lengthFilter,
     sort: document.getElementById('bookSort')?.value || 'default'
   });
 
@@ -963,6 +1011,11 @@ function clearBookFilters() {
   document.querySelectorAll('#genreFilters input[type="checkbox"]').forEach(input => {
     input.checked = false;
   });
+
+  const statusFilter = document.getElementById('bookStatusFilter');
+  const lengthFilter = document.getElementById('bookLengthFilter');
+  if (statusFilter) statusFilter.value = 'all';
+  if (lengthFilter) lengthFilter.value = 'all';
 
   setLibraryView('all');
 }
@@ -1319,6 +1372,11 @@ function getChapterImage(chapterNumber) {
 }
 
 function fetchChapterText(chapterNumber) {
+  const cacheKey = `${currentBook}:${chapterNumber}`;
+  if (readerChapterTextCache.has(cacheKey)) {
+    return Promise.resolve(readerChapterTextCache.get(cacheKey));
+  }
+
   const partPath = getChapterPath(chapterNumber);
   const fallbackPath = createBookDataUrl(
     currentBook,
@@ -1333,7 +1391,11 @@ function fetchChapterText(chapterNumber) {
   );
 
   return tryFetch(partPath)
-    .catch(() => tryFetch(fallbackPath));
+    .catch(() => tryFetch(fallbackPath))
+    .then(text => {
+      readerChapterTextCache.set(cacheKey, text);
+      return text;
+    });
 }
 
 function renderChapterLoadError(contentEl, error, chapterNumber = currentChapter) {
@@ -1387,6 +1449,9 @@ function loadChapter() {
 
         saveProgress(currentBook, currentChapter);
         restoreReadingPosition(currentBook, currentChapter);
+        document.dispatchEvent(new CustomEvent('reader:chapter-rendered', {
+          detail: { chapter: currentChapter, direction: '' }
+        }));
       }, 180);
     })
     .catch(err => {
@@ -1394,6 +1459,9 @@ function loadChapter() {
       contentEl.classList.add('is-visible');
 
       renderChapterLoadError(contentEl, err);
+      document.dispatchEvent(new CustomEvent('reader:chapter-rendered', {
+        detail: { chapter: currentChapter, direction: '' }
+      }));
     });
 }
 
@@ -1636,6 +1704,7 @@ function renderReaderToc(query = '') {
 
     button.type = 'button';
     button.className = 'reader-toc-item';
+    button.dataset.chapter = String(chapter.number);
     button.classList.toggle('is-current', chapter.number === currentChapter);
     button.setAttribute('role', 'listitem');
     button.setAttribute('aria-current', chapter.number === currentChapter ? 'page' : 'false');
@@ -1715,11 +1784,6 @@ function getReaderAdjacentChapter(direction) {
   return null;
 }
 
-function announceReaderGesture(message) {
-  const status = document.getElementById('readerGestureStatus');
-  if (status) status.textContent = message;
-}
-
 function removeReaderPageTurn() {
   readerPageTurnState?.stage?.remove();
   readerPageTurnState = null;
@@ -1750,11 +1814,12 @@ function createReaderPageTurn(direction, originClientY = window.innerHeight / 2)
   const sheet = document.createElement('div');
   const paperCopy = paper.cloneNode(true);
   const shade = document.createElement('span');
-  const cue = document.createElement('span');
-  const adjacentChapter = getReaderAdjacentChapter(direction);
+  const curl = document.createElement('span');
+  const sourceFlow = paper.querySelector('.reader-page-flow');
+  const copiedFlow = paperCopy.querySelector('.reader-page-flow');
   const originY = Math.min(
-    Math.max(originClientY - visibleTop, 28),
-    Math.max(visibleHeight - 28, 28)
+    Math.max(visibleHeight * 0.82, originClientY - visibleTop, 28),
+    Math.max(visibleHeight - 20, 28)
   );
 
   stage.className = `reader-page-turn-stage is-${direction}`;
@@ -1785,24 +1850,26 @@ function createReaderPageTurn(direction, originClientY = window.innerHeight / 2)
   sheet.classList.toggle('is-clipped-bottom', rect.bottom > window.innerHeight);
 
   shade.className = 'reader-page-turn-shade';
-  cue.className = 'reader-page-turn-cue';
-  cue.textContent = adjacentChapter
-    ? `${direction === 'next' ? 'Chương sau' : 'Chương trước'} · ${getChapterDisplayTitle(adjacentChapter)}`
-    : direction === 'next'
-      ? 'Đây là chương cuối'
-      : 'Đây là chương đầu';
-
+  curl.className = 'reader-page-turn-curl';
   sheet.append(paperCopy, shade);
-  stage.append(sheet, cue);
+  stage.append(sheet, curl);
   document.body.appendChild(stage);
   document.body.classList.add('reader-page-turning');
+
+  if (sourceFlow && copiedFlow) {
+    copiedFlow.scrollLeft = sourceFlow.scrollLeft;
+  }
 
   readerPageTurnState = {
     stage,
     sheet,
     shade,
-    cue,
+    curl,
     direction,
+    left: rect.left,
+    top: visibleTop,
+    width: rect.width,
+    height: visibleHeight,
     progress: 0
   };
 
@@ -1815,28 +1882,61 @@ function updateReaderPageTurn(turn, progress) {
 
   const normalizedProgress = Math.min(Math.max(Number(progress) || 0, 0), 1);
   const directionSign = turn.direction === 'next' ? -1 : 1;
-  const angle = directionSign * normalizedProgress * 84;
-  const horizontalShift = directionSign * normalizedProgress * 18;
-  const lift = Math.sin(normalizedProgress * Math.PI) * -5;
+  const curlProgress = Math.min(normalizedProgress / 0.24, 1);
+  const turnProgress = Math.max((normalizedProgress - 0.12) / 0.88, 0);
+  const angle = directionSign * turnProgress * 104;
+  const horizontalShift = directionSign * turnProgress * 28;
+  const lift = Math.sin(turnProgress * Math.PI) * -11;
+  const tilt = directionSign * Math.sin(turnProgress * Math.PI) * 2.2;
+  const maximumCurl = Math.min(turn.width * 0.34, turn.height * 0.27, 220);
+  const curlSize = maximumCurl * curlProgress;
 
   turn.progress = normalizedProgress;
   turn.sheet.style.transform =
-    `translate3d(${horizontalShift}px, ${lift}px, ${normalizedProgress * 34}px) ` +
-    `rotateY(${angle}deg)`;
-  turn.shade.style.opacity = String(Math.min(0.74, normalizedProgress * 0.9));
+    `translate3d(${horizontalShift}px, ${lift}px, ${turnProgress * 42}px) ` +
+    `rotateX(${tilt}deg) rotateY(${angle}deg)`;
+
+  if (turn.direction === 'next') {
+    turn.sheet.style.clipPath =
+      `polygon(0 0, 100% 0, 100% calc(100% - ${curlSize}px), ` +
+      `calc(100% - ${curlSize}px) 100%, 0 100%)`;
+  } else {
+    turn.sheet.style.clipPath =
+      `polygon(0 0, 100% 0, 100% 100%, ${curlSize}px 100%, ` +
+      `0 calc(100% - ${curlSize}px))`;
+  }
+
+  turn.curl.style.width = `${curlSize}px`;
+  turn.curl.style.height = `${curlSize}px`;
+  turn.curl.style.left = `${
+    turn.direction === 'next'
+      ? turn.left + turn.width - curlSize
+      : turn.left
+  }px`;
+  turn.curl.style.top = `${turn.top + turn.height - curlSize}px`;
+  turn.curl.style.opacity = String(
+    curlProgress * Math.max(1 - turnProgress * 0.9, 0)
+  );
+  turn.curl.style.transform = turn.direction === 'next'
+    ? `translate3d(${curlSize * 0.04}px, ${curlSize * -0.06}px, 42px) rotateZ(-5deg) rotateY(-34deg)`
+    : `translate3d(${curlSize * -0.04}px, ${curlSize * -0.06}px, 42px) rotateZ(5deg) rotateY(34deg)`;
+  turn.shade.style.opacity = String(Math.min(0.68, turnProgress * 0.82));
   turn.stage.style.setProperty('--reader-turn-progress', String(normalizedProgress));
+  turn.stage.style.setProperty('--reader-curl-progress', String(curlProgress));
 }
 
 function settleReaderPageTurn(turn, commit) {
   if (!turn) return Promise.resolve();
 
   const distance = commit ? 1 - turn.progress : turn.progress;
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const reduceMotion =
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+    localStorage.getItem('readerReduceMotion') === '1';
   const duration = reduceMotion
     ? 0
     : commit
-      ? Math.max(260, Math.round(560 * distance))
-      : Math.max(180, Math.round(320 * distance));
+      ? Math.max(320, Math.round(680 * distance))
+      : Math.max(190, Math.round(360 * distance));
 
   turn.stage.style.setProperty('--reader-turn-duration', `${duration}ms`);
   turn.stage.classList.add('is-settling');
@@ -1853,34 +1953,12 @@ function settleReaderPageTurn(turn, commit) {
   });
 }
 
-function playReaderPaperArrival(direction) {
-  const paper = document.querySelector('#readerMain > .reader-paper');
-
+function finishReaderPageTurn() {
   removeReaderPageTurn();
   document.body.classList.remove('reader-chapter-prefetching');
-
-  if (!paper || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    document.body.removeAttribute('aria-busy');
-    chapterNavigationLocked = false;
-    return;
-  }
-
-  const rect = paper.getBoundingClientRect();
-  const originY = Math.min(
-    Math.max(window.innerHeight / 2 - rect.top, 28),
-    Math.max(rect.height - 28, 28)
-  );
-  const arrivalClass = `reader-arrive-${direction}`;
-
-  paper.style.setProperty('--reader-turn-origin-y', `${originY}px`);
-  document.body.classList.add(arrivalClass);
-
-  window.setTimeout(() => {
-    document.body.classList.remove(arrivalClass);
-    paper.style.removeProperty('--reader-turn-origin-y');
-    document.body.removeAttribute('aria-busy');
-    chapterNavigationLocked = false;
-  }, 620);
+  document.body.removeAttribute('aria-busy');
+  chapterNavigationLocked = false;
+  document.dispatchEvent(new CustomEvent('reader:page-turn-finished'));
 }
 
 function renderPreparedReaderChapter(chapterNumber, direction, result) {
@@ -1911,10 +1989,9 @@ function renderPreparedReaderChapter(chapterNumber, direction, result) {
   saveProgress(currentBook, chapterNumber);
   loadSelects();
   restoreReadingPosition(currentBook, chapterNumber);
-  announceReaderGesture(
-    `${direction === 'next' ? 'Đã sang' : 'Đã về'} ${getChapterDisplayTitle(getCurrentChapterData())}`
-  );
-  window.setTimeout(() => playReaderPaperArrival(direction), 70);
+  document.dispatchEvent(new CustomEvent('reader:chapter-rendered', {
+    detail: { chapter: chapterNumber, direction }
+  }));
 }
 
 function goToReaderChapter(chapterNumber) {
@@ -1959,27 +2036,30 @@ function navigateToReaderChapter(chapterNumber, requestedDirection = '') {
   saveCurrentReadingPosition();
   document.body.setAttribute('aria-busy', 'true');
   document.body.classList.add('reader-chapter-prefetching');
-  announceReaderGesture(
-    direction === 'next' ? 'Đang mở chương sau' : 'Đang mở chương trước'
-  );
-
   const preparedChapter = fetchChapterText(targetChapter)
     .then(text => ({ ok: true, text }))
     .catch(error => ({ ok: false, error }));
 
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const reduceMotion =
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+    localStorage.getItem('readerReduceMotion') === '1';
   const turn = reduceMotion
     ? null
     : readerPageTurnState?.direction === direction
       ? readerPageTurnState
       : createReaderPageTurn(direction);
-  const pageTurn = reduceMotion
-    ? Promise.resolve()
-    : settleReaderPageTurn(turn, true);
-
-  Promise.all([preparedChapter, pageTurn])
-    .then(([result]) => {
+  preparedChapter
+    .then(result => {
       renderPreparedReaderChapter(targetChapter, direction, result);
+      document.dispatchEvent(new CustomEvent('reader:page-turn', {
+        detail: { direction, chapter: targetChapter }
+      }));
+      return reduceMotion
+        ? Promise.resolve()
+        : settleReaderPageTurn(turn, true);
+    })
+    .then(() => {
+      finishReaderPageTurn();
     })
     .catch(() => {
       removeReaderPageTurn();
@@ -2379,8 +2459,6 @@ window.addEventListener('pageshow', () => {
     document.body.classList.remove(
       'reader-turn-next',
       'reader-turn-prev',
-      'reader-arrive-next',
-      'reader-arrive-prev',
       'reader-chapter-prefetching'
     );
     document.body.removeAttribute('aria-busy');
@@ -2720,7 +2798,19 @@ window.addEventListener('load', () => {
     'lineHeight',
     'letterSpacing',
     'textAlign',
-    'readerWidth'
+    'readerWidth',
+    'readerMode',
+    'readerWakeLockEnabled',
+    'readerPageSoundEnabled',
+    'readerSpreadEnabled',
+    'readerBrightness',
+    'readerAutoScrollSpeed',
+    'readerHighContrast',
+    'readerReduceMotion',
+    'readerGestureEnabled',
+    'readerHapticsEnabled',
+    'readerAnnotationsV1',
+    'readerHistoryV1'
   ];
 
   function showStatus(message, isError = false) {
@@ -2905,6 +2995,9 @@ window.addEventListener('load', () => {
   }
 
   function cancelGesture() {
+    if (gesture?.active) {
+      document.dispatchEvent(new CustomEvent('reader:swipe-preview-cancel'));
+    }
     if (gesture?.turn) {
       settleReaderPageTurn(gesture.turn, false);
     }
@@ -2916,6 +3009,7 @@ window.addEventListener('load', () => {
     if (
       event.pointerType !== 'touch' ||
       !event.isPrimary ||
+      localStorage.getItem('readerGestureEnabled') === '0' ||
       chapterNavigationLocked ||
       document.body.classList.contains('reader-panel-open') ||
       shouldIgnoreSwipeTarget(event.target) ||
@@ -2960,6 +3054,9 @@ window.addEventListener('load', () => {
       gesture.active = true;
       gesture.direction = deltaX < 0 ? 'next' : 'prev';
       gesture.turn = createReaderPageTurn(gesture.direction, gesture.startY);
+      document.dispatchEvent(new CustomEvent('reader:swipe-preview', {
+        detail: { direction: gesture.direction }
+      }));
       document.body.classList.add('reader-swipe-active');
       dismissSwipeHint();
 
@@ -2974,6 +3071,9 @@ window.addEventListener('load', () => {
     if (nextDirection !== gesture.direction) {
       gesture.direction = nextDirection;
       gesture.turn = createReaderPageTurn(nextDirection, gesture.startY);
+      document.dispatchEvent(new CustomEvent('reader:swipe-preview', {
+        detail: { direction: nextDirection }
+      }));
     }
 
     if (!gesture.turn) return;
@@ -3021,19 +3121,21 @@ window.addEventListener('load', () => {
     document.body.classList.remove('reader-swipe-active');
 
     if (shouldCommit) {
-      if ('vibrate' in navigator) navigator.vibrate(8);
+      if ('vibrate' in navigator && localStorage.getItem('readerHapticsEnabled') !== '0') {
+        navigator.vibrate(8);
+      }
       if (direction === 'next') nextChapter();
       else prevChapter();
       return;
     }
 
     if (!canNavigate) {
-      announceReaderGesture(
-        direction === 'next' ? 'Đây là chương cuối' : 'Đây là chương đầu'
-      );
-      if ('vibrate' in navigator) navigator.vibrate(16);
+      if ('vibrate' in navigator && localStorage.getItem('readerHapticsEnabled') !== '0') {
+        navigator.vibrate(16);
+      }
     }
 
+    document.dispatchEvent(new CustomEvent('reader:swipe-preview-cancel'));
     settleReaderPageTurn(turn, false);
   }, { passive: true });
 
