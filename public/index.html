@@ -3,16 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f5f2eb">
+  <meta name="description" content="Thư viện truyện cá nhân với trải nghiệm đọc hiện đại, tiện nghi và dễ sử dụng.">
 
   <title>Thư Viện Truyện — Khám phá câu chuyện tiếp theo</title>
 
   <link rel="icon" type="image/png" href="assets/images/Logo.png?v=20261028-favicon">
+  <link rel="apple-touch-icon" sizes="192x192" href="assets/images/app-icon-192.png?v=20261028-app-1">
+  <link rel="manifest" href="manifest.webmanifest?v=20261028-app-1">
 
   <script src="assets/js/theme.js"></script>
 
   <link rel="stylesheet" href="assets/css/style.css">
   <link rel="stylesheet" href="assets/css/theme.css">
-  <link rel="stylesheet" href="assets/css/home.css?v=20261028-light-hero-1">
+  <link rel="stylesheet" href="assets/css/home.css?v=20261028-app-1">
 </head>
 
 <body class="home-page home-v2">
@@ -45,6 +49,16 @@
 
       <div class="header-actions">
         <a class="library-link" href="#library">Tủ sách</a>
+
+        <button
+          id="installAppButton"
+          class="install-app-button"
+          type="button"
+          aria-label="Cài Thư Viện Truyện"
+          title="Cài ứng dụng"
+          hidden>
+          <span aria-hidden="true">⇩</span>
+        </button>
 
         <button
           id="backupModalTrigger"
@@ -155,6 +169,27 @@
         </div>
       </section>
 
+      <!-- Bảng theo dõi hành trình đọc -->
+      <section
+        id="readingDashboardBanner"
+        class="reading-dashboard-banner"
+        hidden>
+        <div class="reading-dashboard-copy">
+          <span class="reading-dashboard-icon" aria-hidden="true">◴</span>
+          <div>
+            <p>HÀNH TRÌNH ĐỌC</p>
+            <strong id="readingDashboardSummary">Tiếp tục câu chuyện gần nhất của bạn</strong>
+          </div>
+        </div>
+
+        <button
+          id="openReadingDashboard"
+          class="reading-dashboard-button"
+          type="button">
+          Xem tiến độ
+        </button>
+      </section>
+
       <!-- Thống kê nhanh -->
        <section
         class="library-overview"
@@ -186,6 +221,24 @@
             <span>Truyện yêu thích</span>
           </div>
         </article>
+      </section>
+
+      <!-- Truyện vừa cập nhật -->
+      <section
+        id="recentUpdatesSection"
+        class="recent-updates-section"
+        aria-labelledby="recentUpdatesTitle"
+        hidden>
+        <div class="home-section-heading">
+          <div>
+            <p class="section-label">NỘI DUNG MỚI</p>
+            <h2 id="recentUpdatesTitle">Vừa cập nhật</h2>
+          </div>
+
+          <a class="section-text-link" href="#library">Xem thư viện</a>
+        </div>
+
+        <div id="recentUpdatesList" class="recent-updates-list"></div>
       </section>
 
       <!-- Danh sách đọc tiêp -->
@@ -268,6 +321,15 @@
           </div>
 
           <div class="library-display-actions">
+            <button
+              id="openFilterDialog"
+              class="mobile-filter-trigger"
+              type="button"
+              aria-label="Mở bộ lọc truyện">
+              <span aria-hidden="true">☷</span>
+              Bộ lọc
+            </button>
+
             <label class="book-sort-field" for="bookSort">
               <span>Sắp xếp</span>
 
@@ -339,9 +401,29 @@
         </p>
 
         <div
+          id="homeLoadingSkeleton"
+          class="home-loading-skeleton"
+          aria-hidden="true">
+          <span class="skeleton-book-card"></span>
+          <span class="skeleton-book-card"></span>
+          <span class="skeleton-book-card"></span>
+          <span class="skeleton-book-card"></span>
+        </div>
+
+        <div
           id="book-list"
           class="grid"
           aria-live="polite">
+        </div>
+
+        <div class="load-more-container">
+          <button
+            id="loadMoreBooks"
+            class="load-more-books"
+            type="button"
+            hidden>
+            Tải thêm truyện
+          </button>
         </div>
       </section>
 
@@ -391,8 +473,116 @@
     </div>
    </dialog>
 
+  <!-- Tìm kiếm nhanh -->
+  <dialog id="searchDialog" class="search-dialog" aria-labelledby="searchDialogTitle">
+    <div class="search-dialog-shell">
+      <div class="search-dialog-header">
+        <div>
+          <p class="dialog-eyebrow">TÌM KIẾM NHANH</p>
+          <h2 id="searchDialogTitle">Bạn muốn đọc truyện gì?</h2>
+        </div>
+
+        <button id="closeSearchDialog" class="dialog-close-button" type="button" aria-label="Đóng tìm kiếm">×</button>
+      </div>
+
+      <label class="smart-search-field" for="smartSearchInput">
+        <span aria-hidden="true">⌕</span>
+        <input
+          id="smartSearchInput"
+          type="search"
+          placeholder="Tên truyện, tác giả hoặc thể loại..."
+          autocomplete="off">
+        <kbd>/</kbd>
+      </label>
+
+      <div class="smart-search-meta">
+        <span id="smartSearchCount">Nhập từ khóa để bắt đầu</span>
+        <small>Enter để mở kết quả đầu tiên</small>
+      </div>
+
+      <div id="smartSearchResults" class="smart-search-results"></div>
+    </div>
+  </dialog>
+
+  <!-- Bộ lọc trên điện thoại -->
+  <dialog id="filterDialog" class="filter-dialog" aria-labelledby="filterDialogTitle">
+    <div class="filter-dialog-shell">
+      <div class="filter-dialog-header">
+        <div>
+          <p class="dialog-eyebrow">KHÁM PHÁ</p>
+          <h2 id="filterDialogTitle">Lọc kho truyện</h2>
+        </div>
+
+        <button id="closeFilterDialog" class="dialog-close-button" type="button" aria-label="Đóng bộ lọc">×</button>
+      </div>
+
+      <label class="mobile-sort-field" for="mobileBookSort">
+        <span>Sắp xếp</span>
+        <select id="mobileBookSort">
+          <option value="default">Mặc định</option>
+          <option value="title-asc">Tên A–Z</option>
+          <option value="title-desc">Tên Z–A</option>
+          <option value="newest">Mới cập nhật</option>
+        </select>
+      </label>
+
+      <div class="mobile-filter-heading">
+        <strong>Thể loại</strong>
+        <button id="clearMobileFilters" type="button">Xóa lựa chọn</button>
+      </div>
+
+      <div id="mobileGenreFilters" class="mobile-genre-filters"></div>
+
+      <button id="applyMobileFilters" class="apply-mobile-filters" type="button">Xem kết quả</button>
+    </div>
+  </dialog>
+
+  <!-- Bảng tiến độ đọc -->
+  <dialog id="readingDashboardDialog" class="reading-dashboard-dialog" aria-labelledby="readingDashboardTitle">
+    <div class="reading-dashboard-shell">
+      <div class="reading-dashboard-header">
+        <div>
+          <p class="dialog-eyebrow">THƯ VIỆN CỦA BẠN</p>
+          <h2 id="readingDashboardTitle">Tiến độ đọc</h2>
+        </div>
+
+        <button id="closeReadingDashboard" class="dialog-close-button" type="button" aria-label="Đóng bảng tiến độ">×</button>
+      </div>
+
+      <div id="readingDashboardStats" class="reading-dashboard-stats"></div>
+      <div id="readingDashboardList" class="reading-dashboard-list"></div>
+    </div>
+  </dialog>
+
+  <!-- Thông báo nổi -->
+  <div id="homeToastRegion" class="home-toast-region" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- Điều hướng điện thoại -->
+  <nav class="mobile-bottom-navigation" aria-label="Điều hướng nhanh">
+    <a class="mobile-nav-item is-active" href="#mainContent" data-mobile-nav="home">
+      <span aria-hidden="true">⌂</span>
+      <small>Trang chủ</small>
+    </a>
+
+    <a class="mobile-nav-item" href="#library" data-mobile-nav="library">
+      <span aria-hidden="true">▦</span>
+      <small>Tủ sách</small>
+    </a>
+
+    <button id="mobileSearchButton" class="mobile-nav-item" type="button">
+      <span aria-hidden="true">⌕</span>
+      <small>Tìm kiếm</small>
+    </button>
+
+    <button id="mobileProgressButton" class="mobile-nav-item" type="button">
+      <span aria-hidden="true">◷</span>
+      <small>Tiến độ</small>
+    </button>
+  </nav>
+
   <script src="assets/js/data-source.js?v=20261021-r2"></script>
-  <script src="assets/js/script.js?v=20261027-home-v4"></script>
-  <script src="assets/js/home-effects.js?v=20261028-effects-1"></script>
+  <script src="assets/js/script.js?v=20261028-app-1"></script>
+  <script src="assets/js/home-effects.js?v=20261028-app-1"></script>
+  <script src="assets/js/home-app.js?v=20261028-app-1"></script>
 </body>
 </html>

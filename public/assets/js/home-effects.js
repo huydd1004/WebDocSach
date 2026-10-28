@@ -231,7 +231,10 @@
   function setupRevealEffects() {
     const selectors = [
       '.featured-book',
+      '.reading-dashboard-banner',
       '.overview-card',
+      '.recent-updates-section',
+      '.recent-update-card',
       '.continue-reading-section',
       '.library-heading',
       '.library-toolbar',
@@ -323,7 +326,7 @@
 
             if (
               node.matches(
-                '.book, .continue-card'
+                '.book, .continue-card, .recent-update-card'
               )
             ) {
               registerElement(node);
@@ -331,7 +334,7 @@
 
             node
               .querySelectorAll?.(
-                '.book, .continue-card'
+                '.book, .continue-card, .recent-update-card'
               )
               .forEach(registerElement);
           });

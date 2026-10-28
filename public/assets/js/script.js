@@ -2,6 +2,7 @@ const PROGRESS_KEY = 'readingProgress';
 const REMEMBER_PROGRESS_KEY = 'rememberReadingPosition';
 const FAVORITE_BOOKS_KEY = 'favoriteBooks';
 const CHAPTERS_PER_PART = 200;
+const HOME_BOOK_BATCH_SIZE = 12;
 
 const {createDataUrl, createBookDataUrl} = window.WebDocSachData;
 
@@ -13,6 +14,9 @@ const THEMES = [
 
 let booksData = [];
 let activeLibraryView = 'all';
+let homeBookDisplayLimit = HOME_BOOK_BATCH_SIZE;
+let homeFilteredBooksCache = [];
+let homeFilterSignature = '';
 let currentBook = '';
 let currentChapter = 1;
 let chapterIndex = [];
@@ -20,6 +24,7 @@ let chapterIndex = [];
 let loadedChapter = 0;
 let readingPositionTimer = null;
 let chapterNavigationLocked = false;
+let readerPageTurnState = null;
 
 async function fetchBooksData() {
   const response = await fetch(createDataUrl('books.json'));
@@ -280,7 +285,16 @@ function toggleHomeFavorite(bookId) {
     : [...favoriteBookIds, bookId];
 
   saveFavoriteBookIds(nextFavoriteBookIds);
-  return !isFavorite;
+  const nextState = !isFavorite;
+
+  document.dispatchEvent(new CustomEvent('webdocsach:favorite-changed', {
+    detail: {
+      bookId,
+      isFavorite: nextState
+    }
+  }));
+
+  return nextState;
 }
 
 function getHomeProgressEntries() {
@@ -362,7 +376,7 @@ function createContinueReadingCard(book, progress) {
   cover.src = book.cover;
   cover.alt = `Bìa truyện ${book.title}`;
   cover.loading = 'lazy';
-
+  cover.decoding = 'async';
   cover.addEventListener('error', () => {
     cover.src = 'assets/images/Logo.png';
   }, { once: true });
@@ -547,6 +561,13 @@ function renderFeaturedBook(book) {
   description.textContent = book.description || 'Nội dung truyện đang được cập nhật.';
   cover.src = book.cover;
   cover.alt = `Bìa truyện ${book.title}`;
+  cover.loading = 'eager';
+  cover.decoding = 'async';
+  cover.fetchPriority = 'high';
+  cover.onerror = () => {
+    cover.onerror = null;
+    cover.src = 'assets/images/Logo.png';
+  };
 
   section.style.setProperty(
     '--featured-cover-image',
@@ -595,7 +616,8 @@ function updateBookResultStatus(list) {
     activeLibraryView !== 'all';
 
   if (resultCount) {
-    resultCount.textContent = `Hiển thị ${list.length} trong ${booksData.length} truyện`;
+    const visibleCount = Math.min(homeBookDisplayLimit, list.length);
+    resultCount.textContent = `Hiển thị ${visibleCount} trong ${list.length} kết quả • ${booksData.length} truyện`;
   }
 
   if (emptyState) {
@@ -634,9 +656,12 @@ function renderBookList(list) {
     return;
   }
 
+  homeFilteredBooksCache = [...list];
+  const visibleBooks = list.slice(0, homeBookDisplayLimit);
+
   container.replaceChildren();
 
-  list.forEach(book => {
+  visibleBooks.forEach(book => {
     const saved = getProgress(book.id);
     const currentChapter = Math.max(Number(saved?.chapter) || 1, 1);
     const savedRatio = Number(saved?.scrollRatio);
@@ -786,6 +811,15 @@ function renderBookList(list) {
   });
 
   updateBookResultStatus(list);
+
+  const loadMoreButton = document.getElementById('loadMoreBooks');
+  if (loadMoreButton) {
+    const remaining = Math.max(list.length - visibleBooks.length, 0);
+    loadMoreButton.hidden = remaining === 0;
+    loadMoreButton.textContent = remaining > 0
+      ? `Tải thêm ${Math.min(remaining, HOME_BOOK_BATCH_SIZE)} truyện`
+      : 'Đã hiển thị tất cả';
+  }
 }
 
 function buildGenreFilters() {
@@ -863,7 +897,11 @@ function applyBookFilters() {
     : {};
 
   const filteredBooks = booksData.filter(book => {
-    const searchableInformation = normalizeSearchText(`${book.title || ''} ${book.author || ''}`);
+    const searchableInformation = normalizeSearchText([
+      book.title,
+      book.author,
+      ...getBookGenres(book)
+    ].filter(Boolean).join(' '));
 
     const matchesSearch = !query || searchableInformation.includes(query);
 
@@ -891,7 +929,28 @@ function applyBookFilters() {
   });
 
   const sortedBooks = sortBookList(filteredBooks);
+
+  const nextFilterSignature = JSON.stringify({
+    query,
+    selectedGenres,
+    activeLibraryView,
+    sort: document.getElementById('bookSort')?.value || 'default'
+  });
+
+  if (nextFilterSignature !== homeFilterSignature) {
+    homeBookDisplayLimit = HOME_BOOK_BATCH_SIZE;
+    homeFilterSignature = nextFilterSignature;
+  }
+
   renderBookList(sortedBooks);
+
+  document.dispatchEvent(new CustomEvent('webdocsach:library-updated', {
+    detail: {
+      total: booksData.length,
+      filtered: sortedBooks.length,
+      visible: Math.min(homeBookDisplayLimit, sortedBooks.length)
+    }
+  }));
 }
 
 function clearBookFilters() {
@@ -913,28 +972,77 @@ async function loadBooks() {
     return;
   }
 
-  booksData = await fetchBooksData();
+  setHomeLoadingState(true);
 
-  if (!Array.isArray(booksData)) {
-    booksData = [];
-  }
+  try {
+    booksData = await fetchBooksData();
 
-  const featuredBook = booksData.find(book => book.featured === true) || booksData[0];
+    if (!Array.isArray(booksData)) {
+      booksData = [];
+    }
 
-  renderFeaturedBook(featuredBook);
-  updateHomeStats();
-  renderContinueReading();
-  buildGenreFilters();
-  setupLibraryViewTabs();
-  setupHomeLibraryControls();
-  applyBookFilters();
+    const featuredBook = booksData.find(book => book.featured === true) || booksData[0];
 
-  document
-    .getElementById('bookSearch')?.addEventListener('input', applyBookFilters);
+    renderFeaturedBook(featuredBook);
+    updateHomeStats();
+    renderContinueReading();
+    buildGenreFilters();
+    setupLibraryViewTabs();
+    setupHomeLibraryControls();
+    setupHomePagination();
+    applyBookFilters();
+
+    document
+      .getElementById('bookSearch')?.addEventListener('input', applyBookFilters);
 
     document.getElementById('genreFilters')?.addEventListener('change', applyBookFilters);
 
     document.getElementById('clearBookFilters')?.addEventListener('click', clearBookFilters);
+
+    document.dispatchEvent(new CustomEvent('webdocsach:books-ready', {
+      detail: {
+        count: booksData.length
+      }
+    }));
+  } finally {
+    setHomeLoadingState(false);
+  }
+}
+
+function setHomeLoadingState(isLoading) {
+  const skeleton = document.getElementById('homeLoadingSkeleton');
+  const bookList = document.getElementById('book-list');
+
+  document.body.classList.toggle('home-data-loading', isLoading);
+
+  if (skeleton) {
+    skeleton.hidden = !isLoading;
+  }
+
+  if (bookList && isLoading) {
+    bookList.hidden = true;
+  }
+}
+
+function setupHomePagination() {
+  const button = document.getElementById('loadMoreBooks');
+
+  if (!button || button.dataset.bound === 'true') {
+    return;
+  }
+
+  button.dataset.bound = 'true';
+  button.addEventListener('click', () => {
+    homeBookDisplayLimit += HOME_BOOK_BATCH_SIZE;
+    renderBookList(homeFilteredBooksCache);
+
+    document.dispatchEvent(new CustomEvent('webdocsach:books-expanded', {
+      detail: {
+        visible: Math.min(homeBookDisplayLimit, homeFilteredBooksCache.length),
+        total: homeFilteredBooksCache.length
+      }
+    }));
+  });
 }
 
 function chapterToPart(chap) {
@@ -1202,6 +1310,45 @@ function showChapterLoading(contentEl) {
     '</div>';
 }
 
+function getChapterImage(chapterNumber) {
+  const chapter = chapterIndex.find(
+    item => item.number === Number(chapterNumber)
+  );
+
+  return String(chapter?.image || '').trim();
+}
+
+function fetchChapterText(chapterNumber) {
+  const partPath = getChapterPath(chapterNumber);
+  const fallbackPath = createBookDataUrl(
+    currentBook,
+    `${chapterNumber}.txt`
+  );
+
+  const tryFetch = url => (
+    fetch(encodeURI(url)).then(response => {
+      if (!response.ok) throw response;
+      return response.text();
+    })
+  );
+
+  return tryFetch(partPath)
+    .catch(() => tryFetch(fallbackPath));
+}
+
+function renderChapterLoadError(contentEl, error, chapterNumber = currentChapter) {
+  const message = error && error.status
+    ? `Không thể tải chương ${chapterNumber} (HTTP ${error.status})`
+    : (error && error.message) ? error.message : String(error);
+
+  contentEl.innerHTML = '';
+
+  const errorMessage = document.createElement('p');
+  errorMessage.className = 'chapter-error';
+  errorMessage.textContent = `Lỗi tải chương: ${message}`;
+  contentEl.appendChild(errorMessage);
+}
+
 function loadChapter() {
   const contentEl = document.getElementById('content');
   if (!contentEl) return;
@@ -1222,31 +1369,9 @@ function loadChapter() {
     contentEl.classList.add('is-visible');
   }, 150);
 
-  const currentChapterData =
-  chapterIndex.find(
-    chapter =>
-      chapter.number === currentChapter
-  );
+  const chapterImage = getChapterImage(currentChapter);
 
-  const chapterImage =
-  String(
-    currentChapterData?.image || ''
-  ).trim();
-
-  const partPath = getChapterPath(currentChapter);
-  const fallbackPath = createBookDataUrl(
-    currentBook,
-    `${currentChapter}.txt`
-  );
-  const tryFetch = (url) => (
-    fetch(encodeURI(url)).then(res => {
-      if (!res.ok) throw res;
-      return res.text();
-    })
-  );
-
-  tryFetch(partPath)
-    .catch(() => tryFetch(fallbackPath))
+  fetchChapterText(currentChapter)
     .then(text => {
       // Fade-out loading, rồi fade-in nội dung
       contentEl.classList.remove('is-visible');
@@ -1268,14 +1393,7 @@ function loadChapter() {
       contentEl.classList.remove('is-transitioning');
       contentEl.classList.add('is-visible');
 
-      const msg = err && err.status
-        ? `Không thể tải chương ${currentChapter} (HTTP ${err.status})`
-        : (err && err.message) ? err.message : String(err);
-      contentEl.innerHTML = '';
-      const errorMessage = document.createElement('p');
-      errorMessage.className = 'chapter-error';
-      errorMessage.textContent = `Lỗi tải chương: ${msg}`;
-      contentEl.appendChild(errorMessage);
+      renderChapterLoadError(contentEl, err);
     });
 }
 
@@ -1583,6 +1701,222 @@ function setupReaderToc() {
   });
 }
 
+function getReaderAdjacentChapter(direction) {
+  const position = getCurrentChapterPosition();
+
+  if (direction === 'next' && position >= 0 && position < chapterIndex.length - 1) {
+    return chapterIndex[position + 1];
+  }
+
+  if (direction === 'prev' && position > 0) {
+    return chapterIndex[position - 1];
+  }
+
+  return null;
+}
+
+function announceReaderGesture(message) {
+  const status = document.getElementById('readerGestureStatus');
+  if (status) status.textContent = message;
+}
+
+function removeReaderPageTurn() {
+  readerPageTurnState?.stage?.remove();
+  readerPageTurnState = null;
+  document.body.classList.remove(
+    'reader-page-turning',
+    'reader-swipe-active'
+  );
+}
+
+function createReaderPageTurn(direction, originClientY = window.innerHeight / 2) {
+  if (direction !== 'next' && direction !== 'prev') return null;
+
+  if (readerPageTurnState?.direction === direction) {
+    return readerPageTurnState;
+  }
+
+  removeReaderPageTurn();
+
+  const paper = document.querySelector('#readerMain > .reader-paper');
+  if (!paper) return null;
+
+  const rect = paper.getBoundingClientRect();
+  const paperHeight = Math.max(rect.height, paper.offsetHeight, 1);
+  const visibleTop = Math.max(rect.top, 0);
+  const visibleBottom = Math.min(rect.bottom, window.innerHeight);
+  const visibleHeight = Math.max(visibleBottom - visibleTop, 1);
+  const stage = document.createElement('div');
+  const sheet = document.createElement('div');
+  const paperCopy = paper.cloneNode(true);
+  const shade = document.createElement('span');
+  const cue = document.createElement('span');
+  const adjacentChapter = getReaderAdjacentChapter(direction);
+  const originY = Math.min(
+    Math.max(originClientY - visibleTop, 28),
+    Math.max(visibleHeight - 28, 28)
+  );
+
+  stage.className = `reader-page-turn-stage is-${direction}`;
+  stage.setAttribute('aria-hidden', 'true');
+
+  paperCopy.querySelectorAll('[id]').forEach(element => element.removeAttribute('id'));
+  paperCopy.removeAttribute('id');
+  paperCopy.removeAttribute('aria-live');
+  paperCopy.classList.add('reader-page-turn-copy');
+  paperCopy.setAttribute('aria-hidden', 'true');
+  paperCopy.inert = true;
+  paperCopy.style.top = `${rect.top - visibleTop}px`;
+  paperCopy.style.left = '0';
+  paperCopy.style.width = `${rect.width}px`;
+  paperCopy.style.height = `${paperHeight}px`;
+  paperCopy.style.margin = '0';
+
+  sheet.className = 'reader-page-turn-sheet';
+  sheet.setAttribute('aria-hidden', 'true');
+  sheet.inert = true;
+  sheet.style.top = `${visibleTop}px`;
+  sheet.style.left = `${rect.left}px`;
+  sheet.style.width = `${rect.width}px`;
+  sheet.style.height = `${visibleHeight}px`;
+  sheet.style.margin = '0';
+  sheet.style.transformOrigin = `${direction === 'next' ? 'left' : 'right'} ${originY}px`;
+  sheet.classList.toggle('is-clipped-top', rect.top < 0);
+  sheet.classList.toggle('is-clipped-bottom', rect.bottom > window.innerHeight);
+
+  shade.className = 'reader-page-turn-shade';
+  cue.className = 'reader-page-turn-cue';
+  cue.textContent = adjacentChapter
+    ? `${direction === 'next' ? 'Chương sau' : 'Chương trước'} · ${getChapterDisplayTitle(adjacentChapter)}`
+    : direction === 'next'
+      ? 'Đây là chương cuối'
+      : 'Đây là chương đầu';
+
+  sheet.append(paperCopy, shade);
+  stage.append(sheet, cue);
+  document.body.appendChild(stage);
+  document.body.classList.add('reader-page-turning');
+
+  readerPageTurnState = {
+    stage,
+    sheet,
+    shade,
+    cue,
+    direction,
+    progress: 0
+  };
+
+  updateReaderPageTurn(readerPageTurnState, 0);
+  return readerPageTurnState;
+}
+
+function updateReaderPageTurn(turn, progress) {
+  if (!turn?.sheet) return;
+
+  const normalizedProgress = Math.min(Math.max(Number(progress) || 0, 0), 1);
+  const directionSign = turn.direction === 'next' ? -1 : 1;
+  const angle = directionSign * normalizedProgress * 84;
+  const horizontalShift = directionSign * normalizedProgress * 18;
+  const lift = Math.sin(normalizedProgress * Math.PI) * -5;
+
+  turn.progress = normalizedProgress;
+  turn.sheet.style.transform =
+    `translate3d(${horizontalShift}px, ${lift}px, ${normalizedProgress * 34}px) ` +
+    `rotateY(${angle}deg)`;
+  turn.shade.style.opacity = String(Math.min(0.74, normalizedProgress * 0.9));
+  turn.stage.style.setProperty('--reader-turn-progress', String(normalizedProgress));
+}
+
+function settleReaderPageTurn(turn, commit) {
+  if (!turn) return Promise.resolve();
+
+  const distance = commit ? 1 - turn.progress : turn.progress;
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const duration = reduceMotion
+    ? 0
+    : commit
+      ? Math.max(260, Math.round(560 * distance))
+      : Math.max(180, Math.round(320 * distance));
+
+  turn.stage.style.setProperty('--reader-turn-duration', `${duration}ms`);
+  turn.stage.classList.add('is-settling');
+
+  window.requestAnimationFrame(() => {
+    updateReaderPageTurn(turn, commit ? 1 : 0);
+  });
+
+  return new Promise(resolve => {
+    window.setTimeout(() => {
+      if (!commit) removeReaderPageTurn();
+      resolve();
+    }, duration + 35);
+  });
+}
+
+function playReaderPaperArrival(direction) {
+  const paper = document.querySelector('#readerMain > .reader-paper');
+
+  removeReaderPageTurn();
+  document.body.classList.remove('reader-chapter-prefetching');
+
+  if (!paper || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.body.removeAttribute('aria-busy');
+    chapterNavigationLocked = false;
+    return;
+  }
+
+  const rect = paper.getBoundingClientRect();
+  const originY = Math.min(
+    Math.max(window.innerHeight / 2 - rect.top, 28),
+    Math.max(rect.height - 28, 28)
+  );
+  const arrivalClass = `reader-arrive-${direction}`;
+
+  paper.style.setProperty('--reader-turn-origin-y', `${originY}px`);
+  document.body.classList.add(arrivalClass);
+
+  window.setTimeout(() => {
+    document.body.classList.remove(arrivalClass);
+    paper.style.removeProperty('--reader-turn-origin-y');
+    document.body.removeAttribute('aria-busy');
+    chapterNavigationLocked = false;
+  }, 620);
+}
+
+function renderPreparedReaderChapter(chapterNumber, direction, result) {
+  const contentEl = document.getElementById('content');
+  const metaEl = document.getElementById('chapterMeta');
+  if (!contentEl) return;
+
+  currentChapter = chapterNumber;
+  updateURL();
+  window.scrollTo({ top: 0, behavior: 'auto' });
+
+  if (metaEl) metaEl.hidden = true;
+  contentEl.classList.remove('is-transitioning');
+  contentEl.classList.add('is-visible');
+
+  if (result.ok) {
+    renderChapterContent(
+      contentEl,
+      result.text,
+      getChapterImage(chapterNumber)
+    );
+  } else {
+    updateReaderChapterUI();
+    renderChapterLoadError(contentEl, result.error, chapterNumber);
+  }
+
+  loadedChapter = chapterNumber;
+  saveProgress(currentBook, chapterNumber);
+  loadSelects();
+  restoreReadingPosition(currentBook, chapterNumber);
+  announceReaderGesture(
+    `${direction === 'next' ? 'Đã sang' : 'Đã về'} ${getChapterDisplayTitle(getCurrentChapterData())}`
+  );
+  window.setTimeout(() => playReaderPaperArrival(direction), 70);
+}
+
 function goToReaderChapter(chapterNumber) {
   const chapter = chapterIndex.find(item => item.number === Number(chapterNumber));
   if (!chapter) return;
@@ -1622,20 +1956,37 @@ function navigateToReaderChapter(chapterNumber, requestedDirection = '') {
 
   chapterNavigationLocked = true;
   closeReaderPanels();
-  currentChapter = targetChapter;
-  saveProgress(currentBook, currentChapter);
-
-  try {
-    sessionStorage.setItem('readerPageTurnDirection', direction);
-  } catch (error) {
-    // Continue without the entrance animation when storage is unavailable.
-  }
-
-  document.body.classList.add(`reader-turn-${direction}`);
+  saveCurrentReadingPosition();
   document.body.setAttribute('aria-busy', 'true');
+  document.body.classList.add('reader-chapter-prefetching');
+  announceReaderGesture(
+    direction === 'next' ? 'Đang mở chương sau' : 'Đang mở chương trước'
+  );
+
+  const preparedChapter = fetchChapterText(targetChapter)
+    .then(text => ({ ok: true, text }))
+    .catch(error => ({ ok: false, error }));
 
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  window.setTimeout(updateURL, reduceMotion ? 0 : 260);
+  const turn = reduceMotion
+    ? null
+    : readerPageTurnState?.direction === direction
+      ? readerPageTurnState
+      : createReaderPageTurn(direction);
+  const pageTurn = reduceMotion
+    ? Promise.resolve()
+    : settleReaderPageTurn(turn, true);
+
+  Promise.all([preparedChapter, pageTurn])
+    .then(([result]) => {
+      renderPreparedReaderChapter(targetChapter, direction, result);
+    })
+    .catch(() => {
+      removeReaderPageTurn();
+      document.body.classList.remove('reader-chapter-prefetching');
+      document.body.removeAttribute('aria-busy');
+      chapterNavigationLocked = false;
+    });
 }
 
 function goHome() {
@@ -1988,13 +2339,26 @@ function toggleChapterPicker() {
 }
 
 function updateURL() {
-  window.location.href = `reader.html?book=${encodeURIComponent(currentBook)}&chap=${currentChapter}`;
+  const nextUrl = new URL(window.location.href);
+  nextUrl.searchParams.set('book', currentBook);
+  nextUrl.searchParams.set('chap', String(currentChapter));
+
+  window.history.replaceState(
+    {
+      ...(window.history.state || {}),
+      book: currentBook,
+      chapter: currentChapter
+    },
+    '',
+    nextUrl
+  );
 }
 
 if (document.getElementById('book-list')) {
   loadBooks().catch(() => {
     booksData = [];
     renderBookList([]);
+    document.dispatchEvent(new CustomEvent('webdocsach:books-error'));
   });
 }
 
@@ -2011,7 +2375,14 @@ window.addEventListener('pageshow', () => {
   }
 
   if (document.body.classList.contains('reader-v2')) {
-    document.body.classList.remove('reader-turn-next', 'reader-turn-prev');
+    removeReaderPageTurn();
+    document.body.classList.remove(
+      'reader-turn-next',
+      'reader-turn-prev',
+      'reader-arrive-next',
+      'reader-arrive-prev',
+      'reader-chapter-prefetching'
+    );
     document.body.removeAttribute('aria-busy');
     chapterNavigationLocked = false;
   }
@@ -2049,25 +2420,6 @@ if (document.getElementById('content')) {
       loadSelects();
     });
 }
-
-(function setupReaderPageTurnArrival() {
-  if (!document.body.classList.contains('reader-v2')) return;
-
-  let direction = '';
-  try {
-    direction = sessionStorage.getItem('readerPageTurnDirection') || '';
-    sessionStorage.removeItem('readerPageTurnDirection');
-  } catch (error) {
-    return;
-  }
-
-  if (direction !== 'next' && direction !== 'prev') return;
-
-  document.body.classList.add(`reader-arrive-${direction}`);
-  window.setTimeout(() => {
-    document.body.classList.remove(`reader-arrive-${direction}`);
-  }, 520);
-})();
 
 window.addEventListener('load', () => {
   const content = getReaderContent();
@@ -2531,7 +2883,198 @@ window.addEventListener('load', () => {
   });
 })();
 
-// 3. Cập nhật link trang chi tiết truyện
+// 3. Vuốt ngang để lật toàn bộ trang trên thiết bị cảm ứng
+(function setupReaderSwipeNavigation() {
+  const readerStage = document.getElementById('readerMain');
+  if (!readerStage || !document.body.classList.contains('reader-page')) return;
+
+  let gesture = null;
+
+  function shouldIgnoreSwipeTarget(target) {
+    return Boolean(target?.closest?.(
+      'a, button, input, select, textarea, label, [contenteditable="true"], ' +
+      '.reader-side-panel, .reader-dock, .reader-header'
+    ));
+  }
+
+  function dismissSwipeHint() {
+    const hint = document.querySelector('.reader-swipe-hint');
+    if (!hint) return;
+    hint.classList.add('is-leaving');
+    window.setTimeout(() => hint.remove(), 240);
+  }
+
+  function cancelGesture() {
+    if (gesture?.turn) {
+      settleReaderPageTurn(gesture.turn, false);
+    }
+    gesture = null;
+    document.body.classList.remove('reader-swipe-active');
+  }
+
+  readerStage.addEventListener('pointerdown', event => {
+    if (
+      event.pointerType !== 'touch' ||
+      !event.isPrimary ||
+      chapterNavigationLocked ||
+      document.body.classList.contains('reader-panel-open') ||
+      shouldIgnoreSwipeTarget(event.target) ||
+      window.getSelection()?.toString()
+    ) {
+      return;
+    }
+
+    gesture = {
+      pointerId: event.pointerId,
+      startX: event.clientX,
+      startY: event.clientY,
+      lastX: event.clientX,
+      startedAt: performance.now(),
+      direction: '',
+      active: false,
+      rejected: false,
+      turn: null
+    };
+  }, { passive: true });
+
+  readerStage.addEventListener('pointermove', event => {
+    if (!gesture || event.pointerId !== gesture.pointerId || gesture.rejected) return;
+
+    const deltaX = event.clientX - gesture.startX;
+    const deltaY = event.clientY - gesture.startY;
+    const horizontalDistance = Math.abs(deltaX);
+    const verticalDistance = Math.abs(deltaY);
+
+    gesture.lastX = event.clientX;
+
+    if (!gesture.active) {
+      if (verticalDistance > 14 && verticalDistance > horizontalDistance) {
+        gesture.rejected = true;
+        return;
+      }
+
+      if (horizontalDistance < 12 || horizontalDistance < verticalDistance * 1.15) {
+        return;
+      }
+
+      gesture.active = true;
+      gesture.direction = deltaX < 0 ? 'next' : 'prev';
+      gesture.turn = createReaderPageTurn(gesture.direction, gesture.startY);
+      document.body.classList.add('reader-swipe-active');
+      dismissSwipeHint();
+
+      try {
+        readerStage.setPointerCapture(event.pointerId);
+      } catch (error) {
+        // Pointer capture is optional; the gesture can continue without it.
+      }
+    }
+
+    const nextDirection = deltaX < 0 ? 'next' : 'prev';
+    if (nextDirection !== gesture.direction) {
+      gesture.direction = nextDirection;
+      gesture.turn = createReaderPageTurn(nextDirection, gesture.startY);
+    }
+
+    if (!gesture.turn) return;
+
+    const canNavigate = Boolean(getReaderAdjacentChapter(gesture.direction));
+    const availableWidth = Math.max(readerStage.clientWidth, 280);
+    let progress = Math.min(horizontalDistance / (availableWidth * 0.72), 0.72);
+
+    if (!canNavigate) {
+      progress *= 0.2;
+      gesture.turn.stage.classList.add('is-edge');
+    } else {
+      gesture.turn.stage.classList.remove('is-edge');
+    }
+
+    updateReaderPageTurn(gesture.turn, progress);
+
+    if (event.cancelable) event.preventDefault();
+  }, { passive: false });
+
+  readerStage.addEventListener('pointerup', event => {
+    if (!gesture || event.pointerId !== gesture.pointerId) return;
+
+    if (!gesture.active || !gesture.turn) {
+      gesture = null;
+      return;
+    }
+
+    const deltaX = event.clientX - gesture.startX;
+    const elapsed = Math.max(performance.now() - gesture.startedAt, 1);
+    const velocity = Math.abs(deltaX) / elapsed;
+    const threshold = Math.min(
+      Math.max(readerStage.clientWidth * 0.16, 68),
+      122
+    );
+    const canNavigate = Boolean(getReaderAdjacentChapter(gesture.direction));
+    const shouldCommit = canNavigate && (
+      Math.abs(deltaX) >= threshold ||
+      (Math.abs(deltaX) >= 38 && velocity >= 0.55)
+    );
+    const direction = gesture.direction;
+    const turn = gesture.turn;
+
+    gesture = null;
+    document.body.classList.remove('reader-swipe-active');
+
+    if (shouldCommit) {
+      if ('vibrate' in navigator) navigator.vibrate(8);
+      if (direction === 'next') nextChapter();
+      else prevChapter();
+      return;
+    }
+
+    if (!canNavigate) {
+      announceReaderGesture(
+        direction === 'next' ? 'Đây là chương cuối' : 'Đây là chương đầu'
+      );
+      if ('vibrate' in navigator) navigator.vibrate(16);
+    }
+
+    settleReaderPageTurn(turn, false);
+  }, { passive: true });
+
+  readerStage.addEventListener('pointercancel', cancelGesture, { passive: true });
+  window.addEventListener('blur', cancelGesture);
+
+  const canShowHint = window.matchMedia(
+    '(max-width: 900px), (pointer: coarse)'
+  ).matches;
+
+  if (canShowHint) {
+    let hintWasSeen = false;
+    try {
+      hintWasSeen = localStorage.getItem('readerSwipeHintSeen') === '1';
+    } catch (error) {
+      hintWasSeen = false;
+    }
+
+    if (!hintWasSeen) {
+      const hint = document.createElement('div');
+      hint.className = 'reader-swipe-hint';
+      hint.setAttribute('role', 'status');
+      hint.innerHTML =
+        '<span aria-hidden="true">←</span>' +
+        '<strong>Vuốt để chuyển chương</strong>' +
+        '<span aria-hidden="true">→</span>';
+      document.body.appendChild(hint);
+
+      window.setTimeout(() => hint.classList.add('is-visible'), 900);
+      window.setTimeout(dismissSwipeHint, 5200);
+
+      try {
+        localStorage.setItem('readerSwipeHintSeen', '1');
+      } catch (error) {
+        // The hint simply appears again when storage is unavailable.
+      }
+    }
+  }
+})();
+
+// 4. Cập nhật link trang chi tiết truyện
 (function setupBookDetailLink() {
   if (!document.body.classList.contains('reader-page')) return;
 
