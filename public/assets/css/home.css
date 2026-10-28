@@ -2100,3 +2100,531 @@ option {
     width: auto;
   }
 }
+
+/* =========================================================
+   HIỆU ỨNG CAO CẤP CHO TRANG CHỦ
+   ========================================================= */
+
+.home-effects-ready {
+  background-size:
+    145% 145%,
+    145% 145%,
+    auto;
+  animation:
+    homeAmbientBackground
+    18s ease-in-out infinite;
+}
+
+@keyframes homeAmbientBackground {
+  0%,
+  100% {
+    background-position:
+      0% 0%,
+      100% 10%,
+      center;
+  }
+
+  50% {
+    background-position:
+      14% 8%,
+      86% 24%,
+      center;
+  }
+}
+
+/* Thanh tiến độ cuộn */
+
+.home-scroll-progress {
+  position: absolute;
+  z-index: 4;
+  right: 0;
+  bottom: -1px;
+  left: 0;
+  height: 2px;
+  border-radius: 999px;
+  background:
+    linear-gradient(
+      90deg,
+      var(--home-accent),
+      var(--home-gold-light)
+    );
+  box-shadow:
+    0 0 12px
+    rgb(193 139 50 / 45%);
+  transform: scaleX(0);
+  transform-origin: left center;
+  will-change: transform;
+}
+
+.home-v2 .site-header {
+  transition:
+    min-height 220ms ease,
+    border-color 220ms ease,
+    background-color 220ms ease,
+    box-shadow 220ms ease;
+}
+
+.home-v2 .site-header.is-scrolled {
+  border-color:
+    rgb(15 118 110 / 18%);
+  box-shadow:
+    0 12px 34px
+    rgb(34 29 20 / 10%);
+}
+
+:root[data-theme="dark"]
+.home-v2
+.site-header.is-scrolled {
+  border-color:
+    rgb(94 234 212 / 14%);
+  box-shadow:
+    0 14px 40px
+    rgb(0 0 0 / 36%);
+}
+
+/* Xuất hiện khi cuộn */
+
+.js-home-effects
+.home-reveal {
+  opacity: 0;
+  filter: blur(5px);
+  transform:
+    translateY(28px)
+    scale(0.985);
+  transition:
+    opacity 720ms
+      cubic-bezier(0.22, 1, 0.36, 1),
+    filter 720ms
+      cubic-bezier(0.22, 1, 0.36, 1),
+    transform 720ms
+      cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay:
+    var(--reveal-delay, 0ms);
+}
+
+.js-home-effects
+.home-reveal.is-visible {
+  opacity: 1;
+  filter: blur(0);
+  transform:
+    translateY(0)
+    scale(1);
+}
+
+/* Ánh sáng trong hero */
+
+.home-effects-ready
+.featured-book::after {
+  background:
+    radial-gradient(
+      circle at
+        var(--hero-light-x, 79%)
+        var(--hero-light-y, 46%),
+      rgb(244 198 101 / 26%),
+      transparent 25%
+    ),
+    radial-gradient(
+      circle at 18% 20%,
+      rgb(94 234 212 / 8%),
+      transparent 24%
+    ),
+    linear-gradient(
+      135deg,
+      rgb(255 255 255 / 5%),
+      transparent 38%
+    );
+  transition:
+    background-position 160ms ease;
+}
+
+.home-effects-ready
+.featured-visual {
+  animation:
+    homeHeroFloat
+    5.5s ease-in-out infinite;
+}
+
+@keyframes homeHeroFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-9px);
+  }
+}
+
+.home-effects-ready
+.featured-cover-frame {
+  --hero-rotate-x: 0deg;
+  --hero-rotate-y: 0deg;
+
+  transform:
+    perspective(900px)
+    rotateX(var(--hero-rotate-x))
+    rotateY(var(--hero-rotate-y))
+    rotateZ(1.2deg);
+  transform-style: preserve-3d;
+  will-change: transform;
+  transition:
+    transform 180ms ease-out,
+    box-shadow 260ms ease;
+}
+
+.home-effects-ready
+.featured-book:hover
+.featured-cover-frame {
+  transform:
+    perspective(900px)
+    rotateX(var(--hero-rotate-x))
+    rotateY(var(--hero-rotate-y))
+    rotateZ(0deg)
+    translateY(-3px);
+}
+
+/* Ánh sáng quét qua bìa */
+
+.featured-cover-frame {
+  position: relative;
+  overflow: hidden;
+}
+
+.featured-cover-frame::after {
+  position: absolute;
+  z-index: 3;
+  top: -35%;
+  bottom: -35%;
+  left: -65%;
+  width: 38%;
+  content: "";
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgb(255 255 255 / 26%),
+      transparent
+    );
+  pointer-events: none;
+  transform:
+    skewX(-18deg)
+    translateX(0);
+}
+
+.home-effects-ready
+.featured-book:hover
+.featured-cover-frame::after {
+  animation:
+    homeCoverShine
+    1100ms ease-out;
+}
+
+@keyframes homeCoverShine {
+  from {
+    transform:
+      skewX(-18deg)
+      translateX(0);
+  }
+
+  to {
+    transform:
+      skewX(-18deg)
+      translateX(650%);
+  }
+}
+
+/* Thẻ truyện 3D */
+
+.home-v2
+.book.home-tilt-card {
+  --card-rotate-x: 0deg;
+  --card-rotate-y: 0deg;
+  --card-light-x: 50%;
+  --card-light-y: 25%;
+  --card-lift: 0px;
+
+  transform:
+    perspective(1000px)
+    translateY(var(--card-lift))
+    rotateX(var(--card-rotate-x))
+    rotateY(var(--card-rotate-y));
+  transform-style: preserve-3d;
+  will-change: transform;
+  transition:
+    transform 150ms ease-out,
+    border-color 190ms ease,
+    box-shadow 190ms ease;
+}
+
+.home-v2
+.book.home-tilt-card:hover {
+  --card-lift: -7px;
+}
+
+.home-v2
+.book.home-tilt-card::before {
+  position: absolute;
+  z-index: 4;
+  inset: 0;
+  border-radius: inherit;
+  content: "";
+  background:
+    radial-gradient(
+      circle at
+        var(--card-light-x)
+        var(--card-light-y),
+      rgb(255 255 255 / 18%),
+      transparent 34%
+    );
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 180ms ease;
+}
+
+.home-v2
+.book.home-tilt-card:hover::before {
+  opacity: 1;
+}
+
+.home-v2
+.book.home-tilt-card
+.book-cover-area {
+  transform:
+    translateZ(14px);
+  transition:
+    transform 180ms ease;
+}
+
+.home-v2
+.book.home-tilt-card
+.book-info {
+  transform:
+    translateZ(8px);
+}
+
+/* Ánh sáng quét qua ảnh thẻ truyện */
+
+.book-cover-area::after {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  content: "";
+  background:
+    linear-gradient(
+      120deg,
+      transparent 28%,
+      rgb(255 255 255 / 18%) 45%,
+      transparent 62%
+    );
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-100%);
+  transition:
+    opacity 180ms ease,
+    transform 650ms ease;
+}
+
+.home-v2
+.book:hover
+.book-cover-area::after {
+  opacity: 1;
+  transform: translateX(100%);
+}
+
+/* Tiêu đề khu vực */
+
+.library-heading h2,
+.home-section-heading h2 {
+  position: relative;
+  width: fit-content;
+}
+
+.library-heading h2::after,
+.home-section-heading h2::after {
+  display: block;
+  width: 46px;
+  height: 3px;
+  margin-top: 11px;
+  border-radius: 999px;
+  content: "";
+  background:
+    linear-gradient(
+      90deg,
+      var(--home-accent),
+      var(--home-gold)
+    );
+  transform-origin: left;
+  transition: width 300ms ease;
+}
+
+.library-heading:hover h2::after,
+.home-section-heading:hover h2::after {
+  width: 82px;
+}
+
+/* Nhịp đập khi yêu thích */
+
+.home-v2
+.book-favorite-button.is-favorite {
+  animation:
+    homeFavoritePulse
+    420ms ease-out;
+}
+
+@keyframes homeFavoritePulse {
+  0% {
+    transform: scale(0.82);
+  }
+
+  55% {
+    transform: scale(1.16);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Ripple khi nhấn */
+
+.home-ripple-host {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.home-ripple {
+  position: absolute;
+  z-index: 2;
+  border-radius: 50%;
+  background:
+    rgb(255 255 255 / 30%);
+  pointer-events: none;
+  transform: scale(0);
+  animation:
+    homeRippleEffect
+    620ms ease-out forwards;
+}
+
+@keyframes homeRippleEffect {
+  from {
+    opacity: 0.7;
+    transform: scale(0);
+  }
+
+  to {
+    opacity: 0;
+    transform: scale(1);
+  }
+}
+
+/* Hiệu ứng focus của ô tìm kiếm */
+
+.header-search::after {
+  position: absolute;
+  z-index: -1;
+  inset: -5px;
+  border-radius: 19px;
+  content: "";
+  background:
+    linear-gradient(
+      90deg,
+      rgb(15 118 110 / 25%),
+      rgb(193 139 50 / 22%)
+    );
+  opacity: 0;
+  filter: blur(10px);
+  pointer-events: none;
+  transition: opacity 180ms ease;
+}
+
+.header-search:focus-within::after {
+  opacity: 1;
+}
+
+/* Chip thể loại chuyển động */
+
+.home-v2
+.genre-filters label {
+  overflow: hidden;
+}
+
+.home-v2
+.genre-filters
+label:has(input:checked) {
+  animation:
+    homeChipSelected
+    280ms ease-out;
+}
+
+@keyframes homeChipSelected {
+  from {
+    transform: scale(0.92);
+  }
+
+  65% {
+    transform: scale(1.045);
+  }
+
+  to {
+    transform: scale(1);
+  }
+}
+
+/* Không dùng hiệu ứng nặng trên màn hình cảm ứng */
+
+@media (hover: none),
+       (pointer: coarse) {
+  .home-effects-ready
+  .featured-visual {
+    animation-duration: 7s;
+  }
+
+  .home-v2
+  .book.home-tilt-card {
+    transform: none;
+  }
+
+  .home-v2
+  .book.home-tilt-card
+  .book-cover-area,
+  .home-v2
+  .book.home-tilt-card
+  .book-info {
+    transform: none;
+  }
+}
+
+/* Tôn trọng tùy chọn giảm chuyển động */
+
+@media (prefers-reduced-motion: reduce) {
+  .home-effects-ready,
+  .home-effects-ready
+  .featured-visual,
+  .home-v2
+  .book-favorite-button.is-favorite {
+    animation: none !important;
+  }
+
+  .js-home-effects
+  .home-reveal {
+    opacity: 1;
+    filter: none;
+    transform: none;
+    transition: none;
+  }
+
+  .home-v2
+  .book.home-tilt-card,
+  .home-effects-ready
+  .featured-cover-frame {
+    transform: none;
+    transition: none;
+  }
+
+  .featured-cover-frame::after,
+  .book-cover-area::after,
+  .home-ripple {
+    display: none;
+  }
+}
