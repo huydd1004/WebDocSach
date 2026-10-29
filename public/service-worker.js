@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'webdocsach-shell-v7';
+const CACHE_VERSION = 'webdocsach-shell-v11';
 const DATA_RUNTIME_CACHE = 'webdocsach-data-runtime-v1';
 const BASE_URL = new URL('./', self.location.href);
 
@@ -24,6 +24,7 @@ const SHELL_FILES = [
   './assets/js/home-app.js',
   './assets/js/home-upgrades.js',
   './assets/js/reader-experience.js',
+  './assets/images/favicon-rounded.png',
   './assets/images/Logo.png',
   './assets/images/app-icon-192.png',
   './assets/images/app-icon-512.png'

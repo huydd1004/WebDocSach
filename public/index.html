@@ -8,7 +8,7 @@
 
   <title>Thư Viện Truyện — Khám phá câu chuyện tiếp theo</title>
 
-  <link rel="icon" type="image/png" href="assets/images/Logo.png?v=20261028-favicon">
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/images/favicon-rounded.png?v=20261029-rounded-1">
   <link rel="apple-touch-icon" sizes="192x192" href="assets/images/app-icon-192.png?v=20261028-app-1">
   <link rel="manifest" href="manifest.webmanifest?v=20261029-app-2">
 
@@ -16,8 +16,8 @@
 
   <link rel="stylesheet" href="assets/css/style.css">
   <link rel="stylesheet" href="assets/css/theme.css">
-  <link rel="stylesheet" href="assets/css/home.css?v=20261028-app-1">
-  <link rel="stylesheet" href="assets/css/home-upgrades.css?v=20261029-library-pro-1">
+  <link rel="stylesheet" href="assets/css/home.css?v=20261029-close-buttons-1">
+  <link rel="stylesheet" href="assets/css/home-upgrades.css?v=20261029-hover-summary-1">
 </head>
 
 <body class="home-page home-v2">
@@ -176,7 +176,13 @@
         class="reading-dashboard-banner"
         hidden>
         <div class="reading-dashboard-copy">
-          <span class="reading-dashboard-icon" aria-hidden="true">◴</span>
+          <span class="reading-dashboard-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" focusable="false">
+              <path d="M4 12a8 8 0 1 0 2.34-5.66L4 8.68"></path>
+              <path d="M4 4v4.68h4.68"></path>
+              <path d="M12 7.5V12l3 1.8"></path>
+            </svg>
+          </span>
           <div>
             <p>HÀNH TRÌNH ĐỌC</p>
             <strong id="readingDashboardSummary">Tiếp tục câu chuyện gần nhất của bạn</strong>
@@ -197,7 +203,12 @@
         aria-label="Tổng quan thư viện">
 
         <article class="overview-card">
-          <span class="overview-icon" aria-hidden="true">▦</span>
+          <span class="overview-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" focusable="false">
+              <path d="M4.5 5.5A2.5 2.5 0 0 1 7 3h4v17H7a2.5 2.5 0 0 0-2.5 2V5.5Z"></path>
+              <path d="M19.5 5.5A2.5 2.5 0 0 0 17 3h-4v17h4a2.5 2.5 0 0 1 2.5 2V5.5Z"></path>
+            </svg>
+          </span>
 
           <div>
             <strong id="totalBooksStat">—</strong>
@@ -206,7 +217,14 @@
         </article>
 
         <article class="overview-card">
-          <span class="overview-icon" aria-hidden="true">◷</span>
+          <span class="overview-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" focusable="false">
+              <circle cx="12" cy="12" r="8.5"></circle>
+              <path d="M12 7.5V12l3 2"></path>
+              <path d="M8.5 2.9 7.4 5"></path>
+              <path d="m15.5 2.9 1.1 2.1"></path>
+            </svg>
+          </span>
 
           <div>
             <strong id="readingBooksStat">—</strong>
@@ -215,7 +233,11 @@
         </article>
 
         <article class="overview-card">
-          <span class="overview-icon" aria-hidden="true">♡</span>
+          <span class="overview-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" focusable="false">
+              <path d="M20.8 5.9a5.2 5.2 0 0 0-7.35 0L12 7.35l-1.45-1.46a5.2 5.2 0 0 0-7.35 7.36L12 22l8.8-8.75a5.2 5.2 0 0 0 0-7.36Z"></path>
+            </svg>
+          </span>
 
           <div>
             <strong id="favoriteBooksStat">—</strong>
@@ -500,7 +522,9 @@
    <dialog id="backupDialog" class="backup-dialog" aria-labelledby="backupDialogTitle">
     <div class="backup-dialog-header">
       <h3 id="backupDialogTitle">Sao lưu & Khôi phục</h3>
-      <button id="closeBackupDialog" class="backup-close-btn" type="button" aria-label="Đóng">&times;</button>
+      <button id="closeBackupDialog" class="backup-close-btn" type="button" aria-label="Đóng">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 7 10 10M17 7 7 17"></path></svg>
+      </button>
     </div>
 
     <div class="backup-dialog-body">
@@ -560,7 +584,9 @@
           <h2 id="searchDialogTitle">Bạn muốn đọc truyện gì?</h2>
         </div>
 
-        <button id="closeSearchDialog" class="dialog-close-button" type="button" aria-label="Đóng tìm kiếm">×</button>
+        <button id="closeSearchDialog" class="dialog-close-button" type="button" aria-label="Đóng tìm kiếm">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 7 10 10M17 7 7 17"></path></svg>
+        </button>
       </div>
 
       <label class="smart-search-field" for="smartSearchInput">
@@ -585,7 +611,9 @@
   <!-- Xem nhanh thông tin truyện -->
   <dialog id="quickBookDialog" class="quick-book-dialog" aria-labelledby="quickBookTitle">
     <div class="quick-book-shell">
-      <button id="closeQuickBookDialog" class="dialog-close-button quick-book-close" type="button" aria-label="Đóng xem nhanh">×</button>
+      <button id="closeQuickBookDialog" class="dialog-close-button quick-book-close" type="button" aria-label="Đóng xem nhanh">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 7 10 10M17 7 7 17"></path></svg>
+      </button>
       <div class="quick-book-cover-wrap">
         <img id="quickBookCover" src="assets/images/Logo.png" alt="">
       </div>
@@ -612,7 +640,9 @@
           <h2 id="filterDialogTitle">Lọc kho truyện</h2>
         </div>
 
-        <button id="closeFilterDialog" class="dialog-close-button" type="button" aria-label="Đóng bộ lọc">×</button>
+        <button id="closeFilterDialog" class="dialog-close-button" type="button" aria-label="Đóng bộ lọc">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 7 10 10M17 7 7 17"></path></svg>
+        </button>
       </div>
 
       <label class="mobile-sort-field" for="mobileBookSort">
@@ -666,7 +696,9 @@
           <h2 id="readingDashboardTitle">Tiến độ đọc</h2>
         </div>
 
-        <button id="closeReadingDashboard" class="dialog-close-button" type="button" aria-label="Đóng bảng tiến độ">×</button>
+        <button id="closeReadingDashboard" class="dialog-close-button" type="button" aria-label="Đóng bảng tiến độ">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 7 10 10M17 7 7 17"></path></svg>
+        </button>
       </div>
 
       <div id="readingDashboardStats" class="reading-dashboard-stats"></div>
@@ -704,7 +736,7 @@
   <script src="assets/js/sync-client.js?v=20261029-sync-1"></script>
   <script src="assets/js/script.js?v=20261029-library-pro-1"></script>
   <script src="assets/js/home-effects.js?v=20261028-app-1"></script>
-  <script src="assets/js/home-app.js?v=20261029-library-pro-1"></script>
-  <script src="assets/js/home-upgrades.js?v=20261029-library-pro-1"></script>
+  <script src="assets/js/home-app.js?v=20261029-close-buttons-1"></script>
+  <script src="assets/js/home-upgrades.js?v=20261029-hover-summary-1"></script>
 </body>
 </html>

@@ -219,25 +219,66 @@
 
       card.dataset.quickViewReady = '1';
       const hover = document.createElement('div');
+      const hoverHeader = document.createElement('div');
+      const hoverKicker = document.createElement('span');
       const hoverText = document.createElement('p');
       const hoverMeta = document.createElement('small');
-      const button = document.createElement('button');
+      const summaryToggle = document.createElement('button');
+      const summaryDismiss = document.createElement('button');
+      const summaryId = `book-summary-${String(book.id).replace(/[^a-z0-9_-]/gi, '-')}`;
 
       hover.className = 'book-hover-summary';
-      hoverText.textContent = book.description || 'Mở xem nhanh để biết thêm về câu chuyện này.';
+      hover.id = summaryId;
+      hoverHeader.className = 'book-hover-summary-header';
+      hoverKicker.className = 'book-hover-summary-kicker';
+      hoverKicker.textContent = 'Tóm tắt truyện';
+      hoverText.textContent = book.description || 'Nội dung giới thiệu đang được cập nhật.';
       hoverMeta.textContent = [
         book.author,
         getChapterCount(book) ? `${getChapterCount(book)} chương` : ''
       ].filter(Boolean).join(' • ');
-      button.type = 'button';
-      button.className = 'book-quick-view-button';
-      button.textContent = 'Xem nhanh';
-      button.addEventListener('click', event => {
+
+      summaryToggle.type = 'button';
+      summaryToggle.className = 'book-summary-toggle';
+      summaryToggle.setAttribute('aria-label', `Hiện tóm tắt ${book.title}`);
+      summaryToggle.setAttribute('aria-controls', summaryId);
+      summaryToggle.setAttribute('aria-expanded', 'false');
+      summaryToggle.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"></circle><path d="M12 10.5V16M12 7.5h.01"></path></svg>';
+
+      summaryDismiss.type = 'button';
+      summaryDismiss.className = 'book-summary-dismiss';
+      summaryDismiss.setAttribute('aria-label', 'Đóng phần tóm tắt');
+      summaryDismiss.tabIndex = -1;
+      summaryDismiss.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 7 10 10M17 7 7 17"></path></svg>';
+
+      const setSummaryOpen = open => {
+        card.classList.toggle('is-summary-open', open);
+        summaryToggle.setAttribute('aria-expanded', String(open));
+        summaryToggle.setAttribute(
+          'aria-label',
+          `${open ? 'Ẩn' : 'Hiện'} tóm tắt ${book.title}`
+        );
+        summaryDismiss.tabIndex = open ? 0 : -1;
+      };
+
+      summaryToggle.addEventListener('click', event => {
         event.stopPropagation();
-        openQuickBook(book);
+        setSummaryOpen(!card.classList.contains('is-summary-open'));
       });
-      hover.append(hoverText, hoverMeta, button);
-      coverArea.appendChild(hover);
+
+      summaryDismiss.addEventListener('click', event => {
+        event.stopPropagation();
+        setSummaryOpen(false);
+        summaryToggle.focus({ preventScroll: true });
+      });
+
+      hover.addEventListener('click', event => {
+        if (card.classList.contains('is-summary-open')) event.stopPropagation();
+      });
+
+      hoverHeader.append(hoverKicker, summaryDismiss);
+      hover.append(hoverHeader, hoverText, hoverMeta);
+      coverArea.append(summaryToggle, hover);
     });
   }
 

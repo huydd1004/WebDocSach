@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="theme-color" content="#0b1220">
     <title>Studio nội dung | Thư Viện Truyện</title>
-    <link rel="icon" type="image/png" href="assets/images/Logo.png?v=20261028-favicon">
+    <link rel="icon" type="image/png" sizes="192x192" href="assets/images/favicon-rounded.png?v=20261029-rounded-1">
     <script src="assets/js/theme.js"></script>
     <link rel="stylesheet" href="assets/css/style.css?v=20261026-chapter">
     <link rel="stylesheet" href="assets/css/admin.css?v=20261026-genres">
-    <link rel="stylesheet" href="assets/css/admin-studio.css?v=20261029-studio">
+    <link rel="stylesheet" href="assets/css/admin-studio.css?v=20261029-metadata-editor-1">
     <link rel="stylesheet" href="assets/css/theme.css">
 </head>
 
@@ -73,6 +73,9 @@
                 <nav class="studio-mode-switch" aria-label="Chọn công việc">
                     <button class="studio-mode-button is-active" type="button" data-studio-mode="book" aria-controls="bookStudioPanel" aria-selected="true">
                         <span class="studio-mode-icon" aria-hidden="true">＋</span><span><strong>Tạo truyện</strong><small>Thông tin và ảnh bìa</small></span><b aria-hidden="true">›</b>
+                    </button>
+                    <button class="studio-mode-button" type="button" data-studio-mode="metadata" aria-controls="metadataStudioPanel" aria-selected="false">
+                        <span class="studio-mode-icon" aria-hidden="true">✦</span><span><strong>Sửa thông tin</strong><small>Tên, tác giả, thể loại</small></span><b aria-hidden="true">›</b>
                     </button>
                     <button class="studio-mode-button" type="button" data-studio-mode="chapter" aria-controls="singleChapterSection" aria-selected="false">
                         <span class="studio-mode-icon" aria-hidden="true">✎</span><span><strong>Đăng chương</strong><small>Viết, sửa và tải lên</small></span><b aria-hidden="true">›</b>
@@ -167,6 +170,83 @@
                     </section>
                 </form>
 
+                <section id="metadataStudioPanel" class="admin-card studio-panel studio-metadata-panel" data-studio-panel="metadata" hidden>
+                    <div class="studio-panel-head">
+                        <div>
+                            <span class="studio-kicker">CHỈNH SỬA NHANH</span>
+                            <h2>Sửa thông tin truyện</h2>
+                            <p>Chỉ nhập mục bạn muốn thay đổi. Mục để trống sẽ giữ nguyên.</p>
+                        </div>
+                        <span class="studio-optional-badge">Không cần ảnh bìa</span>
+                    </div>
+
+                    <div class="studio-metadata-layout">
+                        <section class="admin-card studio-section-card studio-metadata-form-card">
+                            <div class="admin-card-heading">
+                                <span class="admin-step">1</span>
+                                <div><h2>Chọn truyện</h2><p>Thông tin hiện tại sẽ được hiển thị để bạn đối chiếu.</p></div>
+                            </div>
+
+                            <label class="admin-field">
+                                <span>Truyện cần sửa <em>*</em></span>
+                                <select id="metadataBook"><option value="">Đang tải danh sách truyện...</option></select>
+                            </label>
+
+                            <div class="studio-current-book" id="metadataCurrentBook" hidden>
+                                <span class="studio-current-book-mark" aria-hidden="true">✦</span>
+                                <div>
+                                    <small>THÔNG TIN HIỆN TẠI</small>
+                                    <strong id="metadataCurrentTitle">—</strong>
+                                    <span id="metadataCurrentAuthor">—</span>
+                                    <div id="metadataCurrentGenres" class="studio-current-genres"></div>
+                                </div>
+                            </div>
+
+                            <div class="admin-card-heading studio-metadata-edit-heading">
+                                <span class="admin-step">2</span>
+                                <div><h2>Nhập thay đổi</h2><p>Cả ba mục dưới đây đều không bắt buộc.</p></div>
+                            </div>
+
+                            <label class="admin-field">
+                                <span>Tên truyện mới <small>Không bắt buộc</small></span>
+                                <input id="metadataTitle" type="text" maxlength="200" placeholder="Để trống nếu không đổi tên truyện">
+                            </label>
+
+                            <label class="admin-field">
+                                <span>Tên tác giả mới <small>Không bắt buộc</small></span>
+                                <input id="metadataAuthor" type="text" maxlength="160" placeholder="Để trống nếu không đổi tác giả">
+                            </label>
+
+                            <label class="admin-field">
+                                <span>Thể loại mới <small>Không bắt buộc</small></span>
+                                <input id="metadataGenres" type="text" placeholder="Ví dụ: Huyền huyễn, Trinh thám, Kinh dị">
+                                <small class="admin-field-help">Nhập nhiều thể loại bằng dấu phẩy. Để trống để giữ nguyên toàn bộ thể loại cũ.</small>
+                            </label>
+
+                            <div class="studio-metadata-preview" id="metadataChangePreview">
+                                <strong>Chưa có thay đổi</strong>
+                                <p>Chọn truyện và nhập ít nhất một mục cần sửa.</p>
+                            </div>
+
+                            <div class="admin-actions studio-metadata-actions">
+                                <button id="resetMetadataButton" type="button">Xóa nội dung vừa nhập</button>
+                                <button id="saveMetadataButton" type="button" disabled>Lưu thay đổi lên R2 <span aria-hidden="true">↑</span></button>
+                            </div>
+
+                            <p id="metadataStatus" class="admin-status" aria-live="polite"></p>
+                            <pre id="metadataSummary" class="upload-summary" hidden></pre>
+                        </section>
+
+                        <aside class="studio-metadata-note">
+                            <span aria-hidden="true">i</span>
+                            <div>
+                                <strong>Cách hoạt động</strong>
+                                <p>Hệ thống chỉ thay thế những trường bạn đã nhập. Ảnh bìa, mô tả, trạng thái và toàn bộ chương truyện được giữ nguyên.</p>
+                            </div>
+                        </aside>
+                    </div>
+                </section>
+
                 <section id="singleChapterSection" class="admin-card studio-panel studio-chapter-panel" data-studio-panel="chapter" hidden>
                     <div class="studio-panel-head">
                         <div><span class="studio-kicker">TRÌNH SOẠN THẢO</span><h2>Đăng hoặc sửa chương</h2><p>Nội dung được tự động lưu nháp trên thiết bị khi bạn đang viết.</p></div>
@@ -215,6 +295,6 @@
     <div class="studio-toast" id="studioToast" role="status" aria-live="polite" hidden><span aria-hidden="true">✓</span><p></p></div>
 
     <script src="assets/js/admin.js?v=20261029-chapter-count"></script>
-    <script src="assets/js/admin-studio.js?v=20261029-studio"></script>
+    <script src="assets/js/admin-studio.js?v=20261029-metadata-editor-1"></script>
 </body>
 </html>

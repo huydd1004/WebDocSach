@@ -177,27 +177,50 @@
 .book-hover-summary {
   position: absolute;
   z-index: 4;
-  inset: auto 9px 9px;
-  padding: 13px;
+  inset: 9px;
   display: grid;
-  gap: 8px;
+  align-content: end;
+  padding: 15px;
+  gap: 9px;
+  overflow: hidden;
   border: 1px solid rgb(255 255 255 / 17%);
-  border-radius: 14px;
-  background: rgb(7 14 25 / 88%);
+  border-radius: 15px;
+  background:
+    linear-gradient(180deg, rgb(7 14 25 / 45%) 0%, rgb(7 14 25 / 92%) 48%, rgb(7 14 25 / 97%) 100%);
   color: #f6f7fb;
   box-shadow: 0 18px 35px rgb(0 0 0 / 30%);
   opacity: 0;
   pointer-events: none;
-  transform: translateY(12px) scale(.98);
-  backdrop-filter: blur(14px);
-  transition: opacity 180ms ease, transform 180ms ease;
+  transform: translateY(10px) scale(.985);
+  backdrop-filter: blur(11px) saturate(118%);
+  transition:
+    opacity 190ms ease,
+    transform 220ms cubic-bezier(.2, .8, .2, 1);
 }
 
-.book:hover .book-hover-summary,
-.book:focus-within .book-hover-summary {
-  opacity: 1;
-  pointer-events: auto;
-  transform: translateY(0) scale(1);
+.book-hover-summary::before {
+  position: absolute;
+  top: 0;
+  right: 18px;
+  left: 18px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgb(244 198 101 / 72%), transparent);
+  content: "";
+}
+
+.book-hover-summary-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.book-hover-summary-kicker {
+  color: #f4c665;
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: .14em;
+  text-transform: uppercase;
 }
 
 .book-hover-summary p {
@@ -205,34 +228,96 @@
   margin: 0;
   overflow: hidden;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
-  font-size: 9px;
-  line-height: 1.55;
+  -webkit-line-clamp: 5;
+  font-size: 10px;
+  line-height: 1.58;
 }
 
 .book-hover-summary small {
   overflow: hidden;
-  color: #aeb9ca;
-  font-size: 8px;
+  color: #bdc8d8;
+  font-size: 8.5px;
+  font-weight: 700;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.book-quick-view-button {
-  min-height: 34px;
-  padding: 6px 10px;
-  border: 1px solid rgb(255 255 255 / 18%);
-  border-radius: 10px;
-  background: rgb(255 255 255 / 10%);
-  color: #fff;
-  font-size: 9px;
-  font-weight: 850;
-  cursor: pointer;
+.book-summary-toggle,
+.book-summary-dismiss {
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  min-width: 36px;
+  height: 36px;
+  min-height: 36px;
+  padding: 0;
+  border: 1px solid rgb(255 255 255 / 20%);
+  border-radius: 12px;
+  background: rgb(7 14 25 / 72%);
+  color: #f6f7fb;
+  box-shadow: 0 10px 24px rgb(0 0 0 / 24%);
+  backdrop-filter: blur(10px);
 }
 
-.book-quick-view-button:hover {
-  border-color: #e8bd67;
+.book-summary-toggle {
+  position: absolute;
+  z-index: 5;
+  right: 10px;
+  bottom: 10px;
+  display: none;
+}
+
+.book-summary-dismiss {
+  display: none;
+  width: 30px;
+  min-width: 30px;
+  height: 30px;
+  min-height: 30px;
+  border-radius: 10px;
+}
+
+.book-summary-toggle svg,
+.book-summary-dismiss svg {
+  width: 17px;
+  height: 17px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+
+.book-summary-toggle:hover,
+.book-summary-dismiss:hover {
+  border-color: rgb(244 198 101 / 55%);
+  background: rgb(24 34 49 / 90%);
   color: #f2cd82;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .book:hover .book-hover-summary,
+  .book:focus-within .book-hover-summary {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (hover: none), (pointer: coarse) {
+  .book-summary-toggle,
+  .book-summary-dismiss {
+    display: inline-flex;
+  }
+
+  .book.is-summary-open .book-hover-summary {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0) scale(1);
+  }
+
+  .book.is-summary-open .book-summary-toggle {
+    opacity: 0;
+    pointer-events: none;
+  }
 }
 
 /* Quick book dialog */
@@ -488,20 +573,18 @@
   }
 
   .book-hover-summary {
-    inset: auto 7px 7px;
-    opacity: 1;
-    padding: 8px;
-    pointer-events: auto;
-    transform: none;
+    inset: 7px;
+    padding: 12px;
   }
 
-  .book-hover-summary p,
-  .book-hover-summary small {
-    display: none;
+  .book-hover-summary p {
+    -webkit-line-clamp: 4;
+    font-size: 9px;
   }
 
-  .book-quick-view-button {
-    min-height: 31px;
+  .book-summary-toggle {
+    right: 8px;
+    bottom: 8px;
   }
 }
 

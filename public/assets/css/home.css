@@ -643,37 +643,81 @@
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 14px;
+  margin-top: 16px;
   margin-bottom: 74px;
 }
 
 .overview-card {
+  position: relative;
   display: flex;
   align-items: center;
   min-width: 0;
   gap: 14px;
   padding: 18px 20px;
+  overflow: hidden;
   border: 1px solid var(--home-border);
   border-radius: 18px;
   background: rgb(255 253 248 / 72%);
   box-shadow: var(--home-shadow-sm);
   backdrop-filter: blur(12px);
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+.overview-card::after {
+  position: absolute;
+  right: -24px;
+  bottom: -34px;
+  width: 82px;
+  height: 82px;
+  border-radius: 50%;
+  background: var(--home-accent-soft);
+  content: "";
+  opacity: 0.48;
+  pointer-events: none;
+}
+
+.overview-card:hover {
+  border-color: rgb(15 118 110 / 28%);
+  box-shadow: 0 14px 34px rgb(34 29 20 / 10%);
+  transform: translateY(-2px);
 }
 
 .overview-icon {
+  position: relative;
+  z-index: 1;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 42px;
-  height: 42px;
+  width: 44px;
+  height: 44px;
   flex: 0 0 auto;
-  border-radius: 13px;
-  background: var(--home-accent-soft);
+  border: 1px solid rgb(15 118 110 / 14%);
+  border-radius: 14px;
+  background:
+    linear-gradient(145deg, rgb(45 212 191 / 17%), rgb(15 118 110 / 7%)),
+    var(--home-surface-strong);
   color: var(--home-accent);
-  font-size: 20px;
-  font-weight: 900;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 42%),
+    0 8px 18px rgb(15 118 110 / 9%);
+}
+
+.overview-icon svg {
+  width: 21px;
+  height: 21px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.75;
 }
 
 .overview-card div {
+  position: relative;
+  z-index: 1;
   display: grid;
   min-width: 0;
 }
@@ -1354,22 +1398,39 @@ label:has(input:focus-visible) {
 }
 
 .home-v2 .backup-close-btn {
-  width: 34px;
-  height: 34px;
-  min-width: 34px;
-  min-height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  min-height: 40px;
   padding: 0;
-  border: 0;
-  border-radius: 50%;
-  background: var(--home-surface-muted);
-  color: var(--home-muted);
-  font-size: 22px;
+  border: 1px solid var(--home-border-strong);
+  border-radius: 13px;
+  background:
+    linear-gradient(145deg, rgb(255 255 255 / 8%), transparent),
+    var(--home-surface-muted);
+  color: var(--home-text-soft);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 10%),
+    0 8px 20px rgb(34 29 20 / 7%);
 }
 
 .home-v2 .backup-close-btn:hover {
+  border-color: rgb(15 118 110 / 30%);
   background: var(--home-accent-soft);
   color: var(--home-accent);
-  transform: none;
+  transform: translateY(-1px);
+}
+
+.home-v2 .backup-close-btn svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-width: 2;
 }
 
 .backup-dialog-body {
@@ -2880,17 +2941,12 @@ label:has(input:checked) {
 .featured-carousel-controls {
   position: absolute;
   z-index: 5;
-  right: 32px;
-  bottom: 26px;
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  padding: 7px;
-  border: 1px solid rgb(255 255 255 / 13%);
-  border-radius: 999px;
-  background: rgb(7 14 26 / 54%);
-  box-shadow: 0 14px 32px rgb(0 0 0 / 20%);
-  backdrop-filter: blur(14px);
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  pointer-events: none;
 }
 
 .featured-carousel-arrow,
@@ -2902,45 +2958,107 @@ label:has(input:checked) {
   border: 0;
   color: #dbe4f0;
   cursor: pointer;
+  pointer-events: auto;
 }
 
 .featured-carousel-arrow {
-  width: 31px;
-  height: 31px;
+  position: absolute;
+  top: 50%;
+  width: 44px;
+  min-width: 44px;
+  height: 44px;
+  min-height: 44px;
   border-radius: 50%;
-  background: rgb(255 255 255 / 8%);
-  font-size: 15px;
+  background: rgb(7 14 26 / 58%);
+  box-shadow:
+    0 10px 28px rgb(0 0 0 / 24%),
+    inset 0 0 0 1px rgb(255 255 255 / 14%);
+  font-size: 17px;
+  line-height: 1;
+  backdrop-filter: blur(12px);
+  transform: translateY(-50%);
   transition:
     background-color 160ms ease,
     color 160ms ease,
+    box-shadow 160ms ease,
     transform 160ms ease;
 }
 
+.featured-carousel-arrow:first-child {
+  left: 18px;
+}
+
+.featured-carousel-arrow:last-child {
+  right: 18px;
+}
+
 .featured-carousel-arrow:hover {
-  background: rgb(244 198 101 / 18%);
+  background: rgb(244 198 101 / 22%);
   color: var(--home-gold-light);
-  transform: scale(1.06);
+  box-shadow:
+    0 12px 30px rgb(0 0 0 / 28%),
+    inset 0 0 0 1px rgb(244 198 101 / 34%);
+  transform: translateY(-50%) scale(1.06);
+}
+
+.featured-carousel-arrow:focus-visible,
+.featured-carousel-dots button:focus-visible {
+  outline: 2px solid var(--home-gold-light);
+  outline-offset: 3px;
 }
 
 .featured-carousel-dots {
-  display: inline-flex;
+  position: absolute;
+  bottom: 18px;
+  left: 50%;
+  display: flex;
   align-items: center;
-  gap: 6px;
+  justify-content: center;
+  gap: 2px;
+  padding: 4px 7px;
+  border: 1px solid rgb(255 255 255 / 10%);
+  border-radius: 999px;
+  background: rgb(7 14 26 / 38%);
+  backdrop-filter: blur(10px);
+  transform: translateX(-50%);
 }
 
 .featured-carousel-dots button {
-  width: 7px;
-  height: 7px;
-  border-radius: 999px;
-  background: rgb(219 228 240 / 32%);
+  position: relative;
+  width: 22px;
+  min-width: 22px;
+  height: 22px;
+  min-height: 22px;
+  border-radius: 50%;
+  background: transparent;
   transition:
-    width 180ms ease,
-    background-color 180ms ease;
+    transform 180ms ease;
 }
 
-.featured-carousel-dots button.is-active {
-  width: 23px;
+.featured-carousel-dots button::before {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgb(219 228 240 / 42%);
+  box-shadow: 0 0 0 0 rgb(244 198 101 / 0%);
+  content: "";
+  transition:
+    width 180ms ease,
+    height 180ms ease,
+    background-color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.featured-carousel-dots button:hover {
+  background: transparent;
+  transform: scale(1.12);
+}
+
+.featured-carousel-dots button.is-active::before {
+  width: 9px;
+  height: 9px;
   background: var(--home-gold-light);
+  box-shadow: 0 0 0 4px rgb(244 198 101 / 13%);
 }
 
 /* Banner hành trình đọc */
@@ -2952,6 +3070,7 @@ label:has(input:checked) {
   justify-content: space-between;
   gap: 20px;
   margin-top: 18px;
+  margin-bottom: 0;
   padding: 17px 20px;
   overflow: hidden;
   border: 1px solid rgb(15 118 110 / 22%);
@@ -2992,10 +3111,20 @@ label:has(input:checked) {
   height: 43px;
   flex: 0 0 auto;
   border-radius: 14px;
-  background: var(--home-accent);
+  border: 1px solid rgb(255 255 255 / 24%);
+  background: linear-gradient(145deg, #43dcc8, var(--home-accent));
   color: #ffffff;
-  font-size: 22px;
   box-shadow: 0 9px 22px rgb(15 118 110 / 24%);
+}
+
+.reading-dashboard-icon svg {
+  width: 21px;
+  height: 21px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.85;
 }
 
 .reading-dashboard-copy p {
@@ -3314,25 +3443,45 @@ label:has(input:checked) {
   justify-content: center;
   width: 40px;
   height: 40px;
+  min-width: 40px;
+  min-height: 40px;
   flex: 0 0 auto;
   padding: 0;
-  border: 1px solid var(--home-border);
-  border-radius: 50%;
-  background: var(--home-surface-muted);
-  color: var(--home-muted);
-  font-size: 25px;
-  line-height: 1;
+  border: 1px solid var(--home-border-strong);
+  border-radius: 13px;
+  background:
+    linear-gradient(145deg, rgb(255 255 255 / 8%), transparent),
+    var(--home-surface-muted);
+  color: var(--home-text-soft);
   cursor: pointer;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 10%),
+    0 8px 20px rgb(34 29 20 / 7%);
   transition:
+    border-color 160ms ease,
     background-color 160ms ease,
+    box-shadow 160ms ease,
     color 160ms ease,
     transform 160ms ease;
 }
 
 .dialog-close-button:hover {
+  border-color: rgb(15 118 110 / 30%);
   background: var(--home-accent-soft);
   color: var(--home-accent);
-  transform: rotate(8deg);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 12%),
+    0 10px 24px rgb(15 118 110 / 12%);
+  transform: translateY(-1px);
+}
+
+.dialog-close-button svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-width: 2;
 }
 
 /* Tìm kiếm thông minh */
@@ -3764,20 +3913,31 @@ label:has(input:checked) {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 29px;
-  height: 29px;
+  width: 30px;
+  height: 30px;
+  min-width: 30px;
+  min-height: 30px;
   padding: 0;
-  border: 0;
-  border-radius: 50%;
-  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background: var(--home-surface-muted);
   color: var(--home-muted);
-  font-size: 19px;
   cursor: pointer;
 }
 
 .home-toast-close:hover {
-  background: var(--home-surface-muted);
+  border-color: var(--home-border);
+  background: var(--home-accent-soft);
   color: var(--home-text);
+}
+
+.home-toast-close svg {
+  width: 15px;
+  height: 15px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-width: 1.8;
 }
 
 /* Điều hướng cố định trên điện thoại */
@@ -3828,9 +3988,12 @@ label:has(input:checked) {
 }
 
 @media (max-width: 820px) {
-  .featured-carousel-controls {
-    right: 22px;
-    bottom: 18px;
+  .featured-carousel-arrow:first-child {
+    left: 12px;
+  }
+
+  .featured-carousel-arrow:last-child {
+    right: 12px;
   }
 
   .mobile-filter-trigger {
@@ -3865,13 +4028,31 @@ label:has(input:checked) {
   }
 
   .featured-carousel-controls {
-    right: 50%;
-    bottom: 17px;
-    transform: translateX(50%);
+    inset: 0;
+    transform: none;
   }
 
   .featured-book {
-    padding-bottom: 74px;
+    padding-bottom: 64px;
+  }
+
+  .featured-carousel-arrow {
+    width: 40px;
+    min-width: 40px;
+    height: 40px;
+    min-height: 40px;
+  }
+
+  .featured-carousel-arrow:first-child {
+    left: 8px;
+  }
+
+  .featured-carousel-arrow:last-child {
+    right: 8px;
+  }
+
+  .featured-carousel-dots {
+    bottom: 13px;
   }
 
   .reading-dashboard-banner {

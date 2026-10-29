@@ -4,6 +4,7 @@
   const STUDIO_API_BASE_URL = 'https://webdocsach-data-api.huydd12401.workers.dev';
   const BOOK_DRAFT_KEY = 'webdocsach:admin:book-draft:v2';
   const CHAPTER_DRAFT_KEY = 'webdocsach:admin:chapter-draft:v2';
+  const METADATA_DRAFT_KEY = 'webdocsach:admin:metadata-draft:v1';
   const TOKEN_SESSION_KEY = 'webdocsach:admin:token:session';
 
   const $ = (selector, root = document) => root.querySelector(selector);
@@ -21,6 +22,20 @@
     chapterCount: $('#studioChapterCount'),
     updatingCount: $('#studioUpdatingCount'),
     existingBookPicker: $('#existingBookPicker'),
+    metadataPanel: $('#metadataStudioPanel'),
+    metadataBook: $('#metadataBook'),
+    metadataTitle: $('#metadataTitle'),
+    metadataAuthor: $('#metadataAuthor'),
+    metadataGenres: $('#metadataGenres'),
+    metadataCurrentBook: $('#metadataCurrentBook'),
+    metadataCurrentTitle: $('#metadataCurrentTitle'),
+    metadataCurrentAuthor: $('#metadataCurrentAuthor'),
+    metadataCurrentGenres: $('#metadataCurrentGenres'),
+    metadataChangePreview: $('#metadataChangePreview'),
+    metadataSave: $('#saveMetadataButton'),
+    metadataReset: $('#resetMetadataButton'),
+    metadataStatus: $('#metadataStatus'),
+    metadataSummary: $('#metadataSummary'),
     generateBookId: $('#generateBookId'),
     bookForm: $('#bookUploadForm'),
     bookId: $('#bookId'),
@@ -75,6 +90,7 @@
   let catalog = [];
   let bookDraftTimer = 0;
   let chapterDraftTimer = 0;
+  let metadataDraftTimer = 0;
   let toastTimer = 0;
   let coverPreviewUrl = '';
   let chapterPreviewUrl = '';
@@ -120,7 +136,7 @@
   }
 
   function setMode(mode, options = {}) {
-    activeMode = mode === 'chapter' ? 'chapter' : 'book';
+    activeMode = ['book', 'metadata', 'chapter'].includes(mode) ? mode : 'book';
 
     elements.modeButtons.forEach(button => {
       const isActive = button.dataset.studioMode === activeMode;
@@ -140,7 +156,11 @@
     updateDraftState();
 
     if (options.focus) {
-      const target = activeMode === 'chapter' ? elements.chapterBook : elements.bookTitle;
+      const target = activeMode === 'chapter'
+        ? elements.chapterBook
+        : activeMode === 'metadata'
+          ? elements.metadataBook
+          : elements.bookTitle;
       window.setTimeout(() => target?.focus(), 120);
     }
   }
@@ -197,6 +217,7 @@
     elements.updatingCount.textContent = formatNumber(updating);
 
     const currentValue = elements.existingBookPicker.value;
+    const metadataValue = elements.metadataBook.value || elements.metadataBook.dataset.restoreValue || '';
     const options = catalog
       .slice()
       .sort((a, b) => String(a.title || a.id).localeCompare(String(b.title || b.id), 'vi'));
@@ -206,6 +227,225 @@
       elements.existingBookPicker.add(new Option(`${book.title || book.id} · ${book.id}`, book.id));
     });
     elements.existingBookPicker.value = currentValue;
+
+    elements.metadataBook.replaceChildren(new Option('Chọn truyện cần sửa thông tin...', ''));
+    options.forEach(book => {
+      elements.metadataBook.add(new Option(`${book.title || book.id} · ${book.id}`, book.id));
+    });
+    elements.metadataBook.disabled = options.length === 0;
+    elements.metadataBook.value = metadataValue;
+    delete elements.metadataBook.dataset.restoreValue;
+    renderMetadataCurrentBook();
+    updateMetadataPreview();
+  }
+
+  function getMetadataGenres(book) {
+    const value = book?.genre ?? book?.genres ?? [];
+    return (Array.isArray(value) ? value : String(value).split(/[,;]+/))
+      .map(genre => String(genre).replace(/\s+/g, ' ').trim())
+      .filter(Boolean);
+  }
+
+  function parseMetadataGenres(value) {
+    const unique = new Map();
+    String(value || '')
+      .split(/[,;\n]+/)
+      .map(genre => genre.replace(/\s+/g, ' ').trim())
+      .filter(Boolean)
+      .forEach(genre => unique.set(genre.toLocaleLowerCase('vi'), genre));
+    return [...unique.values()];
+  }
+
+  function renderMetadataCurrentBook() {
+    const book = catalog.find(item => item.id === elements.metadataBook.value);
+    elements.metadataCurrentBook.hidden = !book;
+
+    if (!book) {
+      elements.metadataCurrentTitle.textContent = '—';
+      elements.metadataCurrentAuthor.textContent = '—';
+      elements.metadataCurrentGenres.replaceChildren();
+      return;
+    }
+
+    elements.metadataCurrentTitle.textContent = book.title || book.id;
+    elements.metadataCurrentAuthor.textContent = `Tác giả: ${book.author || 'Chưa cập nhật'}`;
+    elements.metadataCurrentGenres.replaceChildren();
+
+    const genres = getMetadataGenres(book);
+    (genres.length ? genres : ['Chưa có thể loại']).forEach(genre => {
+      const tag = document.createElement('span');
+      tag.textContent = genre;
+      elements.metadataCurrentGenres.appendChild(tag);
+    });
+
+    elements.metadataTitle.placeholder = `Hiện tại: ${book.title || book.id}`;
+    elements.metadataAuthor.placeholder = `Hiện tại: ${book.author || 'Chưa cập nhật'}`;
+  }
+
+  function getMetadataChanges(book = catalog.find(item => item.id === elements.metadataBook.value)) {
+    if (!book) return {};
+
+    const changes = {};
+    const title = elements.metadataTitle.value.replace(/\s+/g, ' ').trim();
+    const author = elements.metadataAuthor.value.replace(/\s+/g, ' ').trim();
+    const genreInput = elements.metadataGenres.value.trim();
+
+    if (title && title !== String(book.title || '').trim()) changes.title = title;
+    if (author && author !== String(book.author || '').trim()) changes.author = author;
+
+    if (genreInput) {
+      const genres = parseMetadataGenres(genreInput);
+      const currentGenres = getMetadataGenres(book);
+      const sameGenres = genres.length === currentGenres.length && genres.every((genre, index) => (
+        genre.toLocaleLowerCase('vi') === currentGenres[index]?.toLocaleLowerCase('vi')
+      ));
+      if (genres.length && !sameGenres) changes.genre = genres;
+    }
+
+    return changes;
+  }
+
+  function updateMetadataPreview() {
+    const book = catalog.find(item => item.id === elements.metadataBook.value);
+    const changes = getMetadataChanges(book);
+    const entries = [];
+
+    if (changes.title) entries.push(`Tên truyện: ${book.title || book.id} → ${changes.title}`);
+    if (changes.author) entries.push(`Tác giả: ${book.author || 'Chưa cập nhật'} → ${changes.author}`);
+    if (changes.genre) entries.push(`Thể loại: ${changes.genre.join(', ')}`);
+
+    elements.metadataChangePreview.replaceChildren();
+    const heading = document.createElement('strong');
+    heading.textContent = entries.length ? `${entries.length} thay đổi sẽ được lưu` : 'Chưa có thay đổi';
+    elements.metadataChangePreview.appendChild(heading);
+
+    if (entries.length) {
+      const list = document.createElement('ul');
+      entries.forEach(entry => {
+        const item = document.createElement('li');
+        item.textContent = entry;
+        list.appendChild(item);
+      });
+      elements.metadataChangePreview.appendChild(list);
+    } else {
+      const message = document.createElement('p');
+      message.textContent = book
+        ? 'Nhập một hoặc nhiều mục cần sửa. Các mục còn lại sẽ được giữ nguyên.'
+        : 'Chọn truyện và nhập ít nhất một mục cần sửa.';
+      elements.metadataChangePreview.appendChild(message);
+    }
+
+    elements.metadataSave.disabled = !book || entries.length === 0;
+    updateChecklist();
+  }
+
+  function resetMetadataInputs(options = {}) {
+    elements.metadataTitle.value = '';
+    elements.metadataAuthor.value = '';
+    elements.metadataGenres.value = '';
+    elements.metadataSummary.hidden = true;
+    elements.metadataSummary.textContent = '';
+    elements.metadataStatus.textContent = '';
+    elements.metadataStatus.className = 'admin-status';
+    if (options.removeDraft !== false) localStorage.removeItem(METADATA_DRAFT_KEY);
+    updateMetadataPreview();
+    updateDraftState();
+  }
+
+  function showMetadataStatus(message, type = '') {
+    elements.metadataStatus.textContent = message;
+    elements.metadataStatus.className = 'admin-status';
+    if (type) elements.metadataStatus.classList.add(`is-${type}`);
+  }
+
+  async function saveMetadataChanges() {
+    const adminToken = elements.token.value.trim();
+    const bookId = elements.metadataBook.value;
+
+    if (!adminToken) {
+      showMetadataStatus('Bạn chưa nhập ADMIN_TOKEN.', 'error');
+      elements.token.focus();
+      return;
+    }
+    if (!bookId) {
+      showMetadataStatus('Hãy chọn truyện cần sửa.', 'error');
+      elements.metadataBook.focus();
+      return;
+    }
+
+    elements.metadataSave.disabled = true;
+    elements.metadataReset.disabled = true;
+    showMetadataStatus('Đang đọc dữ liệu mới nhất trên R2...');
+
+    try {
+      const catalogResponse = await fetch(`${STUDIO_API_BASE_URL}/data/books.json?time=${Date.now()}`, {
+        cache: 'no-store'
+      });
+      if (!catalogResponse.ok) throw new Error('Không thể đọc danh mục truyện trên R2.');
+
+      const freshCatalog = await catalogResponse.json();
+      if (!Array.isArray(freshCatalog)) throw new Error('Danh mục truyện trên R2 không hợp lệ.');
+
+      const bookIndex = freshCatalog.findIndex(book => book?.id === bookId);
+      if (bookIndex < 0) throw new Error('Không tìm thấy truyện đã chọn trong danh mục.');
+
+      const previousBook = freshCatalog[bookIndex];
+      const changes = getMetadataChanges(previousBook);
+      if (!Object.keys(changes).length) throw new Error('Bạn chưa nhập thông tin nào cần thay đổi.');
+
+      const updatedBook = { ...previousBook, ...changes };
+      freshCatalog[bookIndex] = updatedBook;
+
+      showMetadataStatus('Đang lưu thay đổi lên R2...');
+      const uploadResponse = await fetch(`${STUDIO_API_BASE_URL}/data/books.json`, {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${adminToken}`,
+          'Content-Type': 'application/json; charset=utf-8'
+        },
+        body: `${JSON.stringify(freshCatalog, null, 2)}\n`
+      });
+
+      let uploadResult = {};
+      try { uploadResult = await uploadResponse.json(); } catch (_) {}
+      if (!uploadResponse.ok) {
+        throw new Error(uploadResult.error || 'Không thể cập nhật books.json trên R2.');
+      }
+
+      catalog = freshCatalog.filter(book => book && book.id);
+      updateCatalogUi();
+      elements.metadataBook.value = bookId;
+      renderMetadataCurrentBook();
+
+      const changedLabels = [];
+      if (changes.title) changedLabels.push(`Tên truyện: ${changes.title}`);
+      if (changes.author) changedLabels.push(`Tác giả: ${changes.author}`);
+      if (changes.genre) changedLabels.push(`Thể loại: ${changes.genre.join(', ')}`);
+
+      elements.metadataTitle.value = '';
+      elements.metadataAuthor.value = '';
+      elements.metadataGenres.value = '';
+      localStorage.removeItem(METADATA_DRAFT_KEY);
+      updateMetadataPreview();
+      updateDraftState();
+
+      elements.metadataSummary.textContent = [
+        `Truyện: ${updatedBook.title || updatedBook.id}`,
+        ...changedLabels,
+        '',
+        'Những thông tin khác được giữ nguyên.'
+      ].join('\n');
+      elements.metadataSummary.hidden = false;
+      showMetadataStatus('Đã cập nhật thông tin truyện thành công.', 'success');
+      showToast('Thông tin truyện đã được cập nhật trên R2');
+
+      if (typeof loadChapterBookOptions === 'function') await loadChapterBookOptions();
+    } catch (error) {
+      showMetadataStatus(error instanceof Error ? error.message : 'Không thể cập nhật thông tin truyện.', 'error');
+    } finally {
+      elements.metadataReset.disabled = false;
+      updateMetadataPreview();
+    }
   }
 
   function setGenres(genres) {
@@ -349,6 +589,16 @@
     };
   }
 
+  function getMetadataDraft() {
+    return {
+      bookId: elements.metadataBook.value,
+      title: elements.metadataTitle.value,
+      author: elements.metadataAuthor.value,
+      genres: elements.metadataGenres.value,
+      savedAt: new Date().toISOString()
+    };
+  }
+
   function hasMeaningfulBookDraft(draft) {
     return Boolean(
       draft.id?.trim() ||
@@ -365,6 +615,15 @@
       draft.number ||
       draft.title?.trim() ||
       draft.content?.trim()
+    );
+  }
+
+  function hasMeaningfulMetadataDraft(draft) {
+    return Boolean(
+      draft.bookId ||
+      draft.title?.trim() ||
+      draft.author?.trim() ||
+      draft.genres?.trim()
     );
   }
 
@@ -415,6 +674,21 @@
     else chapterDraftTimer = window.setTimeout(save, 550);
   }
 
+  function saveMetadataDraft(immediate = false) {
+    window.clearTimeout(metadataDraftTimer);
+    const save = () => {
+      const draft = getMetadataDraft();
+      if (!hasMeaningfulMetadataDraft(draft)) {
+        localStorage.removeItem(METADATA_DRAFT_KEY);
+        updateDraftState();
+        return;
+      }
+      if (writeDraft(METADATA_DRAFT_KEY, draft)) updateDraftState();
+    };
+    if (immediate) save();
+    else metadataDraftTimer = window.setTimeout(save, 450);
+  }
+
   function readDraft(key) {
     try {
       const value = JSON.parse(localStorage.getItem(key) || 'null');
@@ -450,6 +724,14 @@
       elements.chapterSaveIndicator.innerHTML = '<i aria-hidden="true"></i>Chưa có bản nháp';
     }
 
+    const metadataDraft = readDraft(METADATA_DRAFT_KEY);
+    if (metadataDraft) {
+      elements.metadataTitle.value = metadataDraft.title || '';
+      elements.metadataAuthor.value = metadataDraft.author || '';
+      elements.metadataGenres.value = metadataDraft.genres || '';
+      elements.metadataBook.dataset.restoreValue = metadataDraft.bookId || '';
+    }
+
     updateDraftState();
     updateChecklist();
   }
@@ -473,13 +755,22 @@
   }
 
   function updateDraftState() {
-    const draft = readDraft(activeMode === 'book' ? BOOK_DRAFT_KEY : CHAPTER_DRAFT_KEY);
+    const key = activeMode === 'book'
+      ? BOOK_DRAFT_KEY
+      : activeMode === 'metadata'
+        ? METADATA_DRAFT_KEY
+        : CHAPTER_DRAFT_KEY;
+    const draft = readDraft(key);
     elements.draftState.textContent = draft ? 'Đã lưu an toàn' : 'Chưa có thay đổi';
     elements.draftTime.textContent = draftLabel(draft?.savedAt);
   }
 
   function clearActiveDraft() {
-    const key = activeMode === 'book' ? BOOK_DRAFT_KEY : CHAPTER_DRAFT_KEY;
+    const key = activeMode === 'book'
+      ? BOOK_DRAFT_KEY
+      : activeMode === 'metadata'
+        ? METADATA_DRAFT_KEY
+        : CHAPTER_DRAFT_KEY;
     const draft = readDraft(key);
     if (!draft) {
       showToast('Hiện không có bản nháp để xóa');
@@ -583,6 +874,15 @@
         setChecklistItem(elements.checkCover, chapterContentReady, 'Đủ tên và nội dung chương'),
         setChecklistItem(elements.checkReady, tokenReady && chapterSetupReady && chapterContentReady, 'Sẵn sàng tải chương')
       ];
+    } else if (activeMode === 'metadata') {
+      const bookReady = Boolean(elements.metadataBook.value);
+      const changesReady = Object.keys(getMetadataChanges()).length > 0;
+      states = [
+        setChecklistItem(elements.checkToken, tokenReady, 'Đã nhập mã quản trị'),
+        setChecklistItem(elements.checkBook, bookReady, 'Đã chọn truyện cần sửa'),
+        setChecklistItem(elements.checkCover, changesReady, 'Đã nhập thông tin mới'),
+        setChecklistItem(elements.checkReady, tokenReady && bookReady && changesReady, 'Sẵn sàng lưu thay đổi')
+      ];
     } else {
       const genresReady = typeof selectedBookGenres !== 'undefined' && selectedBookGenres.size > 0;
       const infoReady = Boolean(
@@ -653,6 +953,12 @@
     elements.token.addEventListener('input', updateTokenState);
     elements.tokenToggle.addEventListener('click', toggleTokenVisibility);
     elements.existingBookPicker.addEventListener('change', () => loadExistingBook(elements.existingBookPicker.value));
+    elements.metadataBook.addEventListener('change', () => {
+      resetMetadataInputs();
+      renderMetadataCurrentBook();
+      saveMetadataDraft(true);
+      updateMetadataPreview();
+    });
     elements.generateBookId.addEventListener('click', () => {
       const generated = createBookId(elements.bookTitle.value);
       if (!generated) {
@@ -684,6 +990,19 @@
       updateChecklist();
     }));
 
+    [elements.metadataTitle, elements.metadataAuthor, elements.metadataGenres].forEach(input => {
+      input.addEventListener('input', () => {
+        updateMetadataPreview();
+        saveMetadataDraft();
+      });
+    });
+
+    elements.metadataReset.addEventListener('click', () => {
+      resetMetadataInputs();
+      showToast('Đã xóa nội dung thay đổi chưa lưu');
+    });
+    elements.metadataSave.addEventListener('click', saveMetadataChanges);
+
     [elements.chapterBook, elements.chapterNumber, elements.chapterTitle, elements.chapterContent].forEach(input => {
       input.addEventListener('input', () => {
         saveChapterDraft();
@@ -713,6 +1032,7 @@
       if (event.key.toLowerCase() === 's') {
         event.preventDefault();
         if (activeMode === 'book') saveBookDraft(true);
+        else if (activeMode === 'metadata') saveMetadataDraft(true);
         else saveChapterDraft(true);
         showToast('Đã lưu bản nháp trên thiết bị');
       }
@@ -722,6 +1042,8 @@
         if (activeMode === 'book') {
           if (elements.uploadBook.disabled) elements.validateBook.click();
           else elements.uploadBook.click();
+        } else if (activeMode === 'metadata') {
+          elements.metadataSave.click();
         } else {
           elements.uploadChapter.click();
         }
@@ -730,6 +1052,7 @@
 
     window.addEventListener('beforeunload', () => {
       if (activeMode === 'book') saveBookDraft(true);
+      else if (activeMode === 'metadata') saveMetadataDraft(true);
       else saveChapterDraft(true);
       if (coverPreviewUrl) URL.revokeObjectURL(coverPreviewUrl);
       if (chapterPreviewUrl) URL.revokeObjectURL(chapterPreviewUrl);
