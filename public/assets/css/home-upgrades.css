@@ -176,26 +176,34 @@
 
 .book-hover-summary {
   position: absolute;
-  z-index: 4;
-  inset: 9px;
+  z-index: 20;
+  top: 12px;
+  left: calc(100% + 14px);
   display: grid;
-  align-content: end;
+  align-content: start;
+  width: min(270px, calc(100vw - 32px));
   padding: 15px;
   gap: 9px;
   overflow: hidden;
   border: 1px solid rgb(255 255 255 / 17%);
   border-radius: 15px;
   background:
-    linear-gradient(180deg, rgb(7 14 25 / 45%) 0%, rgb(7 14 25 / 92%) 48%, rgb(7 14 25 / 97%) 100%);
+    linear-gradient(145deg, rgb(25 38 55 / 98%), rgb(7 14 25 / 98%));
   color: #f6f7fb;
-  box-shadow: 0 18px 35px rgb(0 0 0 / 30%);
+  box-shadow: 0 22px 48px rgb(0 0 0 / 34%);
   opacity: 0;
   pointer-events: none;
-  transform: translateY(10px) scale(.985);
+  transform: translateX(-9px) scale(.985);
   backdrop-filter: blur(11px) saturate(118%);
   transition:
     opacity 190ms ease,
     transform 220ms cubic-bezier(.2, .8, .2, 1);
+}
+
+.book.is-summary-left .book-hover-summary {
+  right: calc(100% + 14px);
+  left: auto;
+  transform: translateX(9px) scale(.985);
 }
 
 .book-hover-summary::before {
@@ -295,10 +303,19 @@
 }
 
 @media (hover: hover) and (pointer: fine) {
+  .home-v2 .book {
+    overflow: visible;
+  }
+
+  .home-v2 .book:hover,
+  .home-v2 .book:focus-within {
+    z-index: 30;
+  }
+
   .book:hover .book-hover-summary,
   .book:focus-within .book-hover-summary {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: translateX(0) scale(1);
   }
 }
 
@@ -308,10 +325,21 @@
     display: inline-flex;
   }
 
+  .book-hover-summary,
+  .book.is-summary-left .book-hover-summary {
+    position: relative;
+    inset: auto;
+    display: none;
+    width: auto;
+    margin-top: 10px;
+    transform: none;
+  }
+
   .book.is-summary-open .book-hover-summary {
+    display: grid;
     opacity: 1;
     pointer-events: auto;
-    transform: translateY(0) scale(1);
+    transform: none;
   }
 
   .book.is-summary-open .book-summary-toggle {
@@ -573,7 +601,6 @@
   }
 
   .book-hover-summary {
-    inset: 7px;
     padding: 12px;
   }
 

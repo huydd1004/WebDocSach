@@ -261,6 +261,19 @@
         summaryDismiss.tabIndex = open ? 0 : -1;
       };
 
+      const placeDesktopSummary = () => {
+        if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+        const cardRect = card.getBoundingClientRect();
+        const summaryWidth = Math.min(270, window.innerWidth - 32);
+        const gap = 14;
+        const roomOnRight = window.innerWidth - cardRect.right;
+        const roomOnLeft = cardRect.left;
+        card.classList.toggle(
+          'is-summary-left',
+          roomOnRight < summaryWidth + gap && roomOnLeft > roomOnRight
+        );
+      };
+
       summaryToggle.addEventListener('click', event => {
         event.stopPropagation();
         setSummaryOpen(!card.classList.contains('is-summary-open'));
@@ -276,9 +289,13 @@
         if (card.classList.contains('is-summary-open')) event.stopPropagation();
       });
 
+      card.addEventListener('mouseenter', placeDesktopSummary);
+      card.addEventListener('focusin', placeDesktopSummary);
+
       hoverHeader.append(hoverKicker, summaryDismiss);
       hover.append(hoverHeader, hoverText, hoverMeta);
-      coverArea.append(summaryToggle, hover);
+      coverArea.appendChild(summaryToggle);
+      card.appendChild(hover);
     });
   }
 

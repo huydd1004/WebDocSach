@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'webdocsach-shell-v11';
+const CACHE_VERSION = 'webdocsach-shell-v12';
 const DATA_RUNTIME_CACHE = 'webdocsach-data-runtime-v1';
 const BASE_URL = new URL('./', self.location.href);
 
