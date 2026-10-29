@@ -877,6 +877,145 @@
     showToast('Đã chuẩn hóa khoảng trắng và dòng trống');
   }
 
+  function getPreviousTextBlock(text) {
+    const source = String(text || '').trim();
+    if (!source) return null;
+
+    const separators = [...source.matchAll(/\n[ \t]*\n+/g)];
+    const separator = separators.at(-1);
+    if (separator) {
+      return {
+        rest: source.slice(0, separator.index).trim(),
+        block: source.slice(separator.index + separator[0].length).trim()
+      };
+    }
+
+    const lineBreak = source.lastIndexOf('\n');
+    return lineBreak >= 0
+      ? {
+          rest: source.slice(0, lineBreak).trim(),
+          block: source.slice(lineBreak + 1).trim()
+        }
+      : { rest: '', block: source };
+  }
+
+  function getNextTextBlock(text) {
+    const source = String(text || '').trim();
+    if (!source) return null;
+
+    const separator = source.match(/\n[ \t]*\n+/);
+    if (separator) {
+      return {
+        block: source.slice(0, separator.index).trim(),
+        rest: source.slice(separator.index + separator[0].length).trim()
+      };
+    }
+
+    const lineBreak = source.indexOf('\n');
+    return lineBreak >= 0
+      ? {
+          block: source.slice(0, lineBreak).trim(),
+          rest: source.slice(lineBreak + 1).trim()
+        }
+      : { block: source, rest: '' };
+  }
+
+  function getSelectedTextBlock(textarea) {
+    const value = textarea.value;
+    const selectionStart = textarea.selectionStart;
+    const selectionEnd = textarea.selectionEnd;
+    if (selectionStart === selectionEnd) return null;
+
+    const blockStart = value.lastIndexOf('\n', selectionStart - 1) + 1;
+    const endAnchor = selectionEnd > selectionStart && value[selectionEnd - 1] === '\n'
+      ? selectionEnd - 1
+      : selectionEnd;
+    const followingLineBreak = value.indexOf('\n', endAnchor);
+    const blockEnd = followingLineBreak < 0 ? value.length : followingLineBreak;
+    const block = value.slice(blockStart, blockEnd).trim();
+    if (!block) return null;
+
+    return {
+      before: value.slice(0, blockStart).trimEnd(),
+      block,
+      after: value.slice(blockEnd).trimStart()
+    };
+  }
+
+  function composeTextBlocks(blocks) {
+    let value = '';
+    let selectionStart = 0;
+    let selectionEnd = 0;
+
+    blocks.forEach(item => {
+      const text = String(item.text || '').trim();
+      if (!text) return;
+      if (value) value += '\n\n';
+
+      if (item.selected) selectionStart = value.length;
+      value += text;
+      if (item.selected) selectionEnd = value.length;
+    });
+
+    return { value, selectionStart, selectionEnd };
+  }
+
+  function moveSelectedChapterBlock(direction) {
+    const textarea = elements.chapterContent;
+    const selection = getSelectedTextBlock(textarea);
+    if (!selection) return false;
+
+    let blocks;
+    if (direction === 'up') {
+      const previous = getPreviousTextBlock(selection.before);
+      if (!previous?.block) return false;
+      blocks = [
+        { text: previous.rest },
+        { text: selection.block, selected: true },
+        { text: previous.block },
+        { text: selection.after }
+      ];
+    } else {
+      const next = getNextTextBlock(selection.after);
+      if (!next?.block) return false;
+      blocks = [
+        { text: selection.before },
+        { text: next.block },
+        { text: selection.block, selected: true },
+        { text: next.rest }
+      ];
+    }
+
+    const moved = composeTextBlocks(blocks);
+    const scrollTop = textarea.scrollTop;
+    const scrollLeft = textarea.scrollLeft;
+
+    textarea.setRangeText(moved.value, 0, textarea.value.length, 'end');
+    textarea.setSelectionRange(moved.selectionStart, moved.selectionEnd, 'forward');
+    textarea.scrollTop = scrollTop;
+    textarea.scrollLeft = scrollLeft;
+    textarea.dispatchEvent(new Event('input', { bubbles: true }));
+    return true;
+  }
+
+  function handleChapterBlockMove(event) {
+    if (!['ArrowUp', 'ArrowDown'].includes(event.key)) return;
+    if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey || event.isComposing) return;
+
+    const textarea = elements.chapterContent;
+    if (textarea.selectionStart === textarea.selectionEnd) return;
+
+    event.preventDefault();
+    const direction = event.key === 'ArrowUp' ? 'up' : 'down';
+    const moved = moveSelectedChapterBlock(direction);
+
+    if (moved) {
+      showToast(direction === 'up' ? 'Đã đưa đoạn lên trên' : 'Đã đưa đoạn xuống dưới');
+    } else {
+      showToast(direction === 'up' ? 'Đoạn đã ở vị trí đầu tiên' : 'Đoạn đã ở vị trí cuối cùng');
+    }
+  }
+
   function toggleFocusEditor() {
     const focused = elements.editorCard.classList.toggle('is-focus-editor');
     elements.focusEditor.textContent = focused ? 'Thu nhỏ' : 'Toàn màn hình';
@@ -1093,6 +1232,7 @@
     });
 
     elements.chapterContent.addEventListener('input', updateChapterMetrics);
+    elements.chapterContent.addEventListener('keydown', handleChapterBlockMove);
     elements.formatChapter.addEventListener('click', formatChapterText);
     elements.focusEditor.addEventListener('click', toggleFocusEditor);
     elements.nextChapter.addEventListener('click', suggestNextChapter);
