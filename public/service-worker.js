@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'webdocsach-shell-v20';
+const CACHE_VERSION = 'webdocsach-shell-v23';
 const DATA_RUNTIME_CACHE = 'webdocsach-data-runtime-v1';
 const BASE_URL = new URL('./', self.location.href);
 
@@ -12,14 +12,14 @@ const SHELL_FILES = [
   './assets/css/theme.css',
   './assets/css/home.css',
   './assets/css/home-upgrades.css',
-  './assets/css/book.css',
+  './assets/css/book-modern.css',
   './assets/css/reader.css',
   './assets/css/reader-upgrades.css',
   './assets/js/theme.js',
   './assets/js/data-source.js',
   './assets/js/sync-client.js',
   './assets/js/script.js',
-  './assets/js/book.js',
+  './assets/js/book-modern.js',
   './assets/js/home-effects.js',
   './assets/js/home-app.js',
   './assets/js/home-upgrades.js',
@@ -78,7 +78,7 @@ async function networkFirst(request) {
 
 async function staleWhileRevalidate(request) {
   const cache = await caches.open(CACHE_VERSION);
-  const cached = await cache.match(request, { ignoreSearch: true });
+  const cached = await cache.match(request);
 
   const networkRequest = fetch(request)
     .then(async response => {
@@ -89,7 +89,19 @@ async function staleWhileRevalidate(request) {
     })
     .catch(() => null);
 
-  return cached || await networkRequest || Response.error();
+  if (cached) {
+    return cached;
+  }
+
+  const networkResponse = await networkRequest;
+  if (networkResponse) {
+    return networkResponse;
+  }
+
+  return (
+    await cache.match(request, { ignoreSearch: true }) ||
+    Response.error()
+  );
 }
 
 async function dataNetworkFirst(request) {

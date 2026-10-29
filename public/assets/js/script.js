@@ -2186,7 +2186,14 @@ function syncSettingsUI() {
     button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
   });
 
-  const activeFont = localStorage.getItem('fontFamily') || 'Merriweather';
+  const savedFont = localStorage.getItem('fontFamily');
+  const activeFont = savedFont === 'Merriweather'
+    ? 'Noto Serif'
+    : (savedFont || 'Noto Serif');
+
+  if (savedFont === 'Merriweather') {
+    localStorage.setItem('fontFamily', 'Noto Serif');
+  }
   document.querySelectorAll('[data-font]').forEach(button => {
     const isActive = button.dataset.font === activeFont;
     button.classList.toggle('is-active', isActive);
@@ -2283,11 +2290,12 @@ function setFont(fontName, close = false) {
 
   const fontMap = {
     'Noto Sans': "'Noto Sans', 'Segoe UI', 'Verdana', sans-serif",
-    Merriweather: "'Merriweather', 'Times New Roman', serif",
+    'Noto Serif': "'Noto Serif', 'Times New Roman', serif",
     Verdana: "'Verdana', 'Geneva', sans-serif"
   };
 
-  const nextFont = fontMap[fontName] ? fontName : 'Merriweather';
+  const normalizedFontName = fontName === 'Merriweather' ? 'Noto Serif' : fontName;
+  const nextFont = fontMap[normalizedFontName] ? normalizedFontName : 'Noto Serif';
   content.style.setProperty('--font-family', fontMap[nextFont]);
   localStorage.setItem('fontFamily', nextFont);
   syncSettingsUI();

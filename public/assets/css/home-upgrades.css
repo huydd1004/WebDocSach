@@ -81,7 +81,7 @@
 .smart-shelf-title h3 {
   margin-top: 3px;
   color: var(--home-text);
-  font-family: "Merriweather", Georgia, serif;
+  font-family: "Noto Serif", "Times New Roman", serif;
   font-size: 15px;
 }
 
@@ -408,7 +408,7 @@
 .quick-book-copy h2 {
   margin: 8px 44px 10px 0;
   color: var(--home-text);
-  font-family: "Merriweather", Georgia, serif;
+  font-family: "Noto Serif", "Times New Roman", serif;
   font-size: clamp(25px, 4vw, 42px);
   line-height: 1.17;
 }

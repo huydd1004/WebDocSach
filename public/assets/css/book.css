@@ -62,7 +62,7 @@
   box-shadow: 0 8px 22px rgba(38, 42, 48, 0.1);
 }
 .detail-brand > span { display: grid; gap: 1px; }
-.detail-brand strong { font-family: Georgia, "Times New Roman", serif; font-size: 17px; }
+.detail-brand strong { font-family: "Noto Serif", "Times New Roman", serif; font-size: 17px; }
 .detail-brand small { color: var(--book-muted); font-size: 9px; font-weight: 700; letter-spacing: .9px; text-transform: uppercase; }
 .detail-header-actions { display: flex; align-items: center; gap: 12px; }
 
@@ -172,7 +172,7 @@
 
 .detail-information { align-self: center; min-width: 0; }
 .detail-label { margin: 0 0 10px; color: var(--book-accent); font-size: 10px; font-weight: 900; letter-spacing: 2px; }
-.detail-information h1 { margin: 0; max-width: 760px; color: var(--book-ink); font-family: Georgia, "Times New Roman", serif; font-size: clamp(38px, 5vw, 64px); line-height: 1.04; letter-spacing: -2px; text-wrap: balance; }
+.detail-information h1 { margin: 0; max-width: 760px; color: var(--book-ink); font-family: "Noto Serif", "Times New Roman", serif; font-size: clamp(38px, 5vw, 64px); line-height: 1.04; letter-spacing: -2px; text-wrap: balance; }
 .detail-author { margin: 15px 0 0; color: var(--book-muted); font-size: 15px; font-weight: 650; }
 .detail-badges { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 21px; }
 .detail-badges span { padding: 7px 11px; border: 1px solid color-mix(in srgb, var(--book-accent) 20%, transparent); border-radius: 999px; color: var(--book-accent); background: var(--book-accent-soft); font-size: 10px; font-weight: 850; }
@@ -186,7 +186,7 @@
 
 .detail-description { margin-top: 25px; }
 .detail-description-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 9px; }
-.detail-description-heading h2 { margin: 0; color: var(--book-ink); font-family: Georgia, "Times New Roman", serif; font-size: 19px; }
+.detail-description-heading h2 { margin: 0; color: var(--book-ink); font-family: "Noto Serif", "Times New Roman", serif; font-size: 19px; }
 .detail-description-heading span { color: var(--book-faint); font-size: 8px; font-weight: 900; letter-spacing: 1px; }
 .detail-description p { position: relative; margin: 0; color: var(--book-muted); font-size: 14px; line-height: 1.78; white-space: pre-line; }
 .detail-description p.is-collapsed { display: -webkit-box; overflow: hidden; -webkit-box-orient: vertical; -webkit-line-clamp: 5; }
@@ -239,7 +239,7 @@
 .reading-journey-icon svg { width: 25px; height: 25px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
 .reading-journey-copy { min-width: 0; }
 .reading-journey-copy p { margin: 0 0 3px; color: #67dac9; font-size: 8px; font-weight: 900; letter-spacing: 1.6px; }
-.reading-journey-copy h2 { margin: 0; font-family: Georgia, "Times New Roman", serif; font-size: 19px; }
+.reading-journey-copy h2 { margin: 0; font-family: "Noto Serif", "Times New Roman", serif; font-size: 19px; }
 .reading-journey-copy > span { display: block; margin-top: 3px; color: #aebec4; font-size: 11px; }
 .reading-journey-progress { height: 5px; margin-top: 11px; overflow: hidden; border-radius: 99px; background: rgba(255,255,255,.1); }
 .reading-journey-progress i { display: block; width: 0; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #29c5b1, #efc66e); transition: width .55s ease; }
@@ -254,7 +254,7 @@
 .chapter-section-header,
 .related-books-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; margin-bottom: 24px; }
 .chapter-section-header h2,
-.related-books-heading h2 { margin: 0; color: var(--book-ink); font-family: Georgia, "Times New Roman", serif; font-size: clamp(26px, 3vw, 34px); }
+.related-books-heading h2 { margin: 0; color: var(--book-ink); font-family: "Noto Serif", "Times New Roman", serif; font-size: clamp(26px, 3vw, 34px); }
 .chapter-section-header .detail-label,
 .related-books-heading .detail-label { margin-bottom: 5px; }
 .chapter-range-summary { margin: 0; color: var(--book-muted); font-size: 11px; font-weight: 700; }
@@ -262,7 +262,7 @@
 .latest-chapters { margin-bottom: 22px; padding: 20px; border: 1px solid var(--book-line); border-radius: 18px; background: var(--book-surface-soft); }
 .latest-chapters-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 18px; margin-bottom: 14px; }
 .latest-chapters-heading .detail-label { margin-bottom: 3px; }
-.latest-chapters-heading h3 { margin: 0; color: var(--book-ink); font-family: Georgia, "Times New Roman", serif; font-size: 20px; }
+.latest-chapters-heading h3 { margin: 0; color: var(--book-ink); font-family: "Noto Serif", "Times New Roman", serif; font-size: 20px; }
 .latest-chapters-heading > span { color: var(--book-faint); font-size: 10px; }
 .latest-chapter-list { display: grid; gap: 6px; }
 .latest-chapter-link { display: grid; grid-template-columns: 95px minmax(0,1fr) auto; align-items: center; gap: 12px; min-width: 0; padding: 11px 13px; border: 1px solid transparent; border-radius: 11px; background: color-mix(in srgb, var(--book-surface-solid) 75%, transparent); transition: border-color .16s ease, background .16s ease, transform .16s ease; }
@@ -311,7 +311,7 @@
 .chapter-link.is-current .chapter-link-number { color: rgba(255,255,255,.68); }
 .chapter-link.is-current .chapter-link-state { border-color: #fff; background: #fff; }
 .chapter-search-empty { grid-column: 1 / -1; display: grid; min-height: 150px; place-content: center; gap: 5px; color: var(--book-muted); text-align: center; }
-.chapter-search-empty strong { color: var(--book-ink); font-family: Georgia, "Times New Roman", serif; font-size: 18px; }
+.chapter-search-empty strong { color: var(--book-ink); font-family: "Noto Serif", "Times New Roman", serif; font-size: 18px; }
 .chapter-search-empty span { font-size: 10px; }
 
 .related-books-heading > a { color: var(--book-accent); font-size: 11px; font-weight: 850; }
@@ -320,7 +320,7 @@
 .related-book-card:hover { border-color: color-mix(in srgb, var(--book-accent) 36%, transparent); box-shadow: 0 16px 32px rgba(31,35,43,.12); transform: translateY(-4px); }
 .related-book-card img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; }
 .related-book-card > span { display: grid; gap: 5px; padding: 13px; }
-.related-book-card strong { overflow: hidden; color: var(--book-ink); font-family: Georgia, "Times New Roman", serif; font-size: 15px; text-overflow: ellipsis; white-space: nowrap; }
+.related-book-card strong { overflow: hidden; color: var(--book-ink); font-family: "Noto Serif", "Times New Roman", serif; font-size: 15px; text-overflow: ellipsis; white-space: nowrap; }
 .related-book-card small { overflow: hidden; color: var(--book-muted); font-size: 9px; text-overflow: ellipsis; white-space: nowrap; }
 
 .mobile-book-actions { display: none; }
