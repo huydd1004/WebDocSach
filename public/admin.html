@@ -9,7 +9,7 @@
     <script src="assets/js/theme.js"></script>
     <link rel="stylesheet" href="assets/css/style.css?v=20261026-chapter">
     <link rel="stylesheet" href="assets/css/admin.css?v=20261026-genres">
-    <link rel="stylesheet" href="assets/css/admin-studio.css?v=20261029-stat-icons-1">
+    <link rel="stylesheet" href="assets/css/admin-studio.css?v=20261029-metadata-genres-1">
     <link rel="stylesheet" href="assets/css/theme.css">
 </head>
 
@@ -247,11 +247,15 @@
                                 <input id="metadataAuthor" type="text" maxlength="160" placeholder="Để trống nếu không đổi tác giả">
                             </label>
 
-                            <label class="admin-field">
-                                <span>Thể loại mới <small>Không bắt buộc</small></span>
-                                <input id="metadataGenres" type="text" placeholder="Ví dụ: Huyền huyễn, Trinh thám, Kinh dị">
-                                <small class="admin-field-help">Nhập nhiều thể loại bằng dấu phẩy. Để trống để giữ nguyên toàn bộ thể loại cũ.</small>
-                            </label>
+                            <div class="admin-field admin-genre-field studio-metadata-genres-field">
+                                <span><label for="metadataGenres">Thể loại mới</label><small>Không bắt buộc</small></span>
+                                <div id="metadataGenreTags" class="admin-genre-tags" aria-live="polite"></div>
+                                <div class="admin-genre-entry">
+                                    <input id="metadataGenres" type="text" placeholder="Nhập một hoặc nhiều thể loại" autocomplete="off">
+                                    <button id="addMetadataGenreButton" type="button">Thêm</button>
+                                </div>
+                                <small class="admin-field-help">Nhập từng thể loại rồi nhấn Enter hoặc “Thêm”. Bạn cũng có thể dán nhiều thể loại ngăn cách bằng dấu phẩy; để trống để giữ nguyên danh sách cũ.</small>
+                            </div>
 
                             <div class="studio-metadata-preview" id="metadataChangePreview">
                                 <strong>Chưa có thay đổi</strong>
@@ -321,6 +325,6 @@
     <div class="studio-toast" id="studioToast" role="status" aria-live="polite" hidden><span aria-hidden="true">✓</span><p></p></div>
 
     <script src="assets/js/admin.js?v=20261029-chapter-count"></script>
-    <script src="assets/js/admin-studio.js?v=20261029-sidebar-actions-1"></script>
+    <script src="assets/js/admin-studio.js?v=20261029-metadata-genres-1"></script>
 </body>
 </html>

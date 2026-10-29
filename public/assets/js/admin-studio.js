@@ -28,6 +28,8 @@
     metadataTitle: $('#metadataTitle'),
     metadataAuthor: $('#metadataAuthor'),
     metadataGenres: $('#metadataGenres'),
+    metadataGenreTags: $('#metadataGenreTags'),
+    addMetadataGenre: $('#addMetadataGenreButton'),
     metadataCurrentBook: $('#metadataCurrentBook'),
     metadataCurrentTitle: $('#metadataCurrentTitle'),
     metadataCurrentAuthor: $('#metadataCurrentAuthor'),
@@ -95,6 +97,7 @@
   let toastTimer = 0;
   let coverPreviewUrl = '';
   let chapterPreviewUrl = '';
+  const selectedMetadataGenres = new Map();
 
   function showToast(message) {
     if (!elements.toast) return;
@@ -261,6 +264,64 @@
     return [...unique.values()];
   }
 
+  function getPendingMetadataGenres() {
+    const unique = new Map(selectedMetadataGenres);
+    parseMetadataGenres(elements.metadataGenres.value).forEach(genre => {
+      unique.set(genre.toLocaleLowerCase('vi'), genre);
+    });
+    return [...unique.values()];
+  }
+
+  function renderMetadataGenreTags() {
+    const fragment = document.createDocumentFragment();
+
+    selectedMetadataGenres.forEach((genre, genreKey) => {
+      const tag = document.createElement('button');
+      const removeIcon = document.createElement('span');
+      tag.type = 'button';
+      tag.className = 'admin-genre-tag';
+      tag.setAttribute('aria-label', `Xóa thể loại ${genre}`);
+      removeIcon.textContent = '×';
+      removeIcon.setAttribute('aria-hidden', 'true');
+      tag.append(document.createTextNode(genre), removeIcon);
+      tag.addEventListener('click', () => {
+        selectedMetadataGenres.delete(genreKey);
+        renderMetadataGenreTags();
+        updateMetadataPreview();
+        saveMetadataDraft();
+      });
+      fragment.appendChild(tag);
+    });
+
+    elements.metadataGenreTags.replaceChildren(fragment);
+  }
+
+  function setMetadataGenres(genres) {
+    selectedMetadataGenres.clear();
+    const values = Array.isArray(genres) ? genres : parseMetadataGenres(genres);
+    values.map(value => String(value).replace(/\s+/g, ' ').trim()).filter(Boolean).forEach(genre => {
+      selectedMetadataGenres.set(genre.toLocaleLowerCase('vi'), genre);
+    });
+    elements.metadataGenres.value = '';
+    renderMetadataGenreTags();
+  }
+
+  function addMetadataGenresFromInput(options = {}) {
+    const genres = parseMetadataGenres(elements.metadataGenres.value);
+    genres.forEach(genre => {
+      selectedMetadataGenres.set(genre.toLocaleLowerCase('vi'), genre);
+    });
+
+    if (genres.length) {
+      elements.metadataGenres.value = '';
+      renderMetadataGenreTags();
+      updateMetadataPreview();
+      saveMetadataDraft();
+    }
+
+    if (options.focus !== false) elements.metadataGenres.focus();
+  }
+
   function renderMetadataCurrentBook() {
     const book = catalog.find(item => item.id === elements.metadataBook.value);
     elements.metadataCurrentBook.hidden = !book;
@@ -293,13 +354,13 @@
     const changes = {};
     const title = elements.metadataTitle.value.replace(/\s+/g, ' ').trim();
     const author = elements.metadataAuthor.value.replace(/\s+/g, ' ').trim();
-    const genreInput = elements.metadataGenres.value.trim();
+    const hasGenreInput = selectedMetadataGenres.size > 0 || elements.metadataGenres.value.trim();
 
     if (title && title !== String(book.title || '').trim()) changes.title = title;
     if (author && author !== String(book.author || '').trim()) changes.author = author;
 
-    if (genreInput) {
-      const genres = parseMetadataGenres(genreInput);
+    if (hasGenreInput) {
+      const genres = getPendingMetadataGenres();
       const currentGenres = getMetadataGenres(book);
       const sameGenres = genres.length === currentGenres.length && genres.every((genre, index) => (
         genre.toLocaleLowerCase('vi') === currentGenres[index]?.toLocaleLowerCase('vi')
@@ -347,7 +408,7 @@
   function resetMetadataInputs(options = {}) {
     elements.metadataTitle.value = '';
     elements.metadataAuthor.value = '';
-    elements.metadataGenres.value = '';
+    setMetadataGenres([]);
     elements.metadataSummary.hidden = true;
     elements.metadataSummary.textContent = '';
     elements.metadataStatus.textContent = '';
@@ -429,7 +490,7 @@
 
       elements.metadataTitle.value = '';
       elements.metadataAuthor.value = '';
-      elements.metadataGenres.value = '';
+      setMetadataGenres([]);
       localStorage.removeItem(METADATA_DRAFT_KEY);
       updateMetadataPreview();
       updateDraftState();
@@ -599,7 +660,7 @@
       bookId: elements.metadataBook.value,
       title: elements.metadataTitle.value,
       author: elements.metadataAuthor.value,
-      genres: elements.metadataGenres.value,
+      genres: getPendingMetadataGenres(),
       savedAt: new Date().toISOString()
     };
   }
@@ -628,7 +689,7 @@
       draft.bookId ||
       draft.title?.trim() ||
       draft.author?.trim() ||
-      draft.genres?.trim()
+      (Array.isArray(draft.genres) ? draft.genres.length : String(draft.genres || '').trim())
     );
   }
 
@@ -733,7 +794,7 @@
     if (metadataDraft) {
       elements.metadataTitle.value = metadataDraft.title || '';
       elements.metadataAuthor.value = metadataDraft.author || '';
-      elements.metadataGenres.value = metadataDraft.genres || '';
+      setMetadataGenres(metadataDraft.genres || []);
       elements.metadataBook.dataset.restoreValue = metadataDraft.bookId || '';
     }
 
@@ -995,12 +1056,24 @@
       updateChecklist();
     }));
 
-    [elements.metadataTitle, elements.metadataAuthor, elements.metadataGenres].forEach(input => {
+    [elements.metadataTitle, elements.metadataAuthor].forEach(input => {
       input.addEventListener('input', () => {
         updateMetadataPreview();
         saveMetadataDraft();
       });
     });
+
+    elements.addMetadataGenre.addEventListener('click', addMetadataGenresFromInput);
+    elements.metadataGenres.addEventListener('keydown', event => {
+      if (!['Enter', ',', ';'].includes(event.key)) return;
+      event.preventDefault();
+      addMetadataGenresFromInput();
+    });
+    elements.metadataGenres.addEventListener('input', () => {
+      updateMetadataPreview();
+      saveMetadataDraft();
+    });
+    elements.metadataGenres.addEventListener('blur', () => addMetadataGenresFromInput({ focus: false }));
 
     elements.metadataReset.addEventListener('click', () => {
       resetMetadataInputs();
