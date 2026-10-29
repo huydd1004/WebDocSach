@@ -13,6 +13,7 @@
   const elements = {
     modeButtons: $$('[data-studio-mode]'),
     panels: $$('[data-studio-panel]'),
+    chapterSidebarActions: $('#studioChapterSidebarActions'),
     token: $('#adminToken'),
     tokenToggle: $('#toggleAdminToken'),
     sessionState: $('#studioSessionState'),
@@ -147,6 +148,10 @@
     elements.panels.forEach(panel => {
       panel.hidden = panel.dataset.studioPanel !== activeMode;
     });
+
+    if (elements.chapterSidebarActions) {
+      elements.chapterSidebarActions.hidden = activeMode !== 'chapter';
+    }
 
     if (!options.silent) {
       try { sessionStorage.setItem('webdocsach:admin:mode', activeMode); } catch (_) {}

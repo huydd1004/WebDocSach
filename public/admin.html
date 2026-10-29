@@ -9,7 +9,7 @@
     <script src="assets/js/theme.js"></script>
     <link rel="stylesheet" href="assets/css/style.css?v=20261026-chapter">
     <link rel="stylesheet" href="assets/css/admin.css?v=20261026-genres">
-    <link rel="stylesheet" href="assets/css/admin-studio.css?v=20261029-token-layout-1">
+    <link rel="stylesheet" href="assets/css/admin-studio.css?v=20261029-brand-mark-1">
     <link rel="stylesheet" href="assets/css/theme.css">
 </head>
 
@@ -19,7 +19,7 @@
     <header class="admin-header">
         <div class="admin-container admin-header-inner">
             <a class="admin-brand" href="index.html" aria-label="Về trang chủ">
-                <span class="admin-brand-mark"><img src="assets/images/Logo.png" alt="" width="42" height="42"></span>
+                <span class="admin-brand-mark"><img src="assets/images/favicon-rounded.png" alt="" width="44" height="44"></span>
                 <span><strong>Content Studio</strong><small>Thư Viện Truyện</small></span>
             </a>
 
@@ -81,6 +81,12 @@
                         <span class="studio-mode-icon" aria-hidden="true">✎</span><span><strong>Đăng chương</strong><small>Viết, sửa và tải lên</small></span><b aria-hidden="true">›</b>
                     </button>
                 </nav>
+
+                <section id="studioChapterSidebarActions" class="studio-sidebar-actions" aria-label="Thao tác chương" hidden>
+                    <span class="studio-sidebar-actions-label">THAO TÁC CHƯƠNG</span>
+                    <button id="loadExistingChapterButton" type="button">Mở chương để sửa</button>
+                    <button id="uploadSingleChapterButton" type="button">Tải chương lên R2 <span aria-hidden="true">↑</span></button>
+                </section>
 
                 <section class="studio-side-card studio-checklist" aria-labelledby="checklistTitle">
                     <div class="studio-side-heading">
@@ -277,10 +283,6 @@
                         <div class="studio-chapter-info"><strong>Mẹo khi sửa chương</strong><p>Chọn truyện và số chương, sau đó bấm “Mở chương để sửa”. Nội dung hiện có sẽ được nạp vào trình soạn thảo.</p></div>
                     </div>
 
-                    <div class="admin-actions studio-chapter-actions">
-                        <button id="loadExistingChapterButton" type="button">Mở chương để sửa</button>
-                        <button id="uploadSingleChapterButton" type="button">Tải chương lên R2 <span aria-hidden="true">↑</span></button>
-                    </div>
                     <div id="singleChapterProgressWrapper" class="admin-progress" hidden>
                         <div class="studio-progress-heading"><strong>Đang đăng chương</strong><span id="singleChapterProgressText">Đang chuẩn bị...</span></div>
                         <progress id="singleChapterProgress" max="100" value="0"></progress>
@@ -295,6 +297,6 @@
     <div class="studio-toast" id="studioToast" role="status" aria-live="polite" hidden><span aria-hidden="true">✓</span><p></p></div>
 
     <script src="assets/js/admin.js?v=20261029-chapter-count"></script>
-    <script src="assets/js/admin-studio.js?v=20261029-metadata-editor-1"></script>
+    <script src="assets/js/admin-studio.js?v=20261029-sidebar-actions-1"></script>
 </body>
 </html>
