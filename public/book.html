@@ -2,194 +2,128 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta id="bookMetaDescription" name="description" content="Thông tin truyện, mục lục và tiến độ đọc tại Thư Viện Truyện.">
+  <meta name="theme-color" content="#f4f1e8">
   <title>Thông tin truyện | Thư Viện Truyện</title>
-
   <link rel="icon" type="image/png" sizes="192x192" href="assets/images/favicon-rounded.png?v=20261029-rounded-1">
-
   <script src="assets/js/theme.js"></script>
-
-    <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="stylesheet" href="assets/css/book.css">
-    <link rel="stylesheet" href="assets/css/theme.css">
+  <link rel="stylesheet" href="assets/css/style.css?v=20261029-book-upgrade-1">
+  <link rel="stylesheet" href="assets/css/book.css?v=20261029-book-upgrade-1">
+  <link rel="stylesheet" href="assets/css/theme.css?v=20261029-book-upgrade-1">
 </head>
 
 <body class="book-detail-page">
   <header class="detail-header">
     <div class="detail-header-inner">
-      <a class="detail-brand" href="index.html">
-        <img src="assets/images/Logo.png" alt="" width="40" height="40">
-        <span>Thư Viện Truyện</span>
+      <a class="detail-brand" href="index.html" aria-label="Về Thư Viện Truyện">
+        <img src="assets/images/favicon-rounded.png" alt="" width="40" height="40">
+        <span><strong>Thư Viện Truyện</strong><small>Góc đọc của riêng bạn</small></span>
       </a>
-
       <div class="detail-header-actions">
-        <a class="back-library" href="index.html">← Trở về thư viện</a>
-
-    <button
-            class="site-theme-toggle"
-            type="button"
-            data-theme-toggle
-            aria-label="Chuyển giao diện">
-            <span class="theme-toggle-icon" aria-hidden="true">☾</span>
-    </button>
-</div>
+        <a class="back-library" href="index.html"><span aria-hidden="true">←</span> Trở về thư viện</a>
+        <button class="site-theme-toggle" type="button" data-theme-toggle aria-label="Chuyển giao diện">
+          <span class="theme-toggle-icon" aria-hidden="true">☾</span>
+        </button>
+      </div>
     </div>
   </header>
 
   <main class="detail-shell">
     <p id="detailStatus" class="detail-status" aria-live="polite">
-      Đang tải thông tin truyện...
+      <span class="detail-loading-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span>Đang chuẩn bị không gian đọc...</span>
     </p>
 
     <article id="bookDetail" class="detail-card" hidden>
-      <div class="detail-cover-wrapper">
-        <img id="detailCover" class="detail-cover" src="" alt="">
+      <div class="detail-card-backdrop" aria-hidden="true"><img id="detailBackdrop" alt=""></div>
+      <div class="detail-cover-column">
+        <div class="detail-cover-wrapper">
+          <span class="detail-cover-glow" aria-hidden="true"></span>
+          <img id="detailCover" class="detail-cover" src="" alt="">
+          <span class="detail-cover-seal">THƯ VIỆN TUYỂN CHỌN</span>
+        </div>
       </div>
 
       <div class="detail-information">
         <p class="detail-label">THÔNG TIN TRUYỆN</p>
-
         <h1 id="detailTitle"></h1>
         <p id="detailAuthor" class="detail-author"></p>
-
-        <div class="detail-badges">
-          <span id="detailBookStatus"></span>
-          <span id="detailChapterCount"></span>
-        </div>
+        <div class="detail-badges"><span id="detailBookStatus"></span><span id="detailChapterCount"></span></div>
 
         <dl class="detail-metadata">
-          <div>
-            <dt>Thể loại</dt>
-            <dd id="detailGenres"></dd>
-          </div>
-
-          <div>
-            <dt>Ngày cập nhật</dt>
-            <dd id="detailDate"></dd>
-          </div>
+          <div class="detail-metadata-genres"><dt>Thể loại</dt><dd id="detailGenres" class="detail-genre-list"></dd></div>
+          <div><dt>Ngày cập nhật</dt><dd id="detailDate"></dd></div>
         </dl>
 
         <section class="detail-description">
-          <h2>Giới thiệu</h2>
-          <p id="detailDescription"></p>
+          <div class="detail-description-heading"><h2>Giới thiệu</h2><span>TÓM TẮT NỘI DUNG</span></div>
+          <p id="detailDescription" class="is-collapsed"></p>
+          <button id="toggleDescriptionButton" class="detail-description-toggle" type="button" hidden>Xem thêm</button>
         </section>
 
         <div class="detail-actions">
-          <a
-            id="startReadingButton"
-            class="detail-button detail-button-primary"
-          >
-            Đọc từ đầu
-          </a>
-
-          <a
-            id="continueReadingButton"
-            class="detail-button detail-button-secondary"
-            hidden
-          ></a>
-
-          <button
-            id="favoriteButton"
-            class="detail-button detail-button-favorite"
-            type="button"
-            aria-pressed="false"
-          >
-            ♡ Thêm vào yêu thích
-          </button>
+          <a id="startReadingButton" class="detail-button detail-button-primary"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 7 8 5-8 5Z"/></svg><span>Đọc từ đầu</span></a>
+          <a id="continueReadingButton" class="detail-button detail-button-secondary" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M14 7l5 5-5 5"/></svg><span></span></a>
+          <button id="favoriteButton" class="detail-button detail-button-favorite" type="button" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21l7.8-7.5 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z"/></svg><span id="favoriteButtonLabel">Thêm vào yêu thích</span></button>
+          <button id="shareBookButton" class="detail-button detail-button-share" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="m8.2 10.8 7.6-4.5M8.2 13.2l7.6 4.5"/></svg><span>Chia sẻ</span></button>
         </div>
       </div>
     </article>
 
-    <section
-  id="chapterSection"
-  class="chapter-section"
-  aria-labelledby="chapterSectionTitle"
-  hidden
->
-  <div class="chapter-section-header">
-    <div>
-      <p class="detail-label">MỤC LỤC</p>
-      <h2 id="chapterSectionTitle">Danh sách chương</h2>
-    </div>
+    <section id="readingJourney" class="reading-journey" aria-labelledby="readingJourneyTitle" hidden>
+      <div class="reading-journey-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4.5 5.5A2.5 2.5 0 0 1 7 3h4v17H7a2.5 2.5 0 0 0-2.5 2V5.5ZM19.5 5.5A2.5 2.5 0 0 0 17 3h-4v17h4a2.5 2.5 0 0 1 2.5 2V5.5Z"/></svg></div>
+      <div class="reading-journey-copy">
+        <p>HÀNH TRÌNH ĐỌC</p><h2 id="readingJourneyTitle">Sẵn sàng bắt đầu</h2><span id="readingJourneyText">Tiến độ đọc của bạn sẽ được lưu trên thiết bị này.</span>
+        <div class="reading-journey-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i id="readingJourneyBar"></i></div>
+      </div>
+      <div class="reading-journey-actions">
+        <a id="journeyContinueButton" class="journey-continue-button"><span>Bắt đầu đọc</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M14 7l5 5-5 5"/></svg></a>
+        <button id="resetReadingProgress" type="button" hidden>Đặt lại tiến độ</button>
+      </div>
+    </section>
 
-    <p id="chapterRangeSummary" class="chapter-range-summary"></p>
-  </div>
-  <section
-    class="latest-chapters"
-    aria-labelledby="latestChaptersTitle"
-  >
-    <div class="latest-chapters-heading">
-      <div>
-        <p class="detail-label">VỪA CẬP NHẬT</p>
-        <h3 id="latestChaptersTitle">Chương mới nhất</h3>
+    <section id="chapterSection" class="chapter-section" aria-labelledby="chapterSectionTitle" hidden>
+      <div class="chapter-section-header"><div><p class="detail-label">MỤC LỤC</p><h2 id="chapterSectionTitle">Danh sách chương</h2></div><p id="chapterRangeSummary" class="chapter-range-summary"></p></div>
+
+      <section class="latest-chapters" aria-labelledby="latestChaptersTitle">
+        <div class="latest-chapters-heading"><div><p class="detail-label">VỪA CẬP NHẬT</p><h3 id="latestChaptersTitle">Chương mới nhất</h3></div><span>5 chương gần nhất</span></div>
+        <div id="latestChapterList" class="latest-chapter-list"></div>
+      </section>
+
+      <div class="chapter-controls">
+        <div class="chapter-filter-row">
+          <label class="chapter-control-field"><span>Phần truyện</span><select id="chapterPartSelect"><option value="all">Tất cả các phần</option></select></label>
+          <fieldset class="chapter-read-filter"><legend>Tiến độ</legend><div><button type="button" data-chapter-filter="all" class="is-active">Tất cả</button><button type="button" data-chapter-filter="read">Đã đọc</button><button type="button" data-chapter-filter="unread">Chưa đọc</button></div></fieldset>
+          <label class="chapter-control-field"><span>Sắp xếp</span><select id="chapterSortSelect"><option value="asc">Cũ nhất trước</option><option value="desc">Mới nhất trước</option></select></label>
+        </div>
+
+        <div class="chapter-search-box">
+          <label class="chapter-search-label" for="chapterSearchInput">Tìm chương</label>
+          <div class="chapter-search-control"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4 4"/></svg><input id="chapterSearchInput" class="chapter-search-input" type="search" placeholder="Nhập số hoặc tên chương..." aria-controls="chapterList" autocomplete="off"><button id="clearChapterSearch" class="chapter-search-clear" type="button" hidden>Xóa</button></div>
+          <p id="chapterSearchStatus" class="chapter-search-status" aria-live="polite">Kết hợp tìm kiếm với phần truyện và tiến độ đọc.</p>
+        </div>
       </div>
 
-      <span>5 chương gần nhất</span>
-    </div>
+      <div class="chapter-pagination" aria-label="Chuyển nhóm chương"><button id="previousChapterPage" class="chapter-page-button" type="button">← Nhóm trước</button><select id="chapterPageSelect" class="chapter-page-select" aria-label="Chọn nhóm chương"></select><button id="nextChapterPage" class="chapter-page-button" type="button">Nhóm sau →</button></div>
+      <div id="chapterList" class="chapter-list"></div>
+    </section>
 
-    <div
-      id="latestChapterList"
-      class="latest-chapter-list"
-    ></div>
-  </section>
-
-  <div class="chapter-search-box">
-    <label
-      class="chapter-search-label"
-      for="chapterSearchInput">Tìm chương</label>
-
-
-      <div class="chapter-search-control">
-        <input
-          id="chapterSearchInput"
-          class="chapter-search-input"
-          type="search"
-          placeholder="Nhập số hoặc tên chương..."
-          aria-controls="chapterList"
-          autocomplete="off">
-
-          <button
-            id="clearChapterSearch"
-            class="chapter-search-clear"
-            type="button"
-            hidden>Xóa</button>
-      </div>
-
-      <p
-        id="chapterSearchStatus"
-        class="chapter-search-status"
-        aria-live="polite">Nhập số chương hoặc một phần tên chương.</p>
-  </div>
-
-  <div class="chapter-pagination" aria-label="Chuyển nhóm chương">
-    <button
-      id="previousChapterPage"
-      class="chapter-page-button"
-      type="button"
-    >
-      ← Nhóm trước
-    </button>
-
-    <select
-      id="chapterPageSelect"
-      class="chapter-page-select"
-      aria-label="Chọn nhóm chương"
-    ></select>
-
-    <button
-      id="nextChapterPage"
-      class="chapter-page-button"
-      type="button"
-    >
-      Nhóm sau →
-    </button>
-  </div>
-
-  <div id="chapterList" class="chapter-list"></div>
-</section>
+    <section id="relatedBooksSection" class="related-books-section" aria-labelledby="relatedBooksTitle" hidden>
+      <div class="related-books-heading"><div><p class="detail-label">CÓ THỂ BẠN SẼ THÍCH</p><h2 id="relatedBooksTitle">Truyện cùng thể loại</h2></div><a href="index.html">Khám phá thư viện <span aria-hidden="true">→</span></a></div>
+      <div id="relatedBooksList" class="related-books-list"></div>
+    </section>
   </main>
+
+  <nav id="mobileBookActions" class="mobile-book-actions" aria-label="Thao tác nhanh" hidden>
+    <a id="mobileContinueButton"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 7 8 5-8 5Z"/></svg><span>Đọc ngay</span></a>
+    <button id="mobileTocButton" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 6h14M5 12h14M5 18h14"/></svg><span>Mục lục</span></button>
+    <button id="mobileFavoriteButton" type="button" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21l7.8-7.5 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z"/></svg><span>Yêu thích</span></button>
+    <button id="mobileShareButton" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="m8.2 10.8 7.6-4.5M8.2 13.2l7.6 4.5"/></svg><span>Chia sẻ</span></button>
+  </nav>
+
+  <div id="detailToast" class="detail-toast" role="status" aria-live="polite" hidden><span aria-hidden="true">✓</span><p></p></div>
   <script src="assets/js/data-source.js?v=20261021-r2"></script>
-  <script src="assets/js/book.js?v=20261021-r2"></script>
+  <script src="assets/js/book.js?v=20261029-book-upgrade-1"></script>
 </body>
 </html>

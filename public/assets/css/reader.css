@@ -1187,6 +1187,11 @@
   background: var(--reader-accent-soft);
 }
 
+.reader-v2 #topPartMenu .reader-toc-popover-option + .reader-toc-popover-option,
+.reader-v2 #tocPartMenu .reader-toc-popover-option + .reader-toc-popover-option {
+  margin-top: 5px;
+}
+
 .reader-v2 .reader-toc-option-check {
   justify-self: end;
   color: var(--reader-accent);
