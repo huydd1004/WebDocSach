@@ -253,9 +253,9 @@
   background: var(--studio-surface-solid);
 }
 .studio-token-field input:focus { border-color: var(--studio-teal); box-shadow: 0 0 0 3px color-mix(in srgb, var(--studio-teal) 14%, transparent); }
-.studio-token-field button { position: absolute; top: 50%; right: 8px; display: grid; width: 32px; height: 32px; padding: 0; place-items: center; transform: translateY(-50%); border: 0; border-radius: 9px; color: var(--studio-muted); background: transparent; cursor: pointer; }
-.studio-token-field button:hover { color: var(--studio-teal); background: var(--studio-teal-soft); }
-.studio-token-field svg { width: 19px; height: 19px; }
+.studio-token-field button { position: absolute; top: 50%; right: 8px; display: grid; width: 32px; min-width: 32px; height: 32px; min-height: 32px; padding: 0; place-items: center; transform: translateY(-50%); border: 0; border-radius: 9px; color: var(--studio-muted); background: transparent; box-shadow: none; cursor: pointer; }
+.studio-token-field button:hover { color: var(--studio-teal); background: var(--studio-teal-soft); transform: translateY(-50%); }
+.studio-token-field svg { width: 19px; height: 19px; pointer-events: none; }
 .studio-session-state { justify-self: end; white-space: nowrap; }
 .studio-session-state.is-ready { color: var(--studio-teal); border-color: color-mix(in srgb, var(--studio-teal) 30%, transparent); background: var(--studio-teal-soft); }
 

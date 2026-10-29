@@ -258,6 +258,16 @@
   background: var(--reader-control);
   border: 1px solid var(--reader-line);
   border-radius: 13px;
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    background-color 160ms ease;
+}
+
+.reader-story-search:focus-within {
+  border-color: var(--reader-accent);
+  background: var(--reader-control-hover);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--reader-accent) 15%, transparent);
 }
 
 .reader-story-search svg {
@@ -267,15 +277,31 @@
 }
 
 .reader-story-search input {
+  display: block;
+  flex: 1 1 auto;
   width: 100%;
   min-width: 0;
   height: 46px;
-  padding: 0;
-  outline: 0;
-  border: 0;
-  background: transparent;
+  padding: 0 !important;
+  border: 0 !important;
+  outline: 0 !important;
+  appearance: none;
+  background: transparent !important;
+  box-shadow: none !important;
   color: var(--reader-text);
   font-size: 12px;
+}
+
+.reader-v2 .reader-story-search input:focus,
+.reader-v2 .reader-story-search input:focus-visible {
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+}
+
+.reader-story-search input::-webkit-search-cancel-button {
+  cursor: pointer;
+  opacity: .65;
 }
 
 .reader-search-scope {
