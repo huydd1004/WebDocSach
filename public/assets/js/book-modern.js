@@ -133,9 +133,17 @@ function getVisibleChapters() {
 
 function getCleanChapterTitle(chapter) {
   const title = String(chapter.title || '')
-    .replace(new RegExp(`^Chương\\s*${chapter.number}\\s*[:\\-]?\\s*`, 'i'), '')
+    .replace(/^Chương\s*\d+\s*[:\-]?\s*/i, '')
     .trim();
   return title || `Chương ${chapter.number}`;
+}
+
+function getFullChapterTitle(chapter) {
+  const chapterLabel = `Chương ${chapter.number}`;
+  const cleanTitle = getCleanChapterTitle(chapter);
+  return cleanTitle.toLocaleLowerCase('vi') === chapterLabel.toLocaleLowerCase('vi')
+    ? chapterLabel
+    : `${chapterLabel}: ${cleanTitle}`;
 }
 
 function createChapterLink(chapter, savedChapter) {
@@ -149,7 +157,7 @@ function createChapterLink(chapter, savedChapter) {
   number.className = 'chapter-link-number';
   number.textContent = String(chapter.number).padStart(3, '0');
   title.className = 'chapter-link-title';
-  title.textContent = getCleanChapterTitle(chapter);
+  title.textContent = getFullChapterTitle(chapter);
   state.className = 'chapter-link-state';
   state.setAttribute('aria-hidden', 'true');
   link.append(number, title, state);
