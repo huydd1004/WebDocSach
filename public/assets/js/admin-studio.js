@@ -1016,6 +1016,52 @@
     }
   }
 
+  function setupChapterSelectionScrollLock() {
+  const textarea = elements.chapterContent;
+  if (!textarea) return;
+
+  let isSelecting = false;
+  let lockedScrollX = 0;
+  let lockedScrollY = 0;
+
+  function keepPageInPlace() {
+    if (!isSelecting) return;
+
+    if (
+      window.scrollX !== lockedScrollX ||
+      window.scrollY !== lockedScrollY
+    ) {
+      window.scrollTo(lockedScrollX, lockedScrollY);
+    }
+  }
+
+  function stopSelectionLock() {
+    if (!isSelecting) return;
+
+    isSelecting = false;
+    window.removeEventListener('scroll', keepPageInPlace);
+  }
+
+  textarea.addEventListener('mousedown', event => {
+    if (event.button !== 0) return;
+
+    isSelecting = true;
+    lockedScrollX = window.scrollX;
+    lockedScrollY = window.scrollY;
+
+    window.addEventListener('scroll', keepPageInPlace, {
+      passive: true
+    });
+  });
+
+  window.addEventListener('mouseup', stopSelectionLock);
+  window.addEventListener('blur', stopSelectionLock);
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) stopSelectionLock();
+  });
+}
+
   function toggleFocusEditor() {
     const focused = elements.editorCard.classList.toggle('is-focus-editor');
     elements.focusEditor.textContent = focused ? 'Thu nhỏ' : 'Toàn màn hình';
@@ -1233,6 +1279,7 @@
 
     elements.chapterContent.addEventListener('input', updateChapterMetrics);
     elements.chapterContent.addEventListener('keydown', handleChapterBlockMove);
+    setupChapterSelectionScrollLock();
     elements.formatChapter.addEventListener('click', formatChapterText);
     elements.focusEditor.addEventListener('click', toggleFocusEditor);
     elements.nextChapter.addEventListener('click', suggestNextChapter);

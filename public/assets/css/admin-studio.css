@@ -776,7 +776,7 @@
 .admin-page .studio-chapter-title { padding: 20px 22px 0; }
 .admin-page .studio-chapter-title input { min-height: 54px; border: 0; border-bottom: 1px solid var(--studio-line); border-radius: 0; padding-inline: 0; background: transparent; font-family: var(--studio-font-display); font-size: 21px; font-weight: 700; }
 .admin-page .studio-chapter-title input:focus { box-shadow: none; }
-.admin-page .studio-chapter-content textarea { min-height: 540px; padding: 24px 30px 34px; border: 0; border-radius: 0; background: transparent; font-family: var(--studio-font-ui); font-size: 18px; line-height: 1.9; }
+.admin-page .studio-chapter-content textarea { min-height: 540px; padding: 24px 30px 34px; border: 0; border-radius: 0; background: transparent; font-family: var(--studio-font-ui); font-size: 18px; line-height: 1.9; overflow-y: auto; overscroll-behavior-y: contain; scrollbar-gutter: stable; }
 .admin-page .studio-chapter-content textarea:focus { box-shadow: none; }
 
 .studio-editor-card.is-focus-editor { position: fixed; z-index: 1000; inset: 18px; display: grid; grid-template-rows: auto 1fr; border-radius: 22px; background: var(--studio-surface-solid); }
