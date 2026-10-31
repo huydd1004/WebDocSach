@@ -30,6 +30,10 @@
     metadataGenres: $('#metadataGenres'),
     metadataGenreTags: $('#metadataGenreTags'),
     addMetadataGenre: $('#addMetadataGenreButton'),
+    metadataCoverFile: $('#metadataCoverFile'),
+    metadataCoverPreview: $('#metadataCoverPreview'),
+    metadataCoverPlaceholder: $('#metadataCoverPlaceholder'),
+    metadataCoverMeta: $('#metadataCoverMeta'),
     metadataCurrentBook: $('#metadataCurrentBook'),
     metadataCurrentTitle: $('#metadataCurrentTitle'),
     metadataCurrentAuthor: $('#metadataCurrentAuthor'),
@@ -60,6 +64,7 @@
     uploadBook: $('#uploadBookButton'),
     bookStatusMessage: $('#adminStatus'),
     chapterPanel: $('#singleChapterSection'),
+    chapterSetup: $('.studio-chapter-setup'),
     chapterBook: $('#singleChapterBook'),
     chapterNumber: $('#singleChapterNumber'),
     chapterTitle: $('#singleChapterTitle'),
@@ -96,8 +101,13 @@
   let metadataDraftTimer = 0;
   let toastTimer = 0;
   let coverPreviewUrl = '';
+  let metadataCoverPreviewUrl = '';
   let chapterPreviewUrl = '';
   const selectedMetadataGenres = new Map();
+  const chapterActionsHome = {
+    parent: elements.chapterSidebarActions?.parentNode || null,
+    nextSibling: elements.chapterSidebarActions?.nextSibling || null
+  };
 
   function showToast(message) {
     if (!elements.toast) return;
@@ -322,6 +332,83 @@
     if (options.focus !== false) elements.metadataGenres.focus();
   }
 
+  function validateMetadataCover(file) {
+    if (!file) return null;
+
+    const extension = String(file.name || '').split('.').pop()?.toLowerCase() || '';
+    const contentTypes = {
+      jpg: 'image/jpeg',
+      jpeg: 'image/jpeg',
+      png: 'image/png',
+      webp: 'image/webp'
+    };
+
+    if (!contentTypes[extension]) {
+      throw new Error('Ảnh bìa chỉ hỗ trợ JPG, PNG hoặc WEBP.');
+    }
+    if (file.size > 20 * 1024 * 1024) {
+      throw new Error('Ảnh bìa vượt quá giới hạn 20 MB.');
+    }
+
+    return { extension, contentType: contentTypes[extension] };
+  }
+
+  function updateMetadataCoverPreview(book = catalog.find(item => item.id === elements.metadataBook.value)) {
+    const file = elements.metadataCoverFile.files?.[0] || null;
+
+    if (metadataCoverPreviewUrl) {
+      URL.revokeObjectURL(metadataCoverPreviewUrl);
+      metadataCoverPreviewUrl = '';
+    }
+
+    if (file) {
+      metadataCoverPreviewUrl = URL.createObjectURL(file);
+      elements.metadataCoverPreview.src = metadataCoverPreviewUrl;
+      elements.metadataCoverPreview.hidden = false;
+      elements.metadataCoverPlaceholder.hidden = true;
+      elements.metadataCoverMeta.textContent = `${file.name} · ${formatBytes(file.size)}`;
+      return;
+    }
+
+    if (book?.cover) {
+      elements.metadataCoverPreview.src = book.cover;
+      elements.metadataCoverPreview.hidden = false;
+      elements.metadataCoverPlaceholder.hidden = true;
+      elements.metadataCoverMeta.textContent = 'Ảnh bìa hiện tại · Chọn file nếu muốn thay';
+      return;
+    }
+
+    elements.metadataCoverPreview.removeAttribute('src');
+    elements.metadataCoverPreview.hidden = true;
+    elements.metadataCoverPlaceholder.hidden = false;
+    elements.metadataCoverMeta.textContent = 'JPG, PNG hoặc WEBP · Tối đa 20 MB';
+  }
+
+  async function uploadMetadataCover(bookId, file, adminToken) {
+    const fileInfo = validateMetadataCover(file);
+    const key = `assets/images/${bookId}.${fileInfo.extension}`;
+    const encodedKey = key.split('/').map(segment => encodeURIComponent(segment)).join('/');
+    const response = await fetch(`${STUDIO_API_BASE_URL}/${encodedKey}`, {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${adminToken}`,
+        'Content-Type': fileInfo.contentType
+      },
+      body: file
+    });
+
+    let result = {};
+    try { result = await response.json(); } catch (_) {}
+    if (!response.ok) {
+      throw new Error(result.error || 'Không thể tải ảnh bìa mới lên R2.');
+    }
+
+    return {
+      key,
+      url: `${STUDIO_API_BASE_URL}/${encodedKey}?v=${Date.now()}`
+    };
+  }
+
   function renderMetadataCurrentBook() {
     const book = catalog.find(item => item.id === elements.metadataBook.value);
     elements.metadataCurrentBook.hidden = !book;
@@ -330,6 +417,7 @@
       elements.metadataCurrentTitle.textContent = '—';
       elements.metadataCurrentAuthor.textContent = '—';
       elements.metadataCurrentGenres.replaceChildren();
+      updateMetadataCoverPreview(null);
       return;
     }
 
@@ -346,6 +434,7 @@
 
     elements.metadataTitle.placeholder = `Hiện tại: ${book.title || book.id}`;
     elements.metadataAuthor.placeholder = `Hiện tại: ${book.author || 'Chưa cập nhật'}`;
+    updateMetadataCoverPreview(book);
   }
 
   function getMetadataChanges(book = catalog.find(item => item.id === elements.metadataBook.value)) {
@@ -374,11 +463,13 @@
   function updateMetadataPreview() {
     const book = catalog.find(item => item.id === elements.metadataBook.value);
     const changes = getMetadataChanges(book);
+    const coverFile = elements.metadataCoverFile.files?.[0] || null;
     const entries = [];
 
     if (changes.title) entries.push(`Tên truyện: ${book.title || book.id} → ${changes.title}`);
     if (changes.author) entries.push(`Tác giả: ${book.author || 'Chưa cập nhật'} → ${changes.author}`);
     if (changes.genre) entries.push(`Thể loại: ${changes.genre.join(', ')}`);
+    if (coverFile) entries.push(`Ảnh bìa mới: ${coverFile.name}`);
 
     elements.metadataChangePreview.replaceChildren();
     const heading = document.createElement('strong');
@@ -408,12 +499,14 @@
   function resetMetadataInputs(options = {}) {
     elements.metadataTitle.value = '';
     elements.metadataAuthor.value = '';
+    elements.metadataCoverFile.value = '';
     setMetadataGenres([]);
     elements.metadataSummary.hidden = true;
     elements.metadataSummary.textContent = '';
     elements.metadataStatus.textContent = '';
     elements.metadataStatus.className = 'admin-status';
     if (options.removeDraft !== false) localStorage.removeItem(METADATA_DRAFT_KEY);
+    updateMetadataCoverPreview();
     updateMetadataPreview();
     updateDraftState();
   }
@@ -427,6 +520,7 @@
   async function saveMetadataChanges() {
     const adminToken = elements.token.value.trim();
     const bookId = elements.metadataBook.value;
+    const coverFile = elements.metadataCoverFile.files?.[0] || null;
 
     if (!adminToken) {
       showMetadataStatus('Bạn chưa nhập ADMIN_TOKEN.', 'error');
@@ -457,7 +551,17 @@
 
       const previousBook = freshCatalog[bookIndex];
       const changes = getMetadataChanges(previousBook);
-      if (!Object.keys(changes).length) throw new Error('Bạn chưa nhập thông tin nào cần thay đổi.');
+      if (!Object.keys(changes).length && !coverFile) {
+        throw new Error('Bạn chưa nhập thông tin hoặc chọn ảnh bìa cần thay đổi.');
+      }
+
+      let coverUpload = null;
+      if (coverFile) {
+        validateMetadataCover(coverFile);
+        showMetadataStatus('Đang tải ảnh bìa mới lên R2...');
+        coverUpload = await uploadMetadataCover(bookId, coverFile, adminToken);
+        changes.cover = coverUpload.url;
+      }
 
       const updatedBook = { ...previousBook, ...changes };
       freshCatalog[bookIndex] = updatedBook;
@@ -487,10 +591,13 @@
       if (changes.title) changedLabels.push(`Tên truyện: ${changes.title}`);
       if (changes.author) changedLabels.push(`Tác giả: ${changes.author}`);
       if (changes.genre) changedLabels.push(`Thể loại: ${changes.genre.join(', ')}`);
+      if (coverUpload) changedLabels.push(`Ảnh bìa: ${coverUpload.key}`);
 
       elements.metadataTitle.value = '';
       elements.metadataAuthor.value = '';
+      elements.metadataCoverFile.value = '';
       setMetadataGenres([]);
+      updateMetadataCoverPreview(updatedBook);
       localStorage.removeItem(METADATA_DRAFT_KEY);
       updateMetadataPreview();
       updateDraftState();
@@ -1064,6 +1171,18 @@
 
   function toggleFocusEditor() {
     const focused = elements.chapterPanel.classList.toggle('is-focus-editor');
+
+    if (focused) {
+      elements.chapterSidebarActions.classList.add('is-editor-actions');
+      elements.chapterSetup.appendChild(elements.chapterSidebarActions);
+    } else if (chapterActionsHome.parent) {
+      elements.chapterSidebarActions.classList.remove('is-editor-actions');
+      const anchor = chapterActionsHome.nextSibling?.parentNode === chapterActionsHome.parent
+        ? chapterActionsHome.nextSibling
+        : null;
+      chapterActionsHome.parent.insertBefore(elements.chapterSidebarActions, anchor);
+    }
+
     elements.focusEditor.textContent = focused ? 'Thu nhỏ' : 'Toàn màn hình';
     elements.focusEditor.title = focused ? 'Thoát chế độ toàn màn hình' : 'Mở trình soạn thảo toàn màn hình';
     elements.focusEditor.setAttribute('aria-pressed', String(focused));
@@ -1129,7 +1248,7 @@
       ];
     } else if (activeMode === 'metadata') {
       const bookReady = Boolean(elements.metadataBook.value);
-      const changesReady = Object.keys(getMetadataChanges()).length > 0;
+      const changesReady = Object.keys(getMetadataChanges()).length > 0 || Boolean(elements.metadataCoverFile.files?.length);
       states = [
         setChecklistItem(elements.checkToken, tokenReady, 'Đã nhập mã quản trị'),
         setChecklistItem(elements.checkBook, bookReady, 'Đã chọn truyện cần sửa'),
@@ -1250,6 +1369,11 @@
       });
     });
 
+    elements.metadataCoverFile.addEventListener('change', () => {
+      updateMetadataCoverPreview();
+      updateMetadataPreview();
+    });
+
     elements.addMetadataGenre.addEventListener('click', addMetadataGenresFromInput);
     elements.metadataGenres.addEventListener('keydown', event => {
       if (!['Enter', ',', ';'].includes(event.key)) return;
@@ -1322,6 +1446,7 @@
       else if (activeMode === 'metadata') saveMetadataDraft(true);
       else saveChapterDraft(true);
       if (coverPreviewUrl) URL.revokeObjectURL(coverPreviewUrl);
+      if (metadataCoverPreviewUrl) URL.revokeObjectURL(metadataCoverPreviewUrl);
       if (chapterPreviewUrl) URL.revokeObjectURL(chapterPreviewUrl);
     });
   }
@@ -1334,6 +1459,7 @@
 
     setupEvents();
     setupDropZone('#coverDropZone', elements.coverFile, updateCoverPreview);
+    setupDropZone('#metadataCoverDropZone', elements.metadataCoverFile, updateMetadataCoverPreview);
     setupDropZone('#chapterImageDropZone', elements.chapterImage, updateChapterImagePreview);
     observeSelectOptions();
     observeStatusMessages();

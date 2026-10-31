@@ -464,6 +464,7 @@
 
 .studio-media-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 16px; }
 .admin-page .studio-cover-drop,
+.admin-page .studio-metadata-cover-drop,
 .admin-page .studio-folder-drop,
 .admin-page .studio-chapter-image {
   position: relative;
@@ -482,10 +483,12 @@
 
 .admin-page .studio-folder-drop { flex-direction: column; justify-content: center; text-align: center; }
 .admin-page .studio-cover-drop:hover,
+.admin-page .studio-metadata-cover-drop:hover,
 .admin-page .studio-folder-drop:hover,
 .admin-page .studio-chapter-image:hover,
 .admin-page .is-dragging { border-color: var(--studio-gold); background: color-mix(in srgb, var(--studio-gold) 8%, var(--studio-surface-soft)); transform: translateY(-2px); }
 .admin-page .studio-cover-drop > input,
+.admin-page .studio-metadata-cover-drop > input,
 .admin-page .studio-folder-drop > input,
 .admin-page .studio-chapter-image > input { position: absolute; width: 1px; height: 1px; padding: 0; opacity: 0; pointer-events: none; }
 
@@ -643,6 +646,31 @@
   color: var(--studio-teal);
   font-size: 9px;
   font-weight: 800;
+}
+
+.admin-page .studio-metadata-cover-drop {
+  min-height: 136px;
+  margin: 6px 0 18px;
+  padding: 14px;
+}
+
+.studio-metadata-cover-preview {
+  flex-basis: 76px;
+  width: 76px;
+  border-radius: 12px;
+}
+
+.studio-metadata-cover-drop .studio-file-copy strong {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.studio-metadata-cover-drop .studio-file-copy em {
+  color: var(--studio-teal);
+  font-size: 9px;
+  font-style: normal;
 }
 
 .studio-metadata-preview {
@@ -810,6 +838,18 @@
   overflow-y: auto;
 }
 #singleChapterSection.is-focus-editor .studio-inline-button { grid-column: auto; }
+#singleChapterSection.is-focus-editor .studio-chapter-setup .studio-sidebar-actions {
+  grid-column: 1 / -1;
+  position: static;
+  gap: 9px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+#singleChapterSection.is-focus-editor .studio-chapter-setup .studio-sidebar-actions-label { display: none; }
+#singleChapterSection.is-focus-editor .studio-chapter-setup .studio-sidebar-actions button { min-height: 46px; }
 #singleChapterSection.is-focus-editor .studio-editor-card {
   grid-column: 2;
   grid-row: 2;
@@ -973,5 +1013,5 @@ body:has(#singleChapterSection.is-focus-editor) { overflow: hidden; }
 
 @media (prefers-reduced-motion: reduce) {
   .studio-panel, .studio-toast { animation: none; }
-  .studio-mode-button, .studio-mini-progress span, .admin-page .studio-cover-drop, .admin-page .studio-folder-drop, .admin-page .studio-chapter-image { transition: none; }
+  .studio-mode-button, .studio-mini-progress span, .admin-page .studio-cover-drop, .admin-page .studio-metadata-cover-drop, .admin-page .studio-folder-drop, .admin-page .studio-chapter-image { transition: none; }
 }

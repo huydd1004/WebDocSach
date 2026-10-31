@@ -9,7 +9,7 @@
     <script src="assets/js/theme.js"></script>
     <link rel="stylesheet" href="assets/css/style.css?v=20261029-vietnamese-font-1">
     <link rel="stylesheet" href="assets/css/admin.css?v=20261026-genres">
-    <link rel="stylesheet" href="assets/css/admin-studio.css?v=20261031-fullscreen-editor-1">
+    <link rel="stylesheet" href="assets/css/admin-studio.css?v=20261031-admin-cover-actions-1">
     <link rel="stylesheet" href="assets/css/theme.css">
 </head>
 
@@ -99,7 +99,7 @@
                         <span class="studio-mode-icon" aria-hidden="true">＋</span><span><strong>Tạo truyện</strong><small>Thông tin và ảnh bìa</small></span><b aria-hidden="true">›</b>
                     </button>
                     <button class="studio-mode-button" type="button" data-studio-mode="metadata" aria-controls="metadataStudioPanel" aria-selected="false">
-                        <span class="studio-mode-icon" aria-hidden="true">✦</span><span><strong>Sửa thông tin</strong><small>Tên, tác giả, thể loại</small></span><b aria-hidden="true">›</b>
+                        <span class="studio-mode-icon" aria-hidden="true">✦</span><span><strong>Sửa thông tin</strong><small>Tên, tác giả, thể loại, ảnh bìa</small></span><b aria-hidden="true">›</b>
                     </button>
                     <button class="studio-mode-button" type="button" data-studio-mode="chapter" aria-controls="singleChapterSection" aria-selected="false">
                         <span class="studio-mode-icon" aria-hidden="true">✎</span><span><strong>Đăng chương</strong><small>Viết, sửa và tải lên</small></span><b aria-hidden="true">›</b>
@@ -207,7 +207,7 @@
                             <h2>Sửa thông tin truyện</h2>
                             <p>Chỉ nhập mục bạn muốn thay đổi. Mục để trống sẽ giữ nguyên.</p>
                         </div>
-                        <span class="studio-optional-badge">Không cần ảnh bìa</span>
+                        <span class="studio-optional-badge">Có thể thay ảnh bìa</span>
                     </div>
 
                     <div class="studio-metadata-layout">
@@ -234,7 +234,7 @@
 
                             <div class="admin-card-heading studio-metadata-edit-heading">
                                 <span class="admin-step">2</span>
-                                <div><h2>Nhập thay đổi</h2><p>Cả ba mục dưới đây đều không bắt buộc.</p></div>
+                                <div><h2>Nhập thay đổi</h2><p>Chỉ chọn những mục bạn muốn cập nhật.</p></div>
                             </div>
 
                             <label class="admin-field">
@@ -257,6 +257,15 @@
                                 <small class="admin-field-help">Nhập từng thể loại rồi nhấn Enter hoặc “Thêm”. Bạn cũng có thể dán nhiều thể loại ngăn cách bằng dấu phẩy; để trống để giữ nguyên danh sách cũ.</small>
                             </div>
 
+                            <label class="admin-file-field studio-metadata-cover-drop" id="metadataCoverDropZone">
+                                <input id="metadataCoverFile" type="file" accept=".jpg, .jpeg, .png, .webp">
+                                <span class="studio-cover-preview studio-metadata-cover-preview">
+                                    <img id="metadataCoverPreview" alt="Xem trước ảnh bìa mới" hidden>
+                                    <i id="metadataCoverPlaceholder" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3h11A2.5 2.5 0 0 1 20 5.5v13a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 18.5z" stroke="currentColor" stroke-width="1.5"/><circle cx="9" cy="9" r="1.5" stroke="currentColor" stroke-width="1.5"/><path d="m5 17 4.3-4.3 3.2 3.2 2-2 4.5 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></i>
+                                </span>
+                                <span class="studio-file-copy"><strong>Ảnh bìa mới <em>Không bắt buộc</em></strong><b>Chọn ảnh hoặc kéo thả vào đây</b><small id="metadataCoverMeta">JPG, PNG hoặc WEBP · Tối đa 20 MB</small></span>
+                            </label>
+
                             <div class="studio-metadata-preview" id="metadataChangePreview">
                                 <strong>Chưa có thay đổi</strong>
                                 <p>Chọn truyện và nhập ít nhất một mục cần sửa.</p>
@@ -275,7 +284,7 @@
                             <span aria-hidden="true">i</span>
                             <div>
                                 <strong>Cách hoạt động</strong>
-                                <p>Hệ thống chỉ thay thế những trường bạn đã nhập. Ảnh bìa, mô tả, trạng thái và toàn bộ chương truyện được giữ nguyên.</p>
+                                <p>Hệ thống chỉ thay thế những trường bạn đã nhập hoặc ảnh bìa bạn đã chọn. Mô tả, trạng thái và toàn bộ chương truyện được giữ nguyên.</p>
                             </div>
                         </aside>
                     </div>
@@ -326,6 +335,6 @@
     <div class="studio-toast" id="studioToast" role="status" aria-live="polite" hidden><span aria-hidden="true">✓</span><p></p></div>
 
     <script src="assets/js/admin.js?v=20261029-chapter-count"></script>
-    <script src="assets/js/admin-studio.js?v=20261031-fullscreen-editor-1"></script>
+    <script src="assets/js/admin-studio.js?v=20261031-admin-cover-actions-1"></script>
 </body>
 </html>
