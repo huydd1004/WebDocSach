@@ -779,11 +779,55 @@
 .admin-page .studio-chapter-content textarea { min-height: 540px; padding: 24px 30px 34px; border: 0; border-radius: 0; background: transparent; font-family: var(--studio-font-ui); font-size: 18px; line-height: 1.9; overflow-y: auto; overscroll-behavior-y: contain; scrollbar-gutter: stable; }
 .admin-page .studio-chapter-content textarea:focus { box-shadow: none; }
 
-.studio-editor-card.is-focus-editor { position: fixed; z-index: 1000; inset: 18px; display: grid; grid-template-rows: auto 1fr; border-radius: 22px; background: var(--studio-surface-solid); }
-.studio-editor-card.is-focus-editor .studio-chapter-title { grid-row: 2; position: absolute; z-index: 1; top: 52px; left: 0; right: 0; }
-.studio-editor-card.is-focus-editor .studio-chapter-content { grid-row: 2; padding-top: 82px; }
-.studio-editor-card.is-focus-editor .studio-chapter-content textarea { width: min(900px, 100%); height: calc(100vh - 135px); margin-inline: auto; padding-top: 90px; }
-body:has(.studio-editor-card.is-focus-editor) { overflow: hidden; }
+#singleChapterSection.is-focus-editor {
+  position: fixed;
+  z-index: 1900;
+  inset: 14px;
+  display: grid;
+  grid-template-columns: minmax(250px, 330px) minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: 14px;
+  min-width: 0;
+  padding: 14px;
+  overflow: hidden;
+  border: 1px solid var(--studio-line);
+  border-radius: 24px;
+  background: var(--studio-bg);
+  box-shadow: 0 28px 90px rgba(5, 12, 22, 0.38);
+}
+#singleChapterSection.is-focus-editor .studio-panel-head { grid-column: 1 / -1; min-height: 76px; margin: 0; padding: 15px 20px; border-radius: 17px; }
+#singleChapterSection.is-focus-editor .studio-panel-head p { margin-top: 4px; }
+#singleChapterSection.is-focus-editor .studio-chapter-setup {
+  grid-column: 1;
+  grid-row: 2;
+  grid-template-columns: 1fr;
+  align-content: start;
+  align-items: stretch;
+  gap: 14px;
+  min-height: 0;
+  margin: 0;
+  padding: 18px;
+  overflow-y: auto;
+}
+#singleChapterSection.is-focus-editor .studio-inline-button { grid-column: auto; }
+#singleChapterSection.is-focus-editor .studio-editor-card {
+  grid-column: 2;
+  grid-row: 2;
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr);
+  min-width: 0;
+  min-height: 0;
+  border-radius: 18px;
+}
+#singleChapterSection.is-focus-editor .studio-chapter-title { padding-top: 12px; }
+#singleChapterSection.is-focus-editor .studio-chapter-content { display: grid; min-height: 0; }
+#singleChapterSection.is-focus-editor .studio-chapter-content textarea { width: 100%; height: 100%; min-height: 0; resize: none; }
+#singleChapterSection.is-focus-editor #toggleFocusEditor { border-color: var(--studio-teal); color: var(--studio-teal); background: var(--studio-teal-soft); }
+#singleChapterSection.is-focus-editor .studio-chapter-footer-grid,
+#singleChapterSection.is-focus-editor .admin-progress,
+#singleChapterSection.is-focus-editor > .admin-status,
+#singleChapterSection.is-focus-editor > .upload-summary { display: none; }
+body:has(#singleChapterSection.is-focus-editor) { overflow: hidden; }
 
 .studio-chapter-footer-grid { display: grid; grid-template-columns: 1fr 0.8fr; gap: 16px; margin-top: 18px; }
 .admin-page .studio-chapter-image { min-height: 122px; }
@@ -892,8 +936,38 @@ body:has(.studio-editor-card.is-focus-editor) { overflow: hidden; }
   .admin-page .studio-metadata-actions { grid-template-columns: 1fr; }
   .studio-current-book { grid-template-columns: 40px minmax(0, 1fr); padding: 14px; }
   .studio-current-book-mark { width: 40px; height: 40px; border-radius: 12px; }
-  .studio-editor-card.is-focus-editor { inset: 0; border: 0; border-radius: 0; }
-  .studio-editor-card.is-focus-editor .studio-chapter-content textarea { height: calc(100vh - 135px); }
+  #singleChapterSection.is-focus-editor {
+    inset: 0;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto minmax(0, 1fr);
+    gap: 9px;
+    padding: max(8px, env(safe-area-inset-top)) 8px max(8px, env(safe-area-inset-bottom));
+    border: 0;
+    border-radius: 0;
+  }
+  #singleChapterSection.is-focus-editor .studio-panel-head { grid-column: 1; grid-row: 1; min-height: 58px; padding: 10px 13px; }
+  #singleChapterSection.is-focus-editor .studio-panel-head h2 { font-size: 18px; }
+  #singleChapterSection.is-focus-editor .studio-panel-head p,
+  #singleChapterSection.is-focus-editor .studio-kicker { display: none; }
+  #singleChapterSection.is-focus-editor .studio-save-indicator { padding: 6px 9px; }
+  #singleChapterSection.is-focus-editor .studio-chapter-setup {
+    grid-column: 1;
+    grid-row: 2;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 8px;
+    padding: 10px;
+    overflow: visible;
+  }
+  #singleChapterSection.is-focus-editor .studio-book-select-field { grid-column: 1 / -1; }
+  #singleChapterSection.is-focus-editor .studio-inline-button { min-height: 44px; align-self: end; }
+  #singleChapterSection.is-focus-editor .studio-editor-card { grid-column: 1; grid-row: 3; border-radius: 15px; }
+  #singleChapterSection.is-focus-editor .studio-editor-toolbar { align-items: center; flex-direction: row; gap: 8px; min-height: 45px; padding: 6px 9px; }
+  #singleChapterSection.is-focus-editor .studio-editor-move-hint { display: none; }
+  #singleChapterSection.is-focus-editor .studio-editor-toolbar > div { margin-left: auto; }
+  #singleChapterSection.is-focus-editor .studio-editor-toolbar button { min-height: 30px; padding: 5px 8px; }
+  #singleChapterSection.is-focus-editor .studio-chapter-title { padding: 8px 12px 0; }
+  #singleChapterSection.is-focus-editor .studio-chapter-title input { min-height: 42px; font-size: 17px; }
+  #singleChapterSection.is-focus-editor .studio-chapter-content textarea { min-height: 0; padding: 14px 12px 20px; font-size: 16px; }
   .studio-toast { right: 16px; bottom: max(16px, env(safe-area-inset-bottom)); left: 16px; }
 }
 
